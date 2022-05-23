@@ -52,7 +52,7 @@ export default function Home({}) {
   return (
     <Center>
       <Grid
-        w="80%"
+        w={{ base: "100%", md: "80%" }}
         templateColumns="repeat(12, 1fr)"
         templateRows="repeat(4, 1fr)"
         gap={4}

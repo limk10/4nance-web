@@ -6,7 +6,11 @@ import Layout from "../layout";
 export default function CaptureProject({}) {
   return (
     <Center>
-      <Grid h={"full"} w="80%" templateColumns="repeat(12, 1fr)">
+      <Grid
+        w={{ base: "100%", md: "80%" }}
+        h={"full"}
+        templateColumns="repeat(12, 1fr)"
+      >
         <GridItem
           colSpan={12}
           h="full"
