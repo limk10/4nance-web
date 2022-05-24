@@ -17,11 +17,11 @@ import {
 
 import Router from "next/router";
 
-import { FiMenu, FiChevronDown } from "react-icons/fi";
+import { FiMenu, FiChevronDown, FiUser, FiLogOut } from "react-icons/fi";
 
 const MobileNav = ({ onOpen, ...rest }) => {
-  const handleLogout = () => {
-    Router.push("/business/signin");
+  const navigateTo = (route) => {
+    Router.push(route);
   };
 
   return (
@@ -94,9 +94,15 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              {/* <MenuItem>Perfil</MenuItem>
-              <MenuDivider /> */}
-              <MenuItem onClick={handleLogout}>Deslogar</MenuItem>
+              <MenuItem onClick={() => navigateTo("/business/usuario/perfil")}>
+                <FiUser />
+                <Text ml={2}>Perfil</Text>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={() => navigateTo("/business/signin")}>
+                <FiLogOut />
+                <Text ml={2}>Deslogar</Text>
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>
