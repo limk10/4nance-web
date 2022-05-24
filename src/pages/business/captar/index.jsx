@@ -20,10 +20,8 @@ import Router from "next/router";
 import { AiFillPlusCircle } from "react-icons/ai";
 
 import Layout from "../layout";
-import {
-  CaptureEmployeeForm,
-  CaptureOperationForm,
-} from "./components/CaptureForm";
+import CaptureEmployeeForm from "./components/form/CaptureEmployeeForm";
+import CaptureOperationForm from "./components/form/CaptureOperationForm";
 
 const steps = [
   { label: "Sua empresa", description: "Conte-nos um pouco sobre sua empresa" },
