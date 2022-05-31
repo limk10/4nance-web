@@ -1,16 +1,23 @@
-import { useState } from "react";
-import { Center, GridItem, Grid, Box } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Divider } from "@chakra-ui/react";
 
-import Layout from "../../layout";
+import PaginationTable from "../../../../components/Table/PaginationTabe";
+
+const fetchPokemons = async (pageSize, offset) => {
+  return await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=${pageSize}&offset=${offset}`
+  ).then(async (res) => await res.json());
+};
 
 export default function ContractedProjects({}) {
   return (
-    <Center>
-      <h1>Contratdos</h1>
-    </Center>
+    <Box borderRadius={"md"} bg="#fff" p={4}>
+      <Flex justify="space-between" align="center">
+        <Text fontSize="xl">Operações contratadas</Text>
+        <Button size="sm">Cadastrar operação</Button>
+      </Flex>
+      <Divider mt={5} mb={8} />
+
+      <PaginationTable fetchPokemons={fetchPokemons} />
+    </Box>
   );
 }
-
-ContractedProjects.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};

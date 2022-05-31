@@ -28,6 +28,8 @@ import Router from "next/router";
 import { addToLocalStorage } from "../../../helpers/localStorage";
 import { signinSchema, handleMessage } from "../../../helpers/validade";
 
+import axios from "axios";
+
 const Singin = () => {
   const [form, setForm] = useState({});
 
@@ -63,6 +65,21 @@ const Singin = () => {
       },
     }
   );
+
+  const username = "17b271f2-2c76-4240-a0d7-46f57e919ca3";
+  const password = "741d5db9-c596-41b4-8785-1d50367224c8";
+
+  function parseXmlToJson(xml) {
+    const json = {};
+    for (const res of xml.matchAll(
+      /(?:<(\w*)(?:\s[^>]*)*>)((?:(?!<\1).)*)(?:<\/\1>)|<(\w*)(?:\s*)*\/>/gm
+    )) {
+      const key = res[1] || res[3];
+      const value = res[2] && parseXmlToJson(res[2]);
+      json[key] = (value && Object.keys(value).length ? value : res[2]) || null;
+    }
+    return json;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,8 +1,18 @@
-import { Stack, Flex, Text, Box } from "@chakra-ui/react";
+import {
+  Stack,
+  Flex,
+  Text,
+  Box,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+} from "@chakra-ui/react";
 
-export default function InfoCard({ title, text, icon, ...rest }) {
+export default function InfoCard({ title, text, up, icon, ...rest }) {
   return (
-    <Box h="full" bg="white" borderRadius={"md"} shadow="md" p={5}>
+    <Box h="full" bg="white" borderRadius={"md"} shadow="md" px={5} py={4}>
       <Stack {...rest}>
         <Flex>
           {icon && (
@@ -21,12 +31,14 @@ export default function InfoCard({ title, text, icon, ...rest }) {
           )}
 
           <Flex direction="column">
-            <Text fontSize="xl" fontWeight={600}>
-              {title}
-            </Text>
-            <Text fontSize="md" color={"gray.600"}>
-              {text}
-            </Text>
+            <Stat>
+              <StatLabel>{text}</StatLabel>
+              <StatNumber>{title}</StatNumber>
+              <StatHelpText>
+                <StatArrow type={up ? "increase" : "decrease"} />
+                23.36%
+              </StatHelpText>
+            </Stat>
           </Flex>
         </Flex>
       </Stack>

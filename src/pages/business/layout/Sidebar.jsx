@@ -33,7 +33,7 @@ const Sidebar = ({ onClose, ...rest }) => {
     },
     {
       name: "Operações",
-      path: "/business/projetos/contratados",
+      path: "/business/projetos",
       icon: FiBarChart,
       submenu: [],
     },

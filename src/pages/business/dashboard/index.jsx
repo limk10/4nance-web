@@ -16,12 +16,22 @@ import {
 
 export default function Dashboard({}) {
   const [info, setInfo] = useState([
-    { title: "0", text: "Investidores", Icon: FiUsers },
-    { title: "0", text: "Operações em captação", Icon: FiBarChart },
-    { title: "0", text: "Operações encerradas", Icon: FiExternalLink },
-    { title: "0", text: "Total captado", Icon: FiAirplay },
-    { title: "0", text: "Proventos pagos", Icon: FiDollarSign },
-    { title: "0", text: "Ticket médio", Icon: FiDivideSquare },
+    { title: 1.423, up: false, text: "Investidores", Icon: FiUsers },
+    { title: 2, up: true, text: "Operações em captação", Icon: FiBarChart },
+    { title: 5, up: true, text: "Operações encerradas", Icon: FiExternalLink },
+    { title: "R$ 4.799,63", up: true, text: "Total captado", Icon: FiAirplay },
+    {
+      title: "R$ 234,99",
+      up: false,
+      text: "Proventos pagos",
+      Icon: FiDollarSign,
+    },
+    {
+      title: "R$ 23.193",
+      up: false,
+      text: "Ticket médio",
+      Icon: FiDivideSquare,
+    },
   ]);
   return (
     <Center>
@@ -31,18 +41,23 @@ export default function Dashboard({}) {
         templateRows="repeat(6, 1fr)"
         gap={4}
       >
-        {info.map(({ title, text, Icon }) => (
+        {info.map(({ title, text, up, Icon }) => (
           <GridItem colSpan={{ base: 12, md: 4 }} rowSpan={1}>
-            <InfoCard title={title} text={text} icon={<Icon size="2rem" />} />
+            <InfoCard
+              title={title}
+              text={text}
+              up={up}
+              icon={<Icon size="2rem" />}
+            />
           </GridItem>
         ))}
 
-        <GridItem colSpan={{ base: 12, md: 6 }} rowSpan={4}>
+        {/* <GridItem colSpan={{ base: 12, md: 6 }} rowSpan={4}>
           <InfoCard />
         </GridItem>
         <GridItem colSpan={{ base: 12, md: 6 }} rowSpan={4}>
           <InfoCard />
-        </GridItem>
+        </GridItem> */}
       </Grid>
     </Center>
   );

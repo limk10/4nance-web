@@ -10,6 +10,7 @@ import {
 
 import Navbar from "./Navbar";
 import SidebarContent from "./Sidebar";
+import Footer from "./Footer";
 
 const LayoutComponent = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,6 +48,7 @@ const LayoutComponent = ({ children }) => {
           </Box>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 };
