@@ -11,7 +11,12 @@ import {
 const PaginationT = ({ pagesCount, currentPage, handlePageChange, pages }) => {
   return (
     <Center>
-      <Flex align="center" textAlign="center" flexDirection="column" w="40%">
+      <Flex
+        align="center"
+        textAlign="center"
+        flexDirection="column"
+        w={{ base: "100%", md: "80%", xl: "60%" }}
+      >
         <Pagination
           pagesCount={pagesCount}
           currentPage={currentPage}

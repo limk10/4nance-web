@@ -42,7 +42,7 @@ export default function Dashboard({}) {
         gap={4}
       >
         {info.map(({ title, text, up, Icon }) => (
-          <GridItem colSpan={{ base: 12, md: 4 }} rowSpan={1}>
+          <GridItem colSpan={{ base: 12, md: 6, lg: 4 }} rowSpan={1}>
             <InfoCard
               title={title}
               text={text}

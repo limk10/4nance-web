@@ -6,6 +6,7 @@ import {
   TabPanel,
   Center,
   SimpleGrid,
+  Box,
 } from "@chakra-ui/react";
 
 import AnalyzeProjects from "./analise";
@@ -16,7 +17,7 @@ import Layout from "../layout";
 export default function Projects() {
   return (
     <Center>
-      <SimpleGrid w={{ base: "100%", md: "80%" }}>
+      <Box w={{ base: "100%", md: "80%" }}>
         <Tabs>
           <TabList mx={5}>
             <Tab>Contratados</Tab>
@@ -32,7 +33,7 @@ export default function Projects() {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </SimpleGrid>
+      </Box>
     </Center>
   );
 }

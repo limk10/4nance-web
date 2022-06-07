@@ -2,7 +2,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { extendTheme } from "@chakra-ui/react";
 
-import { StepsStyleConfig as Steps } from "chakra-ui-steps";
+import "rc-steps/assets/index.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +24,6 @@ const theme = extendTheme({
     },
   },
   components: {
-    Steps,
     Button: {
       baseStyle: {
         bgColor: "primary.300",

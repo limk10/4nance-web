@@ -59,13 +59,18 @@ const Sidebar = ({ onClose, ...rest }) => {
     router.push(route);
   };
 
+  const handleNavigate = (path) => {
+    onClose();
+    navigateTo(path);
+  };
+
   const NavItem = ({ icon, children, path, ...rest }) => {
     return (
       <Link
         href="#!"
         style={{ textDecoration: "none" }}
         _focus={{ boxShadow: "none" }}
-        onClick={() => navigateTo(path)}
+        onClick={() => handleNavigate(path)}
       >
         <Flex
           align="center"
@@ -104,6 +109,7 @@ const Sidebar = ({ onClose, ...rest }) => {
   return (
     <>
       <Box
+        zIndex={10}
         transition="3s ease"
         bg={useColorModeValue("gray.800")}
         borderRight="1px"
@@ -161,7 +167,13 @@ const Sidebar = ({ onClose, ...rest }) => {
           </NavItem>
         ))}
         <Flex justify={"center"} position="absolute" bottom={5} ml={7}>
-          <Button onClick={() => navigateTo("/business/captar")} px={10}>
+          <Button
+            onClick={() => {
+              onClose();
+              navigateTo("/business/captar");
+            }}
+            px={10}
+          >
             Quero captar
           </Button>
         </Flex>

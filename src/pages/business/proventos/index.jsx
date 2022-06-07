@@ -24,9 +24,9 @@ const fetchPokemons = async (pageSize, offset) => {
 export default function Earnings({}) {
   return (
     <Center>
-      <SimpleGrid w={{ base: "100%", md: "80%" }}>
+      <Box w={{ base: "100%", md: "80%" }}>
         <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>
-          <GridItem colSpan={{ base: 12, md: 6 }}>
+          <GridItem colSpan={{ base: 12, lg: 6 }}>
             <InfoCard
               title="Proventos Distribúidos"
               text="R$ 453,44"
@@ -35,7 +35,7 @@ export default function Earnings({}) {
             />
           </GridItem>
 
-          <GridItem colSpan={{ base: 12, md: 6 }}>
+          <GridItem colSpan={{ base: 12, lg: 6 }}>
             <InfoCard
               title="Total em Investimentos"
               text="R$ 453,44"
@@ -53,7 +53,7 @@ export default function Earnings({}) {
 
           <PaginationTable fetchPokemons={fetchPokemons} />
         </Box>
-      </SimpleGrid>
+      </Box>
     </Center>
   );
 }
