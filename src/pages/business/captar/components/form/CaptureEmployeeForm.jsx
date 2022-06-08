@@ -55,7 +55,7 @@ export default function CaptureEmployeeForm({ form, handleChange }) {
         <FormControl id="state" isRequired>
           <FormLabel>Estado</FormLabel>
           <Select
-            disabled={true}
+            // disabled={true}
             name="state"
             onChange={handleChange}
             value={form?.state || ""}
