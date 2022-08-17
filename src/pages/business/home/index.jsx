@@ -10,7 +10,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import Layout from "./layout";
+import Layout from "../layout";
 
 import {
   VscDebugLineByLine,
@@ -19,7 +19,7 @@ import {
   VscEmptyWindow,
 } from "react-icons/vsc";
 
-import Feature from "../../components/Feature";
+import Feature from "../../../components/Feature";
 
 export default function Home({}) {
   const [flow, setFlow] = useState([

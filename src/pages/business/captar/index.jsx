@@ -112,7 +112,7 @@ export default function CaptureProject({}) {
         return (
           <div align="left">
             <Text>Escolha uma empresa para qual deseja fazer a operação *</Text>
-            <SimpleGrid minChildWidth="280px" mb={10}>
+            <SimpleGrid columns={{ base: 1, md: 3, xl: 4 }} mb={10}>
               {employes.map(({ name, doc }, index) => (
                 <Box
                   w="280px"

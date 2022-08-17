@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { extendTheme } from "@chakra-ui/react";
 
 import "rc-steps/assets/index.css";
+import "@fontsource/open-sans";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +18,9 @@ const queryClient = new QueryClient({
 });
 
 const theme = extendTheme({
+  fonts: {
+    body: `'Open Sans', sans-serif`,
+  },
   colors: {
     primary: {
       300: "#ffc709",

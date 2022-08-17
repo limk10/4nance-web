@@ -83,7 +83,7 @@ const Singin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    return Router.push("/business/home");
+    return Router.push("/home");
     try {
       await signinSchema.validate(form, { abortEarly: false });
       postRegister();
@@ -121,22 +121,56 @@ const Singin = () => {
               justify="space-between"
             >
               <Flex align="center">
-                <Text fontSize="xx-large" fontWeight="500" mr="2">
+                <Text fontSize="3xl" fontWeight="500" mr="2">
                   4Nance
                 </Text>
-                <Text fontSize="2xl" mt="1">
-                  for business
+                <Text fontSize="xl" mt="1.5">
+                  Investimentos alternativos
                 </Text>
               </Flex>
               <Flex direction="column">
-                <Flex align="start" flexDirection="column" mb={7}>
-                  <Text fontSize="2xl">Gerencie e administre seus </Text>
-                  <Text fontSize="2xl" fontWeight="bold">
-                    PROJETOS E INVESTIDORES
+                <Flex align="center" textAlign="left" mb={7}>
+                  <Text fontSize="2xl">Invista em projetos sólidos da</Text>
+                  <Text
+                    color="primary.300"
+                    fontSize="3xl"
+                    fontWeight="500"
+                    ml="2"
+                  >
+                    Economia Real
                   </Text>
-                  <Text color="primary.300" fontSize="3xl" fontWeight="bold">
-                    NA PALMA DE SUAS MÃOS!
-                  </Text>
+                </Flex>
+                <Flex>
+                  <SimpleGrid columns={2} spacing={5}>
+                    <Flex align="center">
+                      <BsFilePlus size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        Mais de <b>50 projetos da economia real</b>,
+                        criteriosamente selecionados para investimento
+                      </Text>
+                    </Flex>
+                    <Flex align="center">
+                      <BsBarChart size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        <b>Segurança</b> de um mercado regulado pela ICVM 588 de
+                        2017
+                      </Text>
+                    </Flex>
+                    <Flex align="center">
+                      <BsShieldLock size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        Projetos com <b>alta rentabilidade</b>, taxa zero e
+                        baixa correlação com a bolsa de valores
+                      </Text>
+                    </Flex>
+                    <Flex align="center">
+                      <BsCashCoin size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        <b>Mais de 100 milhões</b> captados e 100% dos
+                        relatórios em dia
+                      </Text>
+                    </Flex>
+                  </SimpleGrid>
                 </Flex>
               </Flex>
               <Flex></Flex>
@@ -185,28 +219,13 @@ const Singin = () => {
                   Entrar
                 </Button>
               </Flex>
-              {/* <GoogleLogin
-                clientId="876501571825-2d8ijl96jtjto6lv4ns0ab7hfpvemu7m.apps.googleusercontent.com"
-                buttonText="Entrar com o Google"
-                render={(renderProps) => (
-                  <Button
-                    onClick={renderProps.onClick}
-                    mt={0}
-                    leftIcon={<FcGoogle />}
-                  >
-                    Login com Google
-                  </Button>
-                )}
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-              /> */}
               <Center spacing={6}>
                 <Text>
                   Ainda não possui conta?{" "}
                   <Link
                     color="primary.300"
                     href="#!"
-                    onClick={() => Router.push("/business/signup")}
+                    onClick={() => Router.push("/signup")}
                   >
                     Abrir Conta!
                   </Link>{" "}

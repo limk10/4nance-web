@@ -18,12 +18,9 @@ import {
 import Router from "next/router";
 
 import { FiMenu, FiChevronDown, FiUser, FiLogOut } from "react-icons/fi";
+import { navigateTo } from "../../../helpers/routes";
 
 const MobileNav = ({ onOpen, ...rest }) => {
-  const navigateTo = (route) => {
-    Router.push(route);
-  };
-
   return (
     <Flex
       ml={{ base: 0, md: 60 }}

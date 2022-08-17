@@ -101,19 +101,50 @@ const Signup = () => {
                 <Text fontSize="xx-large" fontWeight="500" mr="2">
                   4Nance
                 </Text>
-                <Text fontSize="2xl" mt="1">
-                  for business
-                </Text>
               </Flex>
               <Flex direction="column">
-                <Flex align="start" flexDirection="column" mb={7}>
-                  <Text fontSize="2xl">Gerencie e administre seus </Text>
-                  <Text fontSize="2xl" fontWeight="bold">
-                    PROJETOS E INVESTIDORES
+                <Flex align="center" textAlign="left" mb={7}>
+                  <Text fontSize="2xl">Invista em projetos sólidos da</Text>
+                  <Text
+                    color="primary.300"
+                    fontSize="3xl"
+                    fontWeight="500"
+                    ml="2"
+                  >
+                    Economia Real
                   </Text>
-                  <Text color="primary.300" fontSize="3xl" fontWeight="bold">
-                    NA PALMA DE SUAS MÃOS!
-                  </Text>
+                </Flex>
+                <Flex>
+                  <SimpleGrid columns={2} spacing={5}>
+                    <Flex align="center">
+                      <BsFilePlus size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        Mais de <b>50 projetos da economia real</b>,
+                        criteriosamente selecionados para investimento
+                      </Text>
+                    </Flex>
+                    <Flex align="center">
+                      <BsBarChart size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        <b>Segurança</b> de um mercado regulado pela ICVM 588 de
+                        2017
+                      </Text>
+                    </Flex>
+                    <Flex align="center">
+                      <BsShieldLock size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        Projetos com <b>alta rentabilidade</b>, taxa zero e
+                        baixa correlação com a bolsa de valores
+                      </Text>
+                    </Flex>
+                    <Flex align="center">
+                      <BsCashCoin size="2.5rem" color="#ffc709" />
+                      <Text ml={4} fontSize="sm" w="full">
+                        <b>Mais de 100 milhões</b> captados e 100% dos
+                        relatórios em dia
+                      </Text>
+                    </Flex>
+                  </SimpleGrid>
                 </Flex>
               </Flex>
               <Flex></Flex>
@@ -218,7 +249,7 @@ const Signup = () => {
                   <Link
                     color="primary.300"
                     href="#!"
-                    onClick={() => Router.push("/business/signin")}
+                    onClick={() => Router.push("/signin")}
                   >
                     Entrar!
                   </Link>{" "}
