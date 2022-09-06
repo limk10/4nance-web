@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Center, GridItem, Grid, Box } from "@chakra-ui/react";
+import { Center, GridItem, Grid, Box, SimpleGrid } from "@chakra-ui/react";
 
 import Layout from "../layout";
 
@@ -34,32 +34,25 @@ export default function Dashboard({}) {
     },
   ]);
   return (
-    <Center>
-      <Grid
-        w={{ base: "100%", md: "80%" }}
-        templateColumns="repeat(12, 1fr)"
-        templateRows="repeat(6, 1fr)"
-        gap={4}
-      >
+    <>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={3}>
         {info.map(({ title, text, up, Icon }) => (
-          <GridItem colSpan={{ base: 12, md: 6, lg: 4 }} rowSpan={1}>
-            <InfoCard
-              title={title}
-              text={text}
-              up={up}
-              icon={<Icon size="2rem" />}
-            />
-          </GridItem>
+          <InfoCard
+            title={title}
+            text={text}
+            up={up}
+            icon={<Icon size="2rem" />}
+          />
         ))}
+      </SimpleGrid>
 
-        {/* <GridItem colSpan={{ base: 12, md: 6 }} rowSpan={4}>
+      {/* <GridItem colSpan={{ base: 12, md: 6 }} rowSpan={4}>
           <InfoCard />
         </GridItem>
         <GridItem colSpan={{ base: 12, md: 6 }} rowSpan={4}>
           <InfoCard />
         </GridItem> */}
-      </Grid>
-    </Center>
+    </>
   );
 }
 

@@ -16,25 +16,23 @@ import Layout from "../layout";
 
 export default function Projects() {
   return (
-    <Center>
-      <Box w={{ base: "100%", md: "80%" }}>
-        <Tabs>
-          <TabList mx={5}>
-            <Tab>Contratados</Tab>
-            <Tab>Em Análise</Tab>
-          </TabList>
+    <Box>
+      <Tabs>
+        <TabList mx={5}>
+          <Tab>Contratados</Tab>
+          <Tab>Em Análise</Tab>
+        </TabList>
 
-          <TabPanels>
-            <TabPanel>
-              <ContractedProjects />
-            </TabPanel>
-            <TabPanel>
-              <AnalyzeProjects />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
-    </Center>
+        <TabPanels>
+          <TabPanel>
+            <ContractedProjects />
+          </TabPanel>
+          <TabPanel>
+            <AnalyzeProjects />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
   );
 }
 

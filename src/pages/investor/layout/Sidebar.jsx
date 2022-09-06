@@ -10,6 +10,11 @@ import {
   Link,
   Text,
   Image,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter, Router } from "next/router";
 
@@ -53,8 +58,6 @@ const Sidebar = ({ onClose, ...rest }) => {
   ]);
 
   const isMenuAcvite = (path) => {
-    console.log("router", router);
-    console.log("path", path);
     return menu.find((data) => router.asPath.includes(path));
   };
 
@@ -159,6 +162,22 @@ const Sidebar = ({ onClose, ...rest }) => {
             {link.name}
           </NavItem>
         ))}
+
+        <Alert status="warning" mt={10}>
+          <AlertIcon />
+          <VStack>
+            <AlertDescription fontSize="sm">
+              Informações de cadastro pendente, clique no botão abaixo para
+              completa-lo!
+            </AlertDescription>
+            <Button
+              onClick={() => navigateTo("/completar-cadastro")}
+              size="sm"
+              text="Completar cadastro"
+            />
+          </VStack>
+        </Alert>
+
         <Flex
           bg="blackAlpha.50"
           py={3}
@@ -188,6 +207,7 @@ const Sidebar = ({ onClose, ...rest }) => {
               onClose();
               navigateTo("/investir");
             }}
+            scheme="primary"
             text="Quero investir"
             w="100%"
             h="5vh"

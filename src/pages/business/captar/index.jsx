@@ -112,10 +112,9 @@ export default function CaptureProject({}) {
         return (
           <div align="left">
             <Text>Escolha uma empresa para qual deseja fazer a operação *</Text>
-            <SimpleGrid columns={{ base: 1, md: 3, xl: 4 }} mb={10}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} mb={10}>
               {employes.map(({ name, doc }, index) => (
                 <Box
-                  w="280px"
                   h="100px"
                   mt={4}
                   mr={2}
@@ -150,7 +149,6 @@ export default function CaptureProject({}) {
                 </Box>
               ))}
               <Box
-                w="280px"
                 h="100px"
                 mt={4}
                 p={3}
@@ -192,58 +190,56 @@ export default function CaptureProject({}) {
   }, []);
 
   return (
-    <Center>
-      <Box w={{ base: "100%", md: "80%" }} bg="#fff" p={5} borderRadius={"md"}>
-        <Flex flexDir="column">
-          <Box margin={{ base: "0", md: "0 10%" }}>
-            <Steps
-              direction={innerWidth < 500 ? "vertical" : "horizontal"}
-              current={step}
+    <Box bg="#fff" p={5} borderRadius={"md"}>
+      <Flex flexDir="column">
+        <Box margin={{ base: "0", md: "0 10%" }}>
+          <Steps
+            direction={innerWidth < 500 ? "vertical" : "horizontal"}
+            current={step}
+          >
+            {steps.map((s) => (
+              <Step key={s} title={s.label} description={s.description} />
+            ))}
+          </Steps>
+        </Box>
+
+        <Spacer mt={{ base: 5, md: 3 }} />
+
+        {handleContentForm(step)}
+
+        {step === steps.length ? (
+          <Flex px={4} width="100%" flexDir="column" mt={3}>
+            <Heading fontSize="xl" textAlign="center" fontWeight={600}>
+              Agora é com a gente!
+            </Heading>
+            <Text textAlign="center" fontWeight={400} mt={5}>
+              Vamos analisar o seu projeto, mas isso é muito rápido, <br />
+              dentro de 48h enviaremos um e-mail para você
+            </Text>
+
+            <Center mt={5}>
+              <Button onClick={() => Router.push("/business/home")} w="20%">
+                Home
+              </Button>
+            </Center>
+          </Flex>
+        ) : (
+          <Flex width="100%" justify="space-between" mt={7}>
+            <Button
+              isDisabled={step === 0}
+              mr={4}
+              onClick={() => handleStep("prev")}
+              variant="outline"
             >
-              {steps.map((s) => (
-                <Step key={s} title={s.label} description={s.description} />
-              ))}
-            </Steps>
-          </Box>
-
-          <Spacer mt={{ base: 5, md: 3 }} />
-
-          {handleContentForm(step)}
-
-          {step === steps.length ? (
-            <Flex px={4} width="100%" flexDir="column" mt={3}>
-              <Heading fontSize="xl" textAlign="center" fontWeight={600}>
-                Agora é com a gente!
-              </Heading>
-              <Text textAlign="center" fontWeight={400} mt={5}>
-                Vamos analisar o seu projeto, mas isso é muito rápido, <br />
-                dentro de 48h enviaremos um e-mail para você
-              </Text>
-
-              <Center mt={5}>
-                <Button onClick={() => Router.push("/business/home")} w="20%">
-                  Home
-                </Button>
-              </Center>
-            </Flex>
-          ) : (
-            <Flex width="100%" justify="space-between" mt={7}>
-              <Button
-                isDisabled={step === 0}
-                mr={4}
-                onClick={() => handleStep("prev")}
-                variant="outline"
-              >
-                Voltar
-              </Button>
-              <Button onClick={() => handleStep("next")}>
-                {step === steps.length - 1 ? "Finalizar" : "Próximo"}
-              </Button>
-            </Flex>
-          )}
-        </Flex>
-      </Box>
-    </Center>
+              Voltar
+            </Button>
+            <Button onClick={() => handleStep("next")}>
+              {step === steps.length - 1 ? "Finalizar" : "Próximo"}
+            </Button>
+          </Flex>
+        )}
+      </Flex>
+    </Box>
   );
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -26,6 +26,10 @@ import {
   FiChevronDown,
   FiTrendingUp,
   FiBell,
+  FiPieChart,
+  FiBarChart,
+  FiDollarSign,
+  FiUsers,
 } from "react-icons/fi";
 
 import { navigateTo } from "../../../helpers/routes";
@@ -34,10 +38,38 @@ import Button from "../../../components/Button";
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const Links = ["Dashboard", "Meus investimetnos", "Proventos", "Extratos"];
+  // const Links = ["Dashboard", "Meus investimetnos", "Proventos", "Extratos"];
 
-  const NavLink = ({ children }) => (
+  const [menu, setMenu] = useState([
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: FiPieChart,
+      submenu: [],
+    },
+    {
+      name: "Investimentos",
+      path: "/investimentos/em-progresso",
+      icon: FiBarChart,
+      submenu: [],
+    },
+    {
+      name: "Proventos",
+      path: "/proventos",
+      icon: FiDollarSign,
+      submenu: [],
+    },
+    {
+      name: "Extrato",
+      path: "/extrato",
+      icon: FiUsers,
+      submenu: [],
+    },
+  ]);
+
+  const NavLink = ({ _menu: { name, path } }) => (
     <Link
+      onClick={() => navigateTo(path)}
       py={1}
       px={2}
       rounded={"md"}
@@ -47,7 +79,7 @@ function Navbar() {
       _focus={{ outline: 0 }}
       href={"#!"}
     >
-      {children}
+      {name}
     </Link>
   );
 
@@ -134,17 +166,18 @@ function Navbar() {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              {menu.map((m) => (
+                <NavLink key={m.name} _menu={m}>
+                  {m}
+                </NavLink>
               ))}
               <hr />
               <Button
                 onClick={() => navigateTo("/investir")}
                 size={"sm"}
                 leftIcon={<FiTrendingUp />}
-              >
-                Quero Investir
-              </Button>
+                text="Quero Investir"
+              />
             </Stack>
           </Box>
         ) : null}

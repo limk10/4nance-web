@@ -69,7 +69,7 @@ export default function Investiment({}) {
           reais sem sair de casa.
         </Text>
       </Box>
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={3}>
+      <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing={3}>
         {propertyList.map((property) => (
           <Box
             borderWidth="1px"
@@ -154,15 +154,16 @@ export default function Investiment({}) {
                 <Divider my={4} />
                 <Box>
                   <Button
-                    onClick={() => {}}
+                    onClick={() => navigateTo(`/investimentos/${123123}`)}
                     mr={2}
                     text="Ver Detalhes"
-                    schemeColor="gray"
+                    scheme="gray"
                     size="sm"
                   />
                   <Button
                     onClick={() => navigateTo(`/investimentos/${123123}`)}
                     fontWeight="600"
+                    scheme="primary"
                     text="Investir"
                     size="sm"
                   />

@@ -9,7 +9,6 @@ import {
   BsFilePlus,
 } from "react-icons/bs";
 import {
-  Button,
   Flex,
   FormControl,
   FormLabel,
@@ -22,6 +21,7 @@ import {
   Center,
   SimpleGrid,
 } from "@chakra-ui/react";
+import Button from "../../../components/Button";
 
 import Router from "next/router";
 
@@ -214,10 +214,9 @@ const Singin = () => {
                   isLoading={isLoading}
                   loadingText="Um momento..."
                   type="submit"
-                  w={["100%", "20%"]}
-                >
-                  Entrar
-                </Button>
+                  w={["100%", "30%"]}
+                  text="Entrar"
+                />
               </Flex>
               <Center spacing={6}>
                 <Text>

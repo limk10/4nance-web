@@ -5,12 +5,12 @@ export default function Footer() {
     <Box
       px={10}
       pt={2}
-      pb={4}
-      bg={useColorModeValue("gray.50", "gray.900")}
+      pb={2}
+      bg={useColorModeValue("white", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
     >
       <Flex justify="flex-end">
-        <Text align="right">© 2022 - 4Nance Investimentos Alternativos.</Text>
+        <Text fontSize="sm" align="right" color="blackAlpha.600">© 2022 - 4Nance Investimentos Alternativos.</Text>
         {/* <Stack direction={'row'} spacing={6}>
           <SocialButton label={'Twitter'} href={'#'}>
             <FaTwitter />

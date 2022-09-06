@@ -38,7 +38,7 @@ const LayoutComponent = ({ children }) => {
         {/* mobilenav */}
         <Navbar onOpen={onOpen} />
         <Box px={{ base: 2, md: 8 }}>
-          <Box ml={{ base: 0, md: 60 }} pb={10}>
+          <Box ml={{ base: 0, md: 60 }} pb={10} color="gray.600">
             <main>{children}</main>
           </Box>
         </Box>

@@ -56,6 +56,17 @@ const nextConfig = {
         source: "/extrato/:id",
         destination: "/investor/extract/:id",
       },
+
+      // INVEST
+      {
+        source: "/investir/:id",
+        destination: "/investor/invest/:id",
+      },
+
+      {
+        source: "/completar-cadastro",
+        destination: "/investor/complete/registration",
+      },
     ];
   },
 };

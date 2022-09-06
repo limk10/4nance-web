@@ -2,6 +2,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { extendTheme } from "@chakra-ui/react";
 
+import { StepsStyleConfig as Steps } from "chakra-ui-steps";
+
 import "rc-steps/assets/index.css";
 import "@fontsource/open-sans";
 
@@ -28,18 +30,7 @@ const theme = extendTheme({
     },
   },
   components: {
-    Button: {
-      baseStyle: {
-        bgColor: "primary.300",
-        borderRadius: "3px",
-        _hover: {
-          bgColor: "primary.500",
-        },
-      },
-      defaultProps: {
-        variant: "base",
-      },
-    },
+    Steps,
     Link: {
       baseStyle: {
         color: "#3a3a3a",

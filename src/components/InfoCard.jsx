@@ -12,7 +12,7 @@ import {
 
 export default function InfoCard({ title, text, up, icon, ...rest }) {
   return (
-    <Box h="full" bg="white" borderRadius={"md"} shadow="md" px={5} py={4}>
+    <Box bg="white" borderRadius={"md"} shadow="md" px={5} py={4} h="full">
       <Stack {...rest}>
         <Flex>
           {icon && (

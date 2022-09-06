@@ -1,17 +1,17 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Center, Fade, Image, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import Layout from "../../layout";
 
 export default function InvestimentInProgress() {
+  const [success, setSuccess] = useState(true);
   return (
     <>
-      <Box mb={8}>
-        <Text fontSize="xl" fontWeight="md" color="blackAlpha.800">
-          Investimentos em Progresso
-        </Text>
-        <Text fontSize="sm" color="blackAlpha.600">
-          Escolha um dos investimentos escolhidos especialmente para você
-        </Text>
-      </Box>
+      <Text fontSize="xl" fontWeight="md" color="blackAlpha.800">
+        Investimentos em Progresso
+      </Text>
+      <Text fontSize="sm" color="blackAlpha.600">
+        Escolha um dos investimentos escolhidos especialmente para você
+      </Text>
     </>
   );
 }

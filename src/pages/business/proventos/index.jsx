@@ -23,38 +23,36 @@ const fetchPokemons = async (pageSize, offset) => {
 };
 export default function Earnings({}) {
   return (
-    <Center>
-      <Box w={{ base: "100%", md: "80%" }}>
-        <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>
-          <GridItem colSpan={{ base: 12, lg: 6 }}>
-            <InfoCard
-              title="Proventos Distribúidos"
-              text="R$ 453,44"
-              up={true}
-              icon={<FiDivideSquare size="2rem" />}
-            />
-          </GridItem>
+    <Box>
+      <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>
+        <GridItem colSpan={{ base: 12, lg: 6 }}>
+          <InfoCard
+            title="Proventos Distribúidos"
+            text="R$ 453,44"
+            up={true}
+            icon={<FiDivideSquare size="2rem" />}
+          />
+        </GridItem>
 
-          <GridItem colSpan={{ base: 12, lg: 6 }}>
-            <InfoCard
-              title="Total em Investimentos"
-              text="R$ 453,44"
-              up={true}
-              icon={<FiDollarSign size="2rem" />}
-            />
-          </GridItem>
-        </Grid>
+        <GridItem colSpan={{ base: 12, lg: 6 }}>
+          <InfoCard
+            title="Total em Investimentos"
+            text="R$ 453,44"
+            up={true}
+            icon={<FiDollarSign size="2rem" />}
+          />
+        </GridItem>
+      </Grid>
 
-        <Box borderRadius={"md"} bg="#fff" p={4}>
-          <Flex justify="space-between" align="center" py="1px">
-            <Text fontSize="xl">Previsões de ganho</Text>
-          </Flex>
-          <Divider mt={5} mb={8} />
+      <Box borderRadius={"md"} bg="#fff" p={4}>
+        <Flex justify="space-between" align="center" py="1px">
+          <Text fontSize="xl">Previsões de ganho</Text>
+        </Flex>
+        <Divider mt={5} mb={8} />
 
-          <PaginationTable fetchPokemons={fetchPokemons} />
-        </Box>
+        <PaginationTable fetchPokemons={fetchPokemons} />
       </Box>
-    </Center>
+    </Box>
   );
 }
 

@@ -50,65 +50,63 @@ export default function Home({}) {
   ]);
 
   return (
-    <Center>
-      <Grid
-        w={{ base: "100%", md: "80%" }}
-        templateColumns="repeat(12, 1fr)"
-        templateRows="repeat(4, 1fr)"
-        gap={4}
-      >
-        <GridItem colSpan={{ base: 12, md: 8 }} rowSpan={1}>
-          <Box h="full" bg="white" borderRadius={"md"} shadow="md" p={5}>
-            <Heading fontSize="large" fontWeight={400}>
-              Bom dia,{" "}
-              <Text fontSize="xl" fontWeight={600}>
-                Matheus Lopes
-              </Text>
-            </Heading>
-            <Text mt={7}>
-              Esse é o seu painel administrativo, aqui você pode{" "}
-              <Link href="#!" color="primary.300">
-                captar recursos
-              </Link>
-              ,{" "}
-              <Link href="#!" color="primary.300">
-                ver suas métricas
-              </Link>{" "}
-              ou{" "}
-              <Link href="#!" color="primary.300">
-                acompanhar seus investidores.
-              </Link>
+    <Grid
+      templateColumns="repeat(12, 1fr)"
+      templateRows="repeat(4, 1fr)"
+      gap={4}
+    >
+      <GridItem colSpan={{ base: 12, md: 8 }} rowSpan={1}>
+        <Box h="full" bg="white" borderRadius={"md"} shadow="md" p={5}>
+          <Heading fontSize="large" fontWeight={400}>
+            Bom dia,{" "}
+            <Text fontSize="xl" fontWeight={600}>
+              Matheus Lopes
             </Text>
-          </Box>
-        </GridItem>
-        <GridItem colSpan={{ base: 12, md: 4 }} rowSpan={4}>
-          <Text mb={3} fontSize={"large"} fontWeight={500}>
-            Entenda como funciona:
+          </Heading>
+          <Text mt={7}>
+            Esse é o seu painel administrativo, aqui você pode{" "}
+            <Link href="#!" color="primary.300">
+              captar recursos
+            </Link>
+            ,{" "}
+            <Link href="#!" color="primary.300">
+              ver suas métricas
+            </Link>{" "}
+            ou{" "}
+            <Link href="#!" color="primary.300">
+              acompanhar seus investidores.
+            </Link>
           </Text>
-          <Box bg="white" borderRadius={"md"} shadow="md" p={5}>
-            {flow.map(({ title, description, icon }, key) => (
-              <>
-                <Feature
-                  key={key}
-                  mb={flow.length === key + 1 ? 0 : 7}
-                  icon={
-                    <Icon
-                      as={icon}
-                      w="3rem"
-                      h="3rem"
-                      color="primary.300"
-                      mr={2}
-                    />
-                  }
-                  title={title}
-                  text={description}
-                />
-              </>
-            ))}
-          </Box>
-        </GridItem>
+        </Box>
+      </GridItem>
+      <GridItem colSpan={{ base: 12, md: 4 }} rowSpan={4}>
+        <Text mb={3} fontSize={"large"} fontWeight={500}>
+          Entenda como funciona:
+        </Text>
+        <Box bg="white" borderRadius={"md"} shadow="md" p={5}>
+          {flow.map(({ title, description, icon }, key) => (
+            <>
+              <Feature
+                key={key}
+                mb={flow.length === key + 1 ? 0 : 7}
+                icon={
+                  <Icon
+                    as={icon}
+                    w="3rem"
+                    h="3rem"
+                    color="primary.300"
+                    mr={2}
+                  />
+                }
+                title={title}
+                text={description}
+              />
+            </>
+          ))}
+        </Box>
+      </GridItem>
 
-        {/* <GridItem colSpan={4} rowSpan={1}>
+      {/* <GridItem colSpan={4} rowSpan={1}>
           <Box p={5} bg="white" borderRadius={"md"} shadow="md">
             <Heading fontSize="large" fontWeight={600}>
               Plan Money
@@ -132,8 +130,7 @@ export default function Home({}) {
             </Text>
           </Box>
         </GridItem> */}
-      </Grid>
-    </Center>
+    </Grid>
   );
 }
 

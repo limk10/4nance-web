@@ -9,9 +9,10 @@ import {
   useColorModeValue,
   Link,
   Text,
-  Button,
 } from "@chakra-ui/react";
 import { useRouter, Router } from "next/router";
+
+import Button from "../../../components/Button";
 
 import {
   FiPieChart,
@@ -174,9 +175,12 @@ const Sidebar = ({ onClose, ...rest }) => {
               navigateTo("/business/captar");
             }}
             px={10}
-          >
-            Quero captar
-          </Button>
+            scheme="primary"
+            text="Quero captar"
+            w="100%"
+            h="5vh"
+            fontWeight="600"
+          />
         </Flex>
       </Box>
     </>

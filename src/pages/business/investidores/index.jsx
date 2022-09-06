@@ -20,9 +20,8 @@ const fetchPokemons = async (pageSize, offset) => {
 
 export default function Investors({}) {
   return (
-    <Center>
-      <Box w={{ base: "100%", md: "80%" }}>
-        {/* <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>
+    <Box>
+      {/* <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>
           <GridItem colSpan={{ base: 12, md: 6 }}>
             <InfoCard
               title="Proventos Distribúidos"
@@ -42,16 +41,15 @@ export default function Investors({}) {
           </GridItem>
         </Grid> */}
 
-        <Box borderRadius={"md"} bg="#fff" p={4}>
-          <Flex justify="space-between" align="center" py="1px">
-            <Text fontSize="xl">Investidores</Text>
-          </Flex>
-          <Divider mt={5} mb={8} />
+      <Box borderRadius={"md"} bg="#fff" p={4}>
+        <Flex justify="space-between" align="center" py="1px">
+          <Text fontSize="xl">Investidores</Text>
+        </Flex>
+        <Divider mt={5} mb={8} />
 
-          <PaginationTable fetchPokemons={fetchPokemons} />
-        </Box>
+        <PaginationTable fetchPokemons={fetchPokemons} />
       </Box>
-    </Center>
+    </Box>
   );
 }
 
