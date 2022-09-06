@@ -22,7 +22,7 @@ const steps = [
 export default function CompleteRegistration() {
   const [form, setForm] = useState({});
   const { nextStep, prevStep, setStep, reset, activeStep } = useSteps({
-    initialStep: 1,
+    initialStep: 0,
   });
 
   const handleNext = (e) => {
