@@ -11,9 +11,18 @@ import {
 import Navbar from "./Navbar";
 import SidebarContent from "./Sidebar";
 import Footer from "./Footer";
+import { isAuthenticated } from "../../../helpers/localStorage";
+import { useEffect } from "react";
+import { navigateTo } from "../../../helpers/routes";
 
 const LayoutComponent = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigateTo("/business/signin");
+    }
+  }, []);
 
   return (
     <>

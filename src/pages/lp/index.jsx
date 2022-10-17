@@ -3,7 +3,7 @@ import Router from "next/router";
 
 export default function LandingPage() {
   useEffect(() => {
-    Router.push("/signin");
+    Router.push("/business/signin");
   }, []);
 
   return <></>;

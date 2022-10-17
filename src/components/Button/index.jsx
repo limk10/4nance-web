@@ -1,7 +1,7 @@
 import { Button as ButtonChakra } from "@chakra-ui/react";
 
 function Button({
-  action,
+  onClick,
   text,
   scheme = "primary",
   variant,
@@ -29,7 +29,7 @@ function Button({
 
   return (
     <ButtonChakra
-      onClick={action}
+      onClick={onClick}
       fontWeight="500"
       borderRadius="md"
       boxShadow="md"

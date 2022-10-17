@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   Center,
   Flex,
-  Button,
   Heading,
   Text,
   Box,
@@ -12,6 +11,7 @@ import {
   SimpleGrid,
   Spacer,
 } from "@chakra-ui/react";
+import Button from "../../../components/Button";
 
 import Steps, { Step } from "rc-steps";
 
@@ -230,12 +230,12 @@ export default function CaptureProject({}) {
               mr={4}
               onClick={() => handleStep("prev")}
               variant="outline"
-            >
-              Voltar
-            </Button>
-            <Button onClick={() => handleStep("next")}>
-              {step === steps.length - 1 ? "Finalizar" : "Próximo"}
-            </Button>
+              text="Voltar"
+            />
+            <Button
+              onClick={() => handleStep("next")}
+              text={step === steps.length - 1 ? "Finalizar" : "Próximo"}
+            />
           </Flex>
         )}
       </Flex>

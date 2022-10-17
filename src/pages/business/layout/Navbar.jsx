@@ -13,14 +13,35 @@ import {
   MenuItem,
   MenuList,
   Image,
+  WrapItem,
 } from "@chakra-ui/react";
 
 import Router from "next/router";
 
 import { FiMenu, FiChevronDown, FiUser, FiLogOut } from "react-icons/fi";
+import {
+  getKeyToken,
+  getLocalStorage,
+  removeAuthLocalStorage,
+} from "../../../helpers/localStorage";
 import { navigateTo } from "../../../helpers/routes";
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const getUser = () => {
+    const tokenKey = getKeyToken();
+    const localAuth = getLocalStorage(tokenKey);
+
+    if (!localAuth) return;
+    const { user } = JSON.parse(localAuth);
+    return user;
+  };
+
+  const logout = () => {
+    const tokenKey = getKeyToken();
+    removeAuthLocalStorage(tokenKey);
+    location.reload();
+  };
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -65,21 +86,22 @@ const MobileNav = ({ onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
+                <WrapItem>
+                  <Avatar
+                    size={"sm"}
+                    name={getUser()}
+                    // src="https://bit.ly/tioluwani-kolawole"
+                  />
+                </WrapItem>
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Matheus Lopes</Text>
+                  <Text fontSize="sm">{getUser()}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    Empresário
                   </Text>
                 </VStack>
                 <Box pl={2} display={{ base: "none", md: "flex" }}>
@@ -96,7 +118,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 <Text ml={2}>Perfil</Text>
               </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={() => navigateTo("/business/signin")}>
+              <MenuItem onClick={logout}>
                 <FiLogOut />
                 <Text ml={2}>Deslogar</Text>
               </MenuItem>

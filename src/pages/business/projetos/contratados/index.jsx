@@ -1,5 +1,5 @@
-import { Box, Flex, Text, Button, Divider } from "@chakra-ui/react";
-
+import { Box, Flex, Text, Divider } from "@chakra-ui/react";
+import Button from "../../../../components/Button";
 import PaginationTable from "../../../../components/Table/PaginationTabe";
 
 import Router from "next/router";
@@ -23,9 +23,8 @@ export default function ContractedProjects({}) {
           onClick={() => Router.push("/business/captar")}
           size="sm"
           mt={3}
-        >
-          Cadastrar operação
-        </Button>
+          text="Cadastrar operação"
+        />
       </Flex>
       <Divider mt={5} mb={8} />
 

@@ -1,4 +1,7 @@
-export const getLocalStorage = (key) => localStorage.getItem(key);
+export const getLocalStorage = (key) => {
+  if (typeof window !== "undefined") return localStorage.getItem(key);
+  else return "";
+};
 
 export const addToLocalStorage = (key, value) => {
   if (typeof value !== typeof "") {
@@ -9,22 +12,26 @@ export const addToLocalStorage = (key, value) => {
   }
 };
 
-export const isAuthenticated = () =>
-  Boolean(getLocalStorage(import.meta.env.VITE_REACT_APP_USER));
+export const isAuthenticated = () => {
+  const tokenKey = getKeyToken();
+  return Boolean(getLocalStorage(tokenKey));
+};
 
-export const setAuthLocalStorage = ({ token, user }) => {
-  if (token && user) {
-    addToLocalStorage(import.meta.env.VITE_REACT_APP_AUTH, token);
-    addToLocalStorage(
-      import.meta.env.VITE_REACT_APP_USER,
-      JSON.stringify(user)
-    );
-  }
+export const setAuthLocalStorage = async (auth) => {
+  const tokenKey = await getKeyToken();
+  const { infProfile, ...restAuth } = auth;
+  addToLocalStorage(tokenKey, restAuth);
+};
+
+export const removeAuthLocalStorage = () => {
+  const key = getKeyToken();
+  localStorage.removeItem(key);
+  console.log("limpou cache");
+  location.reload();
 };
 
 export const removeLocalStorage = (key) => localStorage.removeItem(key);
 
-export const clearStorage = () => {
-  removeLocalStorage(import.meta.env.VITE_REACT_APP_AUTH);
-  removeLocalStorage(import.meta.env.VITE_REACT_APP_USER);
+export const getKeyToken = () => {
+  return `@token:4ance-web`;
 };

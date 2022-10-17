@@ -1,11 +1,16 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { extendTheme } from "@chakra-ui/react";
+import { Provider } from "react-redux";
 
 import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 
+import store from "../redux/store";
+
 import "rc-steps/assets/index.css";
 import "@fontsource/open-sans";
+import LoadingScreen from "../components/LoadingScreen";
+import AccountConfirmation from "../components/AccountConfirmation";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,16 +52,20 @@ const theme = extendTheme({
   },
 });
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
-      </QueryClientProvider>
-    </ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <LoadingScreen />
+          <AccountConfirmation />
+          {getLayout(<Component {...pageProps} />)}
+        </QueryClientProvider>
+      </ChakraProvider>
+    </Provider>
   );
 }
 
-export default MyApp;
+export default App;
