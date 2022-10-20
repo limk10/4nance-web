@@ -2,6 +2,8 @@ const nextConfig = {
   reactStrictMode: true,
   async rewrites() {
     return [
+      // INVESTOR ROUTES
+
       {
         source: "/dashboard",
         destination: "/investor/dashboard",
@@ -66,6 +68,12 @@ const nextConfig = {
       {
         source: "/completar-cadastro",
         destination: "/investor/complete/registration",
+      },
+
+      // BUSINESS ROUTES
+      {
+        source: "/business/completar",
+        destination: "/business/signup/complete-registration",
       },
     ];
   },

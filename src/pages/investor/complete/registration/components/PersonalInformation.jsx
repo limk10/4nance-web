@@ -100,7 +100,7 @@ function PersonalInformation() {
             <Input id="address" name="address" value="" onChange={() => {}} />
           </FormControl>
           <FormControl id="number" isRequired>
-            <FormLabel>Number</FormLabel>
+            <FormLabel>Número</FormLabel>
             <Input
               type="number"
               id="number"

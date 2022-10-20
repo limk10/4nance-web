@@ -8,7 +8,7 @@ import {
 } from "../helpers/localStorage";
 
 const baseURL =
-  "https://e15e-2804-14c-8583-8077-d6a1-3ab5-432f-c30a.sa.ngrok.io/web/v1/";
+  "https://5ee7-2804-14c-8583-8077-f36a-93eb-a5b-efaa.sa.ngrok.io/web/v1/";
 // const baseURL = "http://localhost:3333/web/v1/";
 
 const api = axios.create({
@@ -38,11 +38,16 @@ const refreshToken = async (config) => {
 
 api.interceptors.request.use(async (config) => {
   const configuration = config;
-  const key = await getKeyToken();
-  const token = await getLocalStorage(key);
 
-  if (token) {
-    _.set(configuration, ["headers", "Authorization"], `Bearer ${token}`);
+  const key = await getKeyToken();
+  const authStorage = await getLocalStorage(key);
+
+  if (authStorage) {
+    const { token } = JSON.parse(authStorage);
+
+    if (token) {
+      _.set(configuration, ["headers", "Authorization"], `Bearer ${token}`);
+    }
   }
 
   return config;

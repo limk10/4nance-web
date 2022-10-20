@@ -16,31 +16,18 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 
-import Router from "next/router";
-
-import { FiMenu, FiChevronDown, FiUser, FiLogOut } from "react-icons/fi";
 import {
-  getKeyToken,
-  getLocalStorage,
-  removeAuthLocalStorage,
-} from "../../../helpers/localStorage";
+  FiMenu,
+  FiChevronDown,
+  FiUser,
+  FiLogOut,
+  FiBell,
+} from "react-icons/fi";
+import useAuth from "../../../helpers/auth";
 import { navigateTo } from "../../../helpers/routes";
 
 const MobileNav = ({ onOpen, ...rest }) => {
-  const getUser = () => {
-    const tokenKey = getKeyToken();
-    const localAuth = getLocalStorage(tokenKey);
-
-    if (!localAuth) return;
-    const { user } = JSON.parse(localAuth);
-    return user;
-  };
-
-  const logout = () => {
-    const tokenKey = getKeyToken();
-    removeAuthLocalStorage(tokenKey);
-    location.reload();
-  };
+  const [user, logout] = useAuth();
 
   return (
     <Flex
@@ -62,9 +49,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         bgColor="white"
         icon={<FiMenu />}
       />
-      {/* <Text display={{ base: "flex", md: "none" }} fontSize="2xl">
-        Sendify Center
-      </Text> */}
       <Image
         display={{ base: "flex", md: "none" }}
         width="8rem"
@@ -72,12 +56,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         alt="logo-4nance"
       />
       <HStack spacing={{ base: "0", md: "6" }}>
-        {/* <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        /> */}
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
@@ -87,11 +65,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
             >
               <HStack>
                 <WrapItem>
-                  <Avatar
-                    size={"sm"}
-                    name={getUser()}
-                    // src="https://bit.ly/tioluwani-kolawole"
-                  />
+                  <Avatar size={"sm"} name={user?.user} />
                 </WrapItem>
                 <VStack
                   display={{ base: "none", md: "flex" }}
@@ -99,7 +73,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{getUser()}</Text>
+                  <Text fontSize="sm">{user?.user}</Text>
                   <Text fontSize="xs" color="gray.600">
                     Empresário
                   </Text>

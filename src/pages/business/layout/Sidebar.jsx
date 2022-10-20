@@ -9,6 +9,11 @@ import {
   useColorModeValue,
   Link,
   Text,
+  Alert,
+  AlertIcon,
+  VStack,
+  AlertDescription,
+  Image,
 } from "@chakra-ui/react";
 import { useRouter, Router } from "next/router";
 
@@ -24,6 +29,7 @@ import {
 
 const Sidebar = ({ onClose, ...rest }) => {
   const router = useRouter();
+  const completePerfil = false;
 
   const [menu, setMenu] = useState([
     {
@@ -138,8 +144,6 @@ const Sidebar = ({ onClose, ...rest }) => {
             </Text>
           </Flex>
 
-          {/* <Image width="8rem" src="/logo-default.svg" alt="logo-4nance" /> */}
-
           <CloseButton
             display={{ base: "flex", md: "none" }}
             color={"white"}
@@ -148,40 +152,65 @@ const Sidebar = ({ onClose, ...rest }) => {
           />
         </Flex>
 
-        <NavItem path="/business/home" key={"home"} icon={FiHome}>
-          Home
-        </NavItem>
-
-        <Text
-          mt={4}
-          mb={1}
-          px={4}
-          letterSpacing={"0.09rem"}
-          fontSize="xs"
-          color={"#9899ac"}
-        >
-          • MEU NEGÓCIO
-        </Text>
-
-        {menu.map((link) => (
-          <NavItem key={link.name} icon={link.icon} {...link}>
-            {link.name}
+        <Box height="90vh" overflow="auto">
+          <NavItem path="/business/home" key={"home"} icon={FiHome}>
+            Home
           </NavItem>
-        ))}
-        <Flex justify={"center"} position="absolute" bottom={5} ml={7}>
-          <Button
-            onClick={() => {
-              onClose();
-              navigateTo("/business/captar");
-            }}
-            px={10}
-            scheme="primary"
-            text="Quero captar"
-            w="100%"
-            h="5vh"
-            fontWeight="600"
-          />
-        </Flex>
+
+          <Text
+            mt={4}
+            mb={1}
+            px={4}
+            letterSpacing={"0.09rem"}
+            fontSize="xs"
+            color={"#9899ac"}
+          >
+            • MEU NEGÓCIO
+          </Text>
+
+          {menu.map((link) => (
+            <NavItem key={link.name} icon={link.icon} {...link}>
+              {link.name}
+            </NavItem>
+          ))}
+
+          <Flex
+            px={3}
+            pt="80px"
+            flexDir="column"
+            position="relative"
+            marginTop="100%"
+            pb="10vh"
+          >
+            <Image
+              w="85%"
+              top="-110px"
+              pos="absolute"
+              opacity={0.95}
+              ml={1}
+              src="https://firebasestorage.googleapis.com/v0/b/stcar-automotive.appspot.com/o/Savings-amico.svg?alt=media&token=ea0cbbd1-91f7-4139-bdc0-2d7bbd8fe380"
+            />
+            <Text
+              textAlign="center"
+              mt={4}
+              mb={5}
+              color="whiteAlpha.900"
+              fontSize="sm"
+            >
+              Tenha acesso a vários grandes investidores, conte-nos um pouco
+              sobre o seu projeto.
+            </Text>
+            <Button
+              onClick={() => {
+                onClose();
+                navigateTo("/business/captar");
+              }}
+              scheme="primary"
+              text="Quero captar"
+              fontWeight="600"
+            />
+          </Flex>
+        </Box>
       </Box>
     </>
   );

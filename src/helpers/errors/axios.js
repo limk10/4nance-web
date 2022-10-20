@@ -4,14 +4,11 @@ export default function useAxiosValidate() {
   const [handleToast] = useToast();
 
   const axiosErrorValidate = (err) => {
+    console.log("err", err);
     if (!err) return;
-    const {
-      response: {
-        data: { userMessage },
-      },
-    } = err;
+    const { response } = err;
 
-    handleToast("Ops...", userMessage, "warning", 5000);
+    handleToast("Ops...", response?.data?.userMessage, "warning", 5000);
   };
 
   return [axiosErrorValidate];

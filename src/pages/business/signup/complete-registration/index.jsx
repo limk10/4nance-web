@@ -20,7 +20,6 @@ const steps = [
 ];
 
 export default function CompleteRegistration() {
-  const [form, setForm] = useState({});
   const { nextStep, prevStep, setStep, reset, activeStep } = useSteps({
     initialStep: 0,
   });
@@ -34,7 +33,7 @@ export default function CompleteRegistration() {
     <>
       <Box mb={8}>
         <Text fontSize="xl" fontWeight="md" color="blackAlpha.800">
-          Olá, Matheus Lopes
+          Olá, empresário
         </Text>
         <Text fontSize="sm" color="blackAlpha.600">
           Complete seu cadastro, conte-nos um pouco sobre você.

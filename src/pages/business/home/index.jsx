@@ -20,9 +20,11 @@ import {
 } from "react-icons/vsc";
 
 import Feature from "../../../components/Feature";
-import { getKeyToken, getLocalStorage } from "../../../helpers/localStorage";
+import useAuth from "../../../helpers/auth";
 
 export default function Home() {
+  const [user] = useAuth();
+
   const [flow, setFlow] = useState([
     {
       title: "1. Submissão",
@@ -50,15 +52,6 @@ export default function Home() {
     },
   ]);
 
-  const getUser = () => {
-    const tokenKey = getKeyToken();
-    const localAuth = getLocalStorage(tokenKey);
-
-    if (!localAuth) return;
-    const { user } = JSON.parse(localAuth);
-    return user;
-  };
-
   return (
     <Grid
       templateColumns="repeat(12, 1fr)"
@@ -70,7 +63,7 @@ export default function Home() {
           <Heading fontSize="large" fontWeight={400}>
             Bom dia,{" "}
             <Text fontSize="xl" fontWeight={500}>
-              {getUser()}
+              {user?.user}
             </Text>
           </Heading>
           <Text mt={7}>
