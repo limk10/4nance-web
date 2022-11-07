@@ -41,7 +41,7 @@ const Singin = () => {
   };
 
   // Simulação de uma request POST com axios
-  const { isLoading, mutate: postRegister } = useMutation(
+  const { isLoading, mutate: mutateRegister } = useMutation(
     async () => {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       return {
@@ -86,7 +86,7 @@ const Singin = () => {
     return Router.push("/home");
     try {
       await signinSchema.validate(form, { abortEarly: false });
-      postRegister();
+      mutateRegister();
     } catch (err) {
       if (err?.errors?.length) handleMessage(err?.errors);
     }

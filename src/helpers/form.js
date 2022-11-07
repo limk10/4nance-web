@@ -6,7 +6,7 @@ export default function useFormHelper() {
   const { formData, formErrors } = useSelector(useForm);
 
   const handleChange = ({ target }) => {
-    const group = target.getAttribute("group");
+    const group = target?.getAttribute("group");
     const { name, value } = target;
 
     dispatch(
@@ -18,5 +18,5 @@ export default function useFormHelper() {
     );
   };
 
-  return [handleChange, formData, formErrors];
+  return { handleChange, formData, formErrors };
 }

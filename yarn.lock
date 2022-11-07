@@ -2678,6 +2678,11 @@ react-clientside-effect@^1.2.5:
   dependencies:
     "@babel/runtime" "^7.12.13"
 
+react-currency-input-field@^3.6.8:
+  version "3.6.8"
+  resolved "https://registry.yarnpkg.com/react-currency-input-field/-/react-currency-input-field-3.6.8.tgz#d779d7bd7e70aa53a47441b9af784238a94e6153"
+  integrity sha512-vIaxVGRKy/umB4WA3MXAD78wRyJ38d1JcCtUtNxDpk0ZTYiwZFhlGmzgzFnS3pocoxT3p4M2R8tDvW8Z31bVsw==
+
 react-dom@18.1.0:
   version "18.1.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"

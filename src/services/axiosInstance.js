@@ -7,9 +7,8 @@ import {
   addToLocalStorage,
 } from "../helpers/localStorage";
 
-// const baseURL =
-//   "https://5ee7-2804-14c-8583-8077-f36a-93eb-a5b-efaa.sa.ngrok.io/web/v1/";
-const baseURL = "http://localhost:3333/web/v1/";
+const baseURL = "https://cool-kiwis-win-187-123-0-129.loca.lt/web/v1/";
+// const baseURL = "http://localhost:3333/web/v1/";
 
 const api = axios.create({
   baseURL,

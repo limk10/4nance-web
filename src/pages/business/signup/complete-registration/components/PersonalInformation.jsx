@@ -14,33 +14,39 @@ import {
 import InputMask from "react-input-mask";
 import { useMutation, useQuery } from "react-query";
 import useFormHelper from "../../../../../helpers/form";
-import {
-  getCityList,
-  getStateList,
-  stateList,
-} from "../../../../../services/api/address";
+import { getCityList, getStateList } from "../../../../../services/api/address";
 import useAxiosValidate from "../../../../../helpers/errors/axios";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleCityList,
+  handleStateList,
+  useAddress,
+} from "../../../../../redux/address/addressSlice";
+import { handleLoading } from "../../../../../redux/general/generalSlice";
 
 function PersonalInformation() {
-  const [handleChange, formData] = useFormHelper();
-  const [axiosErrorValidate] = useAxiosValidate();
+  const dispatch = useDispatch();
+  const { handleChange, formData } = useFormHelper();
+  const { axiosErrorValidate } = useAxiosValidate();
+
+  const { stateList, cityList } = useSelector(useAddress);
 
   useQuery(["stateList"], getStateList, {
     onSuccess(data) {
-      console.log("getStateList", data);
+      dispatch(handleStateList(data));
     },
     onError(error) {
       axiosErrorValidate(error);
     },
   });
 
-  const { mutate: cityList } = useMutation(
+  const { mutate: mutateCityList, isLoading: isLoadingCityList } = useMutation(
     ["getStateList"],
     (id) => getCityList(id),
     {
       onSuccess(data) {
-        console.log("getCityList", data);
+        dispatch(handleCityList(data));
       },
       onError(error) {
         axiosErrorValidate(error);
@@ -49,8 +55,17 @@ function PersonalInformation() {
   );
 
   useEffect(() => {
-    cityList("e2f8279c-6963-47df-910e-129474acc328");
-  }, []);
+    if (!formData?.completeRegistration?.state) return;
+    const {
+      completeRegistration: { state },
+    } = formData;
+
+    if (state) mutateCityList(state);
+  }, [formData?.completeRegistration?.state]);
+
+  useEffect(() => {
+    dispatch(handleLoading(isLoadingCityList));
+  }, [isLoadingCityList]);
 
   return (
     <>
@@ -67,24 +82,13 @@ function PersonalInformation() {
             />
           </FormControl>
           <FormControl id="last_name" isRequired>
-            <FormLabel>Sobrenome</FormLabel>
-            <Input
-              id="last_name"
-              name="lastName"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.lastName || ""}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl id="last_name" isRequired>
             <FormLabel>E-mail</FormLabel>
             <Input
               type="email"
               id="email"
               name="email"
-              group="completeRegistration"
               value={formData?.completeRegistration?.email || ""}
-              onChange={handleChange}
+              disabled
             />
           </FormControl>
         </HStack>
@@ -94,10 +98,9 @@ function PersonalInformation() {
             <InputMask
               mask="999.999.999-99"
               maskPlaceholder=""
-              group="completeRegistration"
               name="document"
               value={formData?.completeRegistration?.document || ""}
-              onChange={handleChange}
+              disabled
             >
               <Input type="text" placeholder="___.___.___-__" />
             </InputMask>
@@ -129,46 +132,6 @@ function PersonalInformation() {
             </InputMask>
           </FormControl>
         </HStack>
-        {/* <HStack spacing={3} mt={3}>
-          <FormControl id="dob" isRequired>
-            <FormLabel>Data de nascimento</FormLabel>
-            <InputMask
-              mask="(99) 9 9999-9999"
-              maskPlaceholder=""
-              group="completeRegistration"
-              name="phone_2"
-              value={formData?.completeRegistration?.phone_2 || ""}
-              onChange={handleChange}
-            >
-              <Input type="text" placeholder="__/__/____" />
-            </InputMask>
-          </FormControl>
-          <FormControl id="nacionality" isRequired>
-            <FormLabel>Nacionalidade</FormLabel>
-            <Select
-              name="nacionality"
-              onChange={() => {}}
-              value=""
-              placeholder="Selecione uma nacionalidade"
-            >
-              <option value={0}>Brasileiro</option>
-              <option value={1}>Naturalizado</option>
-            </Select>
-          </FormControl>
-          <FormControl id="genre" isRequired>
-            <FormLabel>Genêro</FormLabel>
-            <Select
-              name="genre"
-              onChange={() => {}}
-              value=""
-              placeholder="Selecione seu genêro"
-            >
-              <option value={0}>Masculino</option>
-              <option value={1}>Feminino</option>
-              <option value={2}>Outros</option>
-            </Select>
-          </FormControl>
-        </HStack> */}
         <HStack spacing={3} mt={3}>
           <FormControl id="zipcode" isRequired>
             <FormLabel>CEP</FormLabel>
@@ -192,31 +155,36 @@ function PersonalInformation() {
               value={formData?.completeRegistration?.state || ""}
               onChange={handleChange}
             >
-              <option value={0}>Mato Grosso</option>
-              <option value={1}>Mato Grosso do Sul</option>
-              <option value={2}>Minas Gerais</option>
-              <option value={3}>São Paulo</option>
-              <option value={4}>Rio de Janeiro</option>
+              {stateList.map(({ id, name }) => (
+                <option value={id}>{name}</option>
+              ))}
             </Select>
           </FormControl>
           <FormControl id="city" isRequired>
             <FormLabel>Cidade</FormLabel>
             <Select
               name="city"
-              placeholder="Selecione um estado"
+              placeholder="Selecione uma cidade"
               group="completeRegistration"
               value={formData?.completeRegistration?.city || ""}
               onChange={handleChange}
             >
-              <option value={3}>São Paulo</option>
-              <option value={4}>Rio de Janeiro</option>
+              {cityList.map(({ id, name }) => (
+                <option value={id}>{name}</option>
+              ))}
             </Select>
           </FormControl>
         </HStack>
         <HStack spacing={3} mt={3}>
           <FormControl id="address" isRequired>
             <FormLabel>Endereço</FormLabel>
-            <Input id="address" name="address" value="" onChange={() => {}} />
+            <Input
+              id="address"
+              name="address"
+              group="completeRegistration"
+              value={formData?.completeRegistration?.address || ""}
+              onChange={handleChange}
+            />
           </FormControl>
           <FormControl id="number" isRequired>
             <FormLabel>Número</FormLabel>

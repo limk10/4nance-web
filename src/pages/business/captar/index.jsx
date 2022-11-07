@@ -12,22 +12,24 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import Button from "../../../components/Button";
-
 import Steps, { Step } from "rc-steps";
-
 import Router from "next/router";
-
 import { AiFillPlusCircle } from "react-icons/ai";
-
-import Layout from "../layout";
 import CaptureEmployeeForm from "./components/form/CaptureEmployeeForm";
 import CaptureOperationForm from "./components/form/CaptureOperationForm";
-
+import Layout from "../layout";
+import { getEmplpoyee, postEmployee } from "../../../services/api/employee";
+import { useDispatch, useSelector } from "react-redux";
+import useFormHelper from "../../../helpers/form";
+import useAxiosValidate from "../../../helpers/errors/axios";
+import { useMutation, useQuery } from "react-query";
+import { handleLoading } from "../../../redux/general/generalSlice";
 import {
-  captureEmployeeSchema,
-  captureOperationSchema,
-  handleMessage,
-} from "../../../helpers/validade";
+  handleEmployeeList,
+  useEmployee,
+} from "../../../redux/employee/employeeSlice";
+import { setFormData } from "../../../redux/form/formSlice";
+import { postOperation } from "../../../services/api/operation";
 
 const steps = [
   { label: "Sua empresa", description: "Conte-nos um pouco sobre sua empresa" },
@@ -36,61 +38,78 @@ const steps = [
     description: "Estamos quase lá, agora conte um pouco da sua operação",
   },
 ];
+
 export default function CaptureProject({}) {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({});
   const [step, setStep] = useState(0);
   const [innerWidth, setInnerWidth] = useState();
-  const [employes, setEmployes] = useState([
-    { name: "Pequeno mundo Rock LTDA", doc: "77.503.293/0001-54" },
+  const { axiosErrorValidate } = useAxiosValidate();
+  const { formData } = useFormHelper();
+
+  const { employeeList } = useSelector(useEmployee);
+
+  const { isLoading: isLoadingEmployeeList } = useQuery(
+    ["employeeList"],
+    getEmplpoyee,
     {
-      name: "Clovis Basilio Servico LTDA - Kid Bengala",
-      doc: "34.893.794/0001-81",
-    },
-  ]);
-
-  const handleChange = ({ target: { name, value } }) => {
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleChangeRadio = (props, value) => {
-    setForm({
-      ...form,
-      [props]: value,
-    });
-  };
-
-  const handleSelectEmployee = (name, doc) => {
-    setForm({
-      ...form,
-      social: name,
-      fantasyName: name,
-      doc,
-      select: true,
-    });
-  };
-
-  const validateForm = async () => {
-    switch (step) {
-      case 0:
-        try {
-          await captureEmployeeSchema.validate(form, { abortEarly: false });
-          return true;
-        } catch (err) {
-          if (err?.errors?.length) handleMessage(err?.errors);
-          return false;
-        }
-      case 1:
-        try {
-          await captureOperationSchema.validate(form, { abortEarly: false });
-          return true;
-        } catch (err) {
-          if (err?.errors?.length) handleMessage(err?.errors);
-          return false;
-        }
+      onSuccess(data) {
+        dispatch(handleEmployeeList(data));
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
     }
+  );
+
+  const { mutate: mutatePostEmployee } = useMutation(
+    (data) => postEmployee(data),
+    {
+      onSuccess: () => {
+        handleStep("next");
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+      onSettled() {
+        dispatch(handleLoading(false));
+      },
+    }
+  );
+
+  const { mutate: mutatePostOperation } = useMutation(
+    (data) => postOperation(data),
+    {
+      onSuccess: () => {
+        handleStep("next");
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+      onSettled() {
+        dispatch(handleLoading(false));
+      },
+    }
+  );
+
+  const handleSelectEmployee = (employee) => {
+    const data = {
+      id: employee?.company_id,
+      cnpj: employee?.company?.cnpj,
+      socialReaseon: employee?.company?.social_reason,
+      fantasyName: employee?.company?.fantasy_name,
+      state: employee?.company?.state_registration,
+      email: employee?.company?.email_company,
+      phone: employee?.company?.phone_company,
+      address: employee?.address,
+      number: employee?.number,
+      complement: employee?.complement,
+      district: employee?.district,
+      cep: employee?.cep,
+      city: employee?.city_id,
+    };
+
+    dispatch(setFormData({ group: "captation", values: data }));
   };
 
   const handleStep = async (type) => {
@@ -99,55 +118,116 @@ export default function CaptureProject({}) {
         if (step > 0) setStep(step - 1);
         break;
       case "next":
-        const isValid = await validateForm(step);
-        if (!isValid) return;
         if (step <= 3) setStep(step + 1);
         break;
     }
   };
 
-  const handleContentForm = (step) => {
+  const submitEmployee = async () => {
+    const { captation } = formData;
+    if (captation.id) return handleStep("next");
+    const data = {
+      cnpj: captation?.cnpj,
+      social_reason: captation?.socialReaseon,
+      fantasy_name: captation?.fantasyName,
+      state_registration: captation?.state,
+      email_company: captation?.email,
+      phone_company: captation?.phone,
+      address: captation?.address,
+      number: captation?.number,
+      complement: captation?.complement,
+      district: captation?.district,
+      cep: captation?.cep,
+      city_id: captation?.city,
+    };
+
+    dispatch(handleLoading(true));
+    await mutatePostEmployee(data);
+  };
+
+  const formatCurrency = (data) => {
+    console.log("data", data);
+    const _data = data.replace("R$ ", "").replace(",", ".");
+    console.log("_data", _data), console.log(parseFloat(_data));
+    return data;
+  };
+
+  const submitOperation = async () => {
+    const { captation } = formData;
+
+    const data = {
+      modality_id: formData?.modality,
+      category_id: formData?.category,
+      company_id: captation?.id,
+      name_investment: captation?.investimentName,
+      description: captation?.description,
+      time_investment: captation?.timeInvestment,
+      profitability: captation?.profitability,
+      minimum_value: captation?.minimumValue,
+      max_capture: captation?.maxCapture,
+      min_capture: captation?.minCapture,
+    };
+
+    dispatch(handleLoading(true));
+    await mutatePostOperation(data);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (step === 0) submitEmployee();
+    else if (step === 1) submitOperation();
+  };
+
+  const contentForm = () => {
     switch (step) {
       case 0:
         return (
           <div align="left">
-            <Text>Escolha uma empresa para qual deseja fazer a operação *</Text>
+            <Text>Escolha uma empresa para qual deseja fazer a operação</Text>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} mb={10}>
-              {employes.map(({ name, doc }, index) => (
-                <Box
-                  h="100px"
-                  mt={4}
-                  mr={2}
-                  p={3}
-                  bg={doc === form.doc ? "gray.800" : "gray.700"}
-                  color="white"
-                  boxShadow={"md"}
-                  rounded={"md"}
-                  _hover={{
-                    cursor: "pointer",
-                    transition: "0.5s ease",
-                    backgroundColor: "gray.800",
-                  }}
-                  key={index}
-                  onClick={() => handleSelectEmployee(name, doc)}
-                >
-                  <Heading fontSize={"lg"} fontWeight={500}>
-                    <Stack direction="row" h="45px">
-                      <Divider
-                        borderLeftWidth="2px"
-                        borderLeftColor={
-                          doc === form.doc ? "primary.300" : "gray.700"
-                        }
-                        orientation="vertical"
-                      />
-                      <Text>{name}</Text>
-                    </Stack>
-                  </Heading>
-                  <Text color={"gray.500"} mt={1}>
-                    {doc}
-                  </Text>
-                </Box>
-              ))}
+              {!!employeeList.length &&
+                employeeList.map((employee, index) => (
+                  <Box
+                    h="100px"
+                    mt={4}
+                    mr={2}
+                    p={3}
+                    bg={
+                      employee.company_id === formData?.captation?.company_id
+                        ? "gray.800"
+                        : "gray.700"
+                    }
+                    color="white"
+                    boxShadow={"md"}
+                    rounded={"md"}
+                    _hover={{
+                      cursor: "pointer",
+                      transition: "0.5s ease",
+                      backgroundColor: "gray.800",
+                    }}
+                    key={index}
+                    onClick={() => handleSelectEmployee(employee)}
+                  >
+                    <Heading fontSize={"lg"} fontWeight={500}>
+                      <Stack direction="row" h="45px">
+                        <Divider
+                          borderLeftWidth="2px"
+                          borderLeftColor={
+                            employee.company_id ===
+                            formData?.captation?.company_id
+                              ? "primary.300"
+                              : "gray.700"
+                          }
+                          orientation="vertical"
+                        />
+                        <Text>{employee.company.fantasy_name}</Text>
+                      </Stack>
+                    </Heading>
+                    <Text color={"gray.500"} mt={1}>
+                      {employee.company.cnpj}
+                    </Text>
+                  </Box>
+                ))}
               <Box
                 h="100px"
                 mt={4}
@@ -161,7 +241,9 @@ export default function CaptureProject({}) {
                   transition: "0.5s ease",
                   backgroundColor: "gray.800",
                 }}
-                onClick={() => setForm({})}
+                onClick={() =>
+                  dispatch(setFormData({ group: "captation", values: {} }))
+                }
               >
                 <Flex direction="column" align="center">
                   <Heading fontSize={"lg"} fontWeight={500} mb={2}>
@@ -171,17 +253,11 @@ export default function CaptureProject({}) {
                 </Flex>
               </Box>
             </SimpleGrid>
-            <CaptureEmployeeForm form={form} handleChange={handleChange} />
+            <CaptureEmployeeForm />
           </div>
         );
       case 1:
-        return (
-          <CaptureOperationForm
-            form={form}
-            handleChange={handleChange}
-            handleChangeRadio={handleChangeRadio}
-          />
-        );
+        return <CaptureOperationForm />;
     }
   };
 
@@ -189,56 +265,64 @@ export default function CaptureProject({}) {
     if (typeof window !== "undefined") setInnerWidth(window.innerWidth);
   }, []);
 
+  useEffect(() => {
+    dispatch(handleLoading(isLoadingEmployeeList));
+  }, [isLoadingEmployeeList]);
+
   return (
     <Box bg="#fff" p={5} borderRadius={"md"}>
-      <Flex flexDir="column">
-        <Box margin={{ base: "0", md: "0 10%" }}>
-          <Steps
-            direction={innerWidth < 500 ? "vertical" : "horizontal"}
-            current={step}
-          >
-            {steps.map((s) => (
-              <Step key={s} title={s.label} description={s.description} />
-            ))}
-          </Steps>
-        </Box>
+      <form onSubmit={handleSubmit}>
+        <Flex flexDir="column">
+          <Box margin={{ base: "0", md: "0 10%" }}>
+            <Steps
+              direction={innerWidth < 500 ? "vertical" : "horizontal"}
+              current={step}
+            >
+              {steps.map((s) => (
+                <Step key={s} title={s.label} description={s.description} />
+              ))}
+            </Steps>
+          </Box>
 
-        <Spacer mt={{ base: 5, md: 3 }} />
+          <Spacer mt={{ base: 5, md: 3 }} />
 
-        {handleContentForm(step)}
+          {contentForm()}
 
-        {step === steps.length ? (
-          <Flex px={4} width="100%" flexDir="column" mt={3}>
-            <Heading fontSize="xl" textAlign="center" fontWeight={600}>
-              Agora é com a gente!
-            </Heading>
-            <Text textAlign="center" fontWeight={400} mt={5}>
-              Vamos analisar o seu projeto, mas isso é muito rápido, <br />
-              dentro de 48h enviaremos um e-mail para você
-            </Text>
+          {step === steps.length ? (
+            <Flex px={4} width="100%" flexDir="column" mt={3}>
+              <Heading fontSize="xl" textAlign="center" fontWeight={600}>
+                Agora é com a gente!
+              </Heading>
+              <Text textAlign="center" fontWeight={400} mt={5}>
+                Vamos analisar o seu projeto, mas isso é muito rápido, <br />
+                dentro de 48h enviaremos um e-mail para você
+              </Text>
 
-            <Center mt={5}>
-              <Button onClick={() => Router.push("/business/home")} w="20%">
-                Home
-              </Button>
-            </Center>
-          </Flex>
-        ) : (
-          <Flex width="100%" justify="space-between" mt={7}>
-            <Button
-              isDisabled={step === 0}
-              mr={4}
-              onClick={() => handleStep("prev")}
-              variant="outline"
-              text="Voltar"
-            />
-            <Button
-              onClick={() => handleStep("next")}
-              text={step === steps.length - 1 ? "Finalizar" : "Próximo"}
-            />
-          </Flex>
-        )}
-      </Flex>
+              <Center mt={5}>
+                <Button
+                  onClick={() => Router.push("/business/home")}
+                  w="20%"
+                  text="Home"
+                />
+              </Center>
+            </Flex>
+          ) : (
+            <Flex width="100%" justify="space-between" mt={7}>
+              <Button
+                isDisabled={step === 0}
+                mr={4}
+                onClick={() => handleStep("prev")}
+                variant="outline"
+                text="Voltar"
+              />
+              <Button
+                type="submit"
+                text={step === steps.length - 1 ? "Finalizar" : "Próximo"}
+              />
+            </Flex>
+          )}
+        </Flex>
+      </form>
     </Box>
   );
 }

@@ -40,7 +40,7 @@ const Signup = () => {
   };
 
   // Simulação de uma request POST com axios
-  const { isLoading, mutate: postRegister } = useMutation(
+  const { isLoading, mutate: mutateRegister } = useMutation(
     async () => {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       return {
@@ -77,7 +77,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       await signupSchema.validate(form, { abortEarly: false });
-      postRegister();
+      mutateRegister();
     } catch (err) {
       if (err?.errors?.length) handleMessage(err?.errors);
     }

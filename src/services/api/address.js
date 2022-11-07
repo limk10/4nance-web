@@ -9,3 +9,8 @@ export const getCityList = async (id) => {
   const { data } = await axios.get(`/cities/${id}`);
   return data;
 };
+
+export const getAddressByCompany = async (id) => {
+  const { data } = await axios.get(`/cities/${id}`);
+  return data;
+};

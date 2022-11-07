@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   Flex,
   FormControl,
@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 
 import Router from "next/router";
 
-import { register } from "../../../services/api/auth";
+import { businessRegister } from "../../../services/api/auth";
 import Button from "../../../components/Button";
 
 import useToast from "../../../helpers/toast";
@@ -27,15 +27,16 @@ import {
 import useFormHelper from "../../../helpers/form";
 import useAxiosValidate from "../../../helpers/errors/axios";
 import { setFormData } from "../../../redux/form/formSlice";
+import { getPerson } from "../../../services/api/person";
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const [handleToast] = useToast();
-  const [axiosErrorValidate] = useAxiosValidate();
-  const [handleChange, formData] = useFormHelper();
+  const { handleToast } = useToast();
+  const { axiosErrorValidate } = useAxiosValidate();
+  const { handleChange, formData } = useFormHelper();
 
-  const { mutate: postRegister, isLoading } = useMutation(
-    (data) => register(data),
+  const { mutate: mutateRegister, isLoading } = useMutation(
+    (data) => businessRegister(data),
     {
       onSuccess: () => {
         handleToast(
@@ -64,7 +65,7 @@ const Signup = () => {
       ],
     };
 
-    postRegister(data);
+    mutateRegister(data);
   };
 
   useEffect(() => {

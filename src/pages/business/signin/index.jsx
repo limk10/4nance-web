@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 
 import Router from "next/router";
 
-import { signin } from "../../../services/api/auth";
+import { businessSignin } from "../../../services/api/auth";
 import { handleAccountConfirmation } from "../../../redux/general/generalSlice";
 import useToast from "../../../helpers/toast";
 import useFormHelper from "../../../helpers/form";
@@ -26,12 +26,12 @@ import { setFormData } from "../../../redux/form/formSlice";
 
 const Singin = () => {
   const dispatch = useDispatch();
-  const [handleToast] = useToast();
-  const [handleChange, formData] = useFormHelper();
+  const { handleToast } = useToast();
+  const { handleChange, formData } = useFormHelper();
 
   // Simulação de uma request POST com axios
-  const { mutate: postSignin, isLoading } = useMutation(
-    (data) => signin(data),
+  const { mutate: mutateSignin, isLoading } = useMutation(
+    (data) => businessSignin(data),
     {
       onSuccess: () => {
         Router.push("/business/home");
@@ -64,7 +64,8 @@ const Singin = () => {
     const data = {
       ...signin,
     };
-    postSignin(data);
+
+    mutateSignin(data);
   };
 
   useEffect(() => {

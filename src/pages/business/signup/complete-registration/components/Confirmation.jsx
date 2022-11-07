@@ -15,8 +15,8 @@ function Confirmation() {
       <Text>Você completou seu cadastro!</Text>
 
       <Text mt={3}>
-        Lembrando, essas informações serão usadas em seu contrato ao realizar a
-        reserva em um de nossos investimentos escolhidos.
+        Lembrando, essas informações serão usadas em seu contrato ao cadastrar
+        novos investimentos.
       </Text>
 
       <Alert
@@ -29,24 +29,23 @@ function Confirmation() {
         textAlign="left"
       >
         <AlertTitle mb={1} fontSize="lg">
-          Agora é só aproveitar as nossas opções de investimentos
+          Agora é simples, conte-nos sobre a sua idéia.
         </AlertTitle>
       </Alert>
 
       <Text mt={10}>
-        Agora é simples, identificamos seu perfil e estamos te mandando os
-        melhores investimentos alteranativos do mercado, todos investimentos
-        reais!
+        Aproveite os nossos investidores, eles estão ansisos em saber sobre a
+        sua idéia.
       </Text>
 
       <Text mt={10}>
-        Acesse nosso porfólio de operações <b>no botão abaixo.</b>
+        Acesse nosso cadastro de investimentos <b>no botão abaixo.</b>
       </Text>
       <Button
-        onClick={() => navigateTo("/investir")}
+        onClick={() => navigateTo("/business/captar")}
         maxW={{ base: "80%", md: "40%" }}
         mt={2}
-        text="Ver operações"
+        text="Cadastrar investimento"
       />
     </Box>
   );

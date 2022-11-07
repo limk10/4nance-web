@@ -17,7 +17,11 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
-import { accountConfirmation, signin } from "../../services/api/auth";
+import {
+  accountConfirmation,
+  businessAccountConfirmation,
+  businessSignin,
+} from "../../services/api/auth";
 import { useMutation } from "react-query";
 import Router from "next/router";
 import {
@@ -32,14 +36,14 @@ import useAxiosValidate from "../../helpers/errors/axios";
 
 function AccountConfirmation() {
   const dispatch = useDispatch();
-  const [handleToast] = useToast();
-  const [axiosErrorValidate] = useAxiosValidate();
-  const [{}, formData] = useFormHelper();
+  const { handleToast } = useToast();
+  const { axiosErrorValidate } = useAxiosValidate();
+  const { formData } = useFormHelper();
 
   const { modalAccountConfirm } = useSelector(useGeneral);
 
-  const { mutate: postSignin, isLoading: isLoadingSignin } = useMutation(
-    (data) => signin(data),
+  const { mutate: mutateSignin, isLoading: isLoadingSignin } = useMutation(
+    (data) => businessSignin(data),
     {
       onSuccess: () => {
         Router.push("/business/home");
@@ -57,9 +61,9 @@ function AccountConfirmation() {
   );
 
   const {
-    mutate: postAccountConfirmation,
+    mutate: mutateAccountConfirmation,
     isLoading: isLoadingAccountConfirmation,
-  } = useMutation((data) => accountConfirmation(data), {
+  } = useMutation((data) => businessAccountConfirmation(data), {
     onSuccess: (resp) => {
       handleToast(
         "Cadastro ativado com sucesso",
@@ -74,7 +78,7 @@ function AccountConfirmation() {
           password: formData?.signin?.password || formData?.signup?.password,
         };
 
-        postSignin(data);
+        mutateSignin(data);
       }, 2000);
     },
     onError: (error) => axiosErrorValidate(error),
@@ -86,7 +90,7 @@ function AccountConfirmation() {
         email: formData?.signin?.email || formData?.signup?.email,
         code: e,
       };
-      postAccountConfirmation(data);
+      mutateAccountConfirmation(data);
     }
   };
 

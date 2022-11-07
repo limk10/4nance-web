@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 
@@ -12,6 +12,13 @@ import Container from "../../../../components/Card";
 import PersonalInformation from "./components/PersonalInformation";
 import InvestorInformation from "./components/InvestorInformation";
 import Confirmation from "./components/Confirmation";
+import useFormHelper from "../../../../helpers/form";
+import { getPerson, postPerson } from "../../../../services/api/person";
+import { useMutation, useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import { setFormData } from "../../../../redux/form/formSlice";
+import { handleLoading } from "../../../../redux/general/generalSlice";
+import useAxiosValidate from "../../../../helpers/errors/axios";
 
 const steps = [
   { label: "Dados Pessoais", children: <PersonalInformation /> },
@@ -20,14 +27,62 @@ const steps = [
 ];
 
 export default function CompleteRegistration() {
-  const { nextStep, prevStep, setStep, reset, activeStep } = useSteps({
+  const dispatch = useDispatch();
+  const { axiosErrorValidate } = useAxiosValidate();
+  const { formData } = useFormHelper();
+  const { nextStep, activeStep } = useSteps({
     initialStep: 0,
   });
 
-  const handleNext = (e) => {
+  const { isLoading: isLoadingPerson } = useQuery(["queryPerson"], getPerson, {
+    onSuccess(data) {
+      dispatch(setFormData({ group: "completeRegistration", values: data }));
+    },
+    onError(error) {
+      axiosErrorValidate(error);
+    },
+  });
+
+  const { mutateAsync: mutatePostPerson } = useMutation(
+    (data) => postPerson(data),
+    {
+      onSuccess() {
+        nextStep();
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+      onSettled() {
+        dispatch(handleLoading(false));
+      },
+    }
+  );
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    nextStep();
+    const { completeRegistration } = formData;
+    const data = {
+      name: completeRegistration?.name,
+      document: completeRegistration?.document,
+      phone_1: completeRegistration?.phone_1,
+      phone_2: completeRegistration?.phone_2,
+      email: completeRegistration?.email,
+      company_id: null,
+      address: completeRegistration?.address,
+      number: completeRegistration?.number,
+      complement: completeRegistration?.complement,
+      district: completeRegistration?.district,
+      cep: completeRegistration?.cep,
+      city_id: completeRegistration?.city,
+    };
+
+    dispatch(handleLoading(true));
+    await mutatePostPerson(data);
   };
+
+  useEffect(() => {
+    dispatch(handleLoading(isLoadingPerson));
+  }, [isLoadingPerson]);
 
   return (
     <>
@@ -40,7 +95,7 @@ export default function CompleteRegistration() {
         </Text>
       </Box>
       <Container p={5}>
-        <form onSubmit={handleNext}>
+        <form onSubmit={handleSubmit}>
           <Steps responsive={true} activeStep={activeStep} colorScheme="green">
             {steps.map(({ label, children }) => (
               <Step label={label} key={label} icon={FiAward}>
@@ -49,21 +104,17 @@ export default function CompleteRegistration() {
             ))}
           </Steps>
 
-          {activeStep !== steps.length && (
+          {activeStep === 0 && (
             <Flex width="100%" justify="flex-end" mt={5}>
-              <Button
+              {/* <Button
                 isDisabled={activeStep === 0}
                 mr={4}
                 onClick={prevStep}
                 size="sm"
                 variant="ghost"
                 text="Voltar"
-              />
-              <Button
-                type="submit"
-                size="sm"
-                text={activeStep === steps.length - 1 ? "Finalizar" : "Próximo"}
-              />
+              /> */}
+              <Button type="submit" text="Finalizar" />
             </Flex>
           )}
         </form>

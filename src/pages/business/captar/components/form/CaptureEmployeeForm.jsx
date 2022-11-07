@@ -7,27 +7,85 @@ import {
   InputGroup,
   InputLeftAddon,
   GridItem,
+  HStack,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 
-export default function CaptureEmployeeForm({ form, handleChange }) {
+import InputMask from "react-input-mask";
+import { useMutation, useQuery } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
+import useAxiosValidate from "../../../../../helpers/errors/axios";
+import useFormHelper from "../../../../../helpers/form";
+import {
+  handleCityList,
+  handleStateList,
+  useAddress,
+} from "../../../../../redux/address/addressSlice";
+import { handleLoading } from "../../../../../redux/general/generalSlice";
+import { getCityList, getStateList } from "../../../../../services/api/address";
+
+export default function CaptureEmployeeForm() {
+  const dispatch = useDispatch();
+  const { handleChange, formData } = useFormHelper();
+  const { axiosErrorValidate } = useAxiosValidate();
+
+  const { stateList, cityList } = useSelector(useAddress);
+
+  useQuery(["stateList"], getStateList, {
+    onSuccess(data) {
+      dispatch(handleStateList(data));
+    },
+    onError(error) {
+      axiosErrorValidate(error);
+    },
+  });
+
+  const { mutate: mutateCityList, isLoading: isLoadingCityList } = useMutation(
+    ["getStateList"],
+    (id) => getCityList(id),
+    {
+      onSuccess(data) {
+        dispatch(handleCityList(data));
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (!formData?.captation?.state) return;
+    const {
+      captation: { state },
+    } = formData;
+
+    if (state) mutateCityList(state);
+  }, [formData?.captation?.state]);
+
+  useEffect(() => {
+    dispatch(handleLoading(isLoadingCityList));
+  }, [isLoadingCityList]);
+
   return (
-    <form>
+    <>
       <SimpleGrid columns={{ base: 0, md: 2 }} spacing={3} mb={4}>
         <FormControl id="social" isRequired>
           <FormLabel>Razão social</FormLabel>
           <Input
-            type="text"
-            name="social"
-            value={form?.social || ""}
+            id="social_reason"
+            name="socialReaseon"
+            group="captation"
+            value={formData?.captation?.socialReaseon || ""}
             onChange={handleChange}
           />
         </FormControl>
         <FormControl id="fantasyName" isRequired>
           <FormLabel>Nome fantasia</FormLabel>
           <Input
-            type="text"
+            id="fantasy_name"
             name="fantasyName"
-            value={form?.fantasyName || ""}
+            group="captation"
+            value={formData?.captation?.fantasyName || ""}
             onChange={handleChange}
           />
         </FormControl>
@@ -35,117 +93,131 @@ export default function CaptureEmployeeForm({ form, handleChange }) {
       <SimpleGrid columns={{ base: 0, md: 3 }} spacing={3} mb={4}>
         <FormControl id="doc" isRequired>
           <FormLabel>CNPJ</FormLabel>
+          <InputMask
+            mask="99.999.999/9999-99"
+            maskPlaceholder=""
+            name="cnpj"
+            group="captation"
+            value={formData?.captation?.cnpj || ""}
+            onChange={handleChange}
+          >
+            <Input type="text" placeholder="__.___.___/___-__" />
+          </InputMask>
+        </FormControl>
+        <FormControl id="doc" isRequired>
+          <FormLabel>Telefone</FormLabel>
+          <InputMask
+            mask="(99) 9 9999-9999"
+            maskPlaceholder=""
+            name="phone"
+            group="captation"
+            value={formData?.captation?.phone || ""}
+            onChange={handleChange}
+          >
+            <Input type="text" placeholder="(__) _ ____-____" />
+          </InputMask>
+        </FormControl>
+        <FormControl id="doc" isRequired>
+          <FormLabel>E-mail</FormLabel>
           <Input
-            disabled={form?.select}
-            type="text"
-            name="doc"
-            value={form?.doc || ""}
+            id="email_company"
+            name="email"
+            group="captation"
+            value={formData?.captation?.email || ""}
             onChange={handleChange}
           />
         </FormControl>
-        <FormControl id="zipCode" isRequired>
+      </SimpleGrid>
+      <HStack spacing={3} mt={3}>
+        <FormControl id="zipcode" isRequired>
           <FormLabel>CEP</FormLabel>
-          <Input
-            type="text"
-            name="zipCode"
-            value={form?.zipCode || ""}
+          <InputMask
+            mask="99999-999"
+            maskPlaceholder=""
+            group="captation"
+            name="cep"
+            value={formData?.captation?.cep || ""}
             onChange={handleChange}
-          />
+          >
+            <Input type="text" placeholder="_____-___" />
+          </InputMask>
         </FormControl>
         <FormControl id="state" isRequired>
-          <FormLabel>Estado</FormLabel>
+          <FormLabel>Estado/Provincia</FormLabel>
           <Select
-            // disabled={true}
             name="state"
-            onChange={handleChange}
-            value={form?.state || ""}
             placeholder="Selecione um estado"
+            group="captation"
+            value={formData?.captation?.state || ""}
+            onChange={handleChange}
           >
-            <option value="option1">MT</option>
-            <option value="option2">MS</option>
-            <option value="option3">SP</option>
+            {!!stateList.length &&
+              stateList.map(({ id, name }) => (
+                <option value={id}>{name}</option>
+              ))}
           </Select>
         </FormControl>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 0, md: 2 }} spacing={3} mb={4}>
-        <FormControl id="fundationDate" isRequired>
-          <FormLabel>Data de fundação</FormLabel>
+        <FormControl id="city" isRequired>
+          <FormLabel>Cidade</FormLabel>
+          <Select
+            name="city"
+            placeholder="Selecione uma cidade"
+            group="captation"
+            value={formData?.captation?.city || ""}
+            onChange={handleChange}
+          >
+            {!!cityList.length &&
+              cityList.map(({ id, name }) => (
+                <option value={id}>{name}</option>
+              ))}
+          </Select>
+        </FormControl>
+      </HStack>
+      <HStack spacing={3} mt={3}>
+        <FormControl id="address" isRequired>
+          <FormLabel>Endereço</FormLabel>
           <Input
-            type="date"
-            name="fundationDate"
-            value={form?.fundationDate || ""}
+            id="address"
+            name="address"
+            group="captation"
+            value={formData?.captation?.address || ""}
             onChange={handleChange}
           />
         </FormControl>
-        <FormControl id="site">
-          <FormLabel>Site</FormLabel>
-          <InputGroup>
-            <InputLeftAddon children="https://" />
-            <Input
-              type="text"
-              name="site"
-              value={form?.site || ""}
-              onChange={handleChange}
-            />
-          </InputGroup>
-        </FormControl>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 0, md: 2 }} spacing={3} mb={4} isRequired>
-        <FormControl id="invoicing">
-          <FormLabel>Faturamento no último exercício</FormLabel>
-          <Select
-            name="invoicing"
-            onChange={handleChange}
-            value={form?.invoicing || ""}
-            placeholder="Selecione um faturamento"
-          >
-            <option value="Nunca faturei">Nunca faturei</option>
-            <option value="1 a 10 Milhões">1 a 10 Milhões</option>
-            <option value="10 a 50 Milhões">10 a 50 Milhões</option>
-            <option value="50 a 100 Milhões">50 a 100 Milhões</option>
-            <option value="100 a 200 Milhões">100 a 200 Milhões</option>
-          </Select>
-        </FormControl>
-        <FormControl id="net-worth" isRequired>
-          <FormLabel>Patrimônio Líquido</FormLabel>
-          <Select
-            name="patrimony"
-            onChange={handleChange}
-            value={form?.patrimony || ""}
-            placeholder="Selecione o patrimônio"
-          >
-            <option value="Nunca faturei">Nunca faturei</option>
-            <option value="1 a 10 Milhões">1 a 10 Milhões</option>
-            <option value="10 a 50 Milhões">10 a 50 Milhões</option>
-            <option value="50 a 100 Milhões">50 a 100 Milhões</option>
-            <option value="100 a 200 Milhões">100 a 200 Milhões</option>
-          </Select>
-        </FormControl>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 0, md: 2 }} spacing={3}>
-        <FormControl id="invoicing">
-          <FormLabel>LinkedIn do representante</FormLabel>
+        <FormControl id="number" isRequired>
+          <FormLabel>Número</FormLabel>
           <Input
-            type="text"
-            name="linkedin"
-            value={form?.linkedin || ""}
+            type="number"
+            id="number"
+            name="number"
+            group="captation"
+            value={formData?.captation?.number || ""}
             onChange={handleChange}
           />
         </FormControl>
-        <FormControl id="net-worth">
-          <FormLabel>Tempo de carreira do representante</FormLabel>
-          <Select
-            name="careerTime"
+        <FormControl id="district" isRequired>
+          <FormLabel>Bairro</FormLabel>
+          <Input
+            id="district"
+            name="district"
+            group="captation"
+            value={formData?.captation?.district || ""}
             onChange={handleChange}
-            value={form?.careerTime || ""}
-            placeholder="Selecione o tempo de carreira"
-          >
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
+          />
         </FormControl>
-      </SimpleGrid>
-    </form>
+      </HStack>
+      <HStack spacing={3} mt={3}>
+        <FormControl id="complement">
+          <FormLabel>Complemento</FormLabel>
+          <Input
+            id="complement"
+            name="complement"
+            group="captation"
+            value={formData?.captation?.complement || ""}
+            onChange={handleChange}
+          />
+        </FormControl>
+      </HStack>
+    </>
   );
 }
