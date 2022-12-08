@@ -11,6 +11,8 @@ import "rc-steps/assets/index.css";
 import "@fontsource/open-sans";
 import LoadingScreen from "../components/LoadingScreen";
 import AccountConfirmation from "../components/AccountConfirmation";
+import { useEffect } from "react";
+import { getPathname } from "../helpers/browser";
 
 const queryClient = new QueryClient({
   defaultOptions: {

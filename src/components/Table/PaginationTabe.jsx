@@ -12,64 +12,97 @@ import {
   Select,
   Flex,
   Text,
+  useQuery,
+  Box,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Pagination, usePagination } from "@ajna/pagination";
 
 import PaginationT from "./components/Pagination";
+import { useMutation } from "react-query";
+import useAxiosValidate from "../../helpers/errors/axios";
+import { useDispatch } from "react-redux";
+import { handleLoading } from "../../redux/general/generalSlice";
+import { keys } from "lodash";
+import { formatCurrency } from "../../helpers/format";
 
-const PaginationTable = ({ fetchPokemons }) => {
-  const [total, setTotal] = useState();
-  const [pokemons, setPokemons] = useState([]);
+import { FiEdit, FiEye } from "react-icons/fi";
 
-  const outerLimit = 2;
-  const innerLimit = 2;
+export default function PaginationTable({ fetchData, rows }) {
+  const dispatch = useDispatch();
+  // const [total, setTotal] = useState();
+  const [data, setData] = useState([]);
+  const { axiosErrorValidate } = useAxiosValidate();
 
-  const {
-    pages,
-    pagesCount,
-    offset,
-    currentPage,
-    setCurrentPage,
-    setIsDisabled,
-    isDisabled,
-    pageSize,
-    setPageSize,
-  } = usePagination({
-    total: total,
-    limits: {
-      outer: outerLimit,
-      inner: innerLimit,
-    },
-    initialState: {
-      pageSize: 10,
-      currentPage: 1,
-    },
-  });
+  // const outerLimit = 2;
+  // const innerLimit = 2;
 
-  // effects
+  // const {
+  //   pages,
+  //   pagesCount,
+  //   offset,
+  //   currentPage,
+  //   setCurrentPage,
+  //   setIsDisabled,
+  //   isDisabled,
+  //   pageSize,
+  //   setPageSize,
+  // } = usePagination({
+  //   total: total,
+  //   limits: {
+  //     outer: outerLimit,
+  //     inner: innerLimit,
+  //   },
+  //   initialState: {
+  //     pageSize: 10,
+  //     currentPage: 1,
+  //   },
+  // });
+
+  const { mutate: getData, isLoading: isLoadingGetData } = useMutation(
+    async (data) => fetchData(data),
+    {
+      onSuccess: (data) => {
+        console.log("data", data);
+        setData(data);
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+    }
+  );
+
+  // const handlePageChange = (nextPage) => {
+  //   setCurrentPage(nextPage);
+  //   console.log("request new data with ->", nextPage);
+  // };
+
+  // const handlePageSizeChange = (event) => {
+  //   const pageSize = Number(event.target.value);
+
+  //   setPageSize(pageSize);
+  // };
+
+  const renderValue = (d, r) => {
+    const value = d[r.key];
+    if (r.brlCurrency) {
+      const floatValue = parseFloat(value);
+      return formatCurrency(floatValue);
+    }
+    return value;
+  };
+
   useEffect(() => {
-    fetchPokemons(pageSize, offset).then((pokemons) => {
-      setTotal(pokemons.count);
-      setPokemons(pokemons.results);
-    });
-  }, [currentPage, pageSize, offset]);
+    if (fetchData) getData();
+  }, [fetchData]);
 
-  // handlers
-  const handlePageChange = (nextPage) => {
-    // -> request new data using the page number
-    setCurrentPage(nextPage);
-    console.log("request new data with ->", nextPage);
-  };
-
-  const handlePageSizeChange = (event) => {
-    const pageSize = Number(event.target.value);
-
-    setPageSize(pageSize);
-  };
+  useEffect(() => {
+    dispatch(handleLoading(isLoadingGetData));
+  }, [isLoadingGetData]);
 
   return (
     <>
-      <Flex>
+      {/* <Flex>
         <Select size="sm" onChange={() => {}} w={20} mb={3}>
           <option value="10">10</option>
           <option value="25">25</option>
@@ -78,60 +111,72 @@ const PaginationTable = ({ fetchPokemons }) => {
         <Text mt={0.5} ml={2}>
           resultados por página
         </Text>
-      </Flex>
+      </Flex> */}
       <TableContainer>
         <Table variant="striped" colorScheme="gray">
-          {/* <TableCaption>Nenhum registro encontrado</TableCaption> */}
+          {!data.length && (
+            <TableCaption>Nenhum registro encontrado</TableCaption>
+          )}
 
           <Thead>
             <Tr>
-              <Th>Operação</Th>
-              <Th>Modalidade</Th>
-              <Th>Segmento</Th>
-              <Th>Valor</Th>
-              <Th>Status</Th>
-              <Th>Últimas atualizações</Th>
-              <Th>Ações</Th>
+              {rows.map(({ key, label }) => (
+                <Th key={key}>{label}</Th>
+              ))}
             </Tr>
           </Thead>
+          <Tbody></Tbody>
           <Tbody>
-            <Tr>
-              <Td textAlign="center"></Td>
-              <Td textAlign="center"></Td>
-              <Td textAlign="center"></Td>
-              <Td textAlign="center">Nenhum registro encontrado</Td>
-              <Td textAlign="center"></Td>
-              <Td textAlign="center"></Td>
-              <Td textAlign="center"></Td>
-            </Tr>
+            {!!data.length &&
+              data.map((d) => (
+                <Tr>
+                  <>
+                    {rows.map((r) => (
+                      <>
+                        {r.key !== "actions" ? (
+                          <Td>{renderValue(d, r)}</Td>
+                        ) : (
+                          <Td>
+                            <Flex>
+                              {r.edit && (
+                                <Tooltip label="Editar">
+                                  <Box
+                                    px={2}
+                                    cursor="pointer"
+                                    onClick={() => {}}
+                                  >
+                                    <FiEdit fontSize={20} />
+                                  </Box>
+                                </Tooltip>
+                              )}
+                              {r.details && (
+                                <Tooltip label="Detalhes">
+                                  <Box
+                                    px={2}
+                                    cursor="pointer"
+                                    onClick={() => {}}
+                                  >
+                                    <FiEye fontSize={20} />
+                                  </Box>
+                                </Tooltip>
+                              )}
+                            </Flex>
+                          </Td>
+                        )}
+                      </>
+                    ))}
+                  </>
+                </Tr>
+              ))}
           </Tbody>
-          {/* <Tbody>
-                <Tr>
-                  <Td>inches</Td>
-                  <Td>millimetres (mm)</Td>
-                  <Td isNumeric>25.4</Td>
-                </Tr>
-                <Tr>
-                  <Td>feet</Td>
-                  <Td>centimetres (cm)</Td>
-                  <Td isNumeric>30.48</Td>
-                </Tr>
-                <Tr>
-                  <Td>yards</Td>
-                  <Td>metres (m)</Td>
-                  <Td isNumeric>0.91444</Td>
-                </Tr>
-              </Tbody> */}
         </Table>
-        <PaginationT
+        {/* <PaginationT
           pagesCount={pagesCount}
           currentPage={currentPage}
           handlePageChange={handlePageChange}
           pages={pages}
-        />
+        /> */}
       </TableContainer>
     </>
   );
-};
-
-export default PaginationTable;
+}

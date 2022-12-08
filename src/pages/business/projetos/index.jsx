@@ -13,6 +13,7 @@ import AnalyzeProjects from "./analise";
 import ContractedProjects from "./contratados";
 
 import Layout from "../layout";
+import { useEffect } from "react";
 
 export default function Projects() {
   return (

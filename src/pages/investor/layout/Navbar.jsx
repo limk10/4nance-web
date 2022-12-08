@@ -18,6 +18,7 @@ import {
   MenuDivider,
   VStack,
   Divider,
+  WrapItem,
 } from "@chakra-ui/react";
 
 import {
@@ -30,13 +31,17 @@ import {
   FiBarChart,
   FiDollarSign,
   FiUsers,
+  FiUser,
+  FiLogOut,
 } from "react-icons/fi";
 
 import { navigateTo } from "../../../helpers/routes";
 import Button from "../../../components/Button";
+import useAuth from "../../../helpers/auth";
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [user, logout] = useAuth();
 
   // const Links = ["Dashboard", "Meus investimetnos", "Proventos", "Extratos"];
 
@@ -133,31 +138,40 @@ function Navbar() {
                 _focus={{ boxShadow: "none" }}
               >
                 <HStack>
-                  <Avatar
-                    size={"sm"}
-                    src={
-                      "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                    }
-                  />
+                  <WrapItem>
+                    <Avatar size={"sm"} name={user?.user} />
+                  </WrapItem>
                   <VStack
                     display={{ base: "none", md: "flex" }}
                     alignItems="flex-start"
                     spacing="1px"
                     ml="2"
                   >
-                    <Text fontSize="sm" fontWeight="600">
-                      Alysson Tavares
+                    <Text fontSize="sm">{user?.user}</Text>
+                    <Text fontSize="xs" color="gray.600">
+                      Investidor
                     </Text>
                   </VStack>
                   <Box pl={2} display={{ base: "none", md: "flex" }}>
-                    <FiChevronDown color="rgba(0, 0, 0, 0.48)" />
+                    <FiChevronDown />
                   </Box>
                 </HStack>
               </MenuButton>
-              <MenuList>
-                <MenuItem>Perfil</MenuItem>
+              <MenuList
+                bg={useColorModeValue("white", "gray.900")}
+                borderColor={useColorModeValue("gray.200", "gray.700")}
+              >
+                <MenuItem
+                  onClick={() => navigateTo("/business/usuario/perfil")}
+                >
+                  <FiUser />
+                  <Text ml={2}>Perfil</Text>
+                </MenuItem>
                 <MenuDivider />
-                <MenuItem>Deslogar</MenuItem>
+                <MenuItem onClick={logout}>
+                  <FiLogOut />
+                  <Text ml={2}>Deslogar</Text>
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>

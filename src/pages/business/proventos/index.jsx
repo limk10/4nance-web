@@ -11,16 +11,10 @@ import {
 
 import Layout from "../layout";
 
-import PaginationTable from "../../../components/Table/PaginationTabe";
 import InfoCard from "../../../components/InfoCard";
 
 import { FiDollarSign, FiDivideSquare } from "react-icons/fi";
 
-const fetchPokemons = async (pageSize, offset) => {
-  return await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=${pageSize}&offset=${offset}`
-  ).then(async (res) => await res.json());
-};
 export default function Earnings({}) {
   return (
     <Box>
@@ -50,7 +44,7 @@ export default function Earnings({}) {
         </Flex>
         <Divider mt={5} mb={8} />
 
-        <PaginationTable fetchPokemons={fetchPokemons} />
+        {/* <PaginationTable fetchPokemons={fetchPokemons} /> */}
       </Box>
     </Box>
   );

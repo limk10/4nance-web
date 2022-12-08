@@ -23,11 +23,19 @@ import { handleAccountConfirmation } from "../../../redux/general/generalSlice";
 import useToast from "../../../helpers/toast";
 import useFormHelper from "../../../helpers/form";
 import { setFormData } from "../../../redux/form/formSlice";
+import { isAuthenticated } from "../../../helpers/localStorage";
+import { navigateTo } from "../../../helpers/routes";
 
 const Singin = () => {
   const dispatch = useDispatch();
   const { handleToast } = useToast();
   const { handleChange, formData } = useFormHelper();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigateTo("/business/home");
+    }
+  }, []);
 
   // Simulação de uma request POST com axios
   const { mutate: mutateSignin, isLoading } = useMutation(
@@ -154,21 +162,6 @@ const Singin = () => {
                   text="Entrar"
                 />
               </Flex>
-              {/* <GoogleLogin
-                clientId="876501571825-2d8ijl96jtjto6lv4ns0ab7hfpvemu7m.apps.googleusercontent.com"
-                buttonText="Entrar com o Google"
-                render={(renderProps) => (
-                  <Button
-                    onClick={renderProps.onClick}
-                    mt={0}
-                    leftIcon={<FcGoogle />}
-                  >
-                    Login com Google
-                  </Button>
-                )}
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-              /> */}
               <Center spacing={6}>
                 <Text>
                   Ainda não possui conta?{" "}

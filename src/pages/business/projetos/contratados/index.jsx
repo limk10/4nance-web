@@ -4,13 +4,45 @@ import PaginationTable from "../../../../components/Table/PaginationTabe";
 
 import Router from "next/router";
 
-const fetchPokemons = async (pageSize, offset) => {
-  return await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=${pageSize}&offset=${offset}`
-  ).then(async (res) => await res.json());
-};
+import { getEnabledOperation } from "../../../../services/api/operation";
 
 export default function ContractedProjects({}) {
+  const rows = [
+    {
+      key: "name_investment",
+      label: "Investimento",
+    },
+    {
+      key: "profitability",
+      label: "Rentabilidade",
+    },
+    {
+      key: "min_capture",
+      label: "Captura Min.",
+      brlCurrency: true,
+    },
+    {
+      key: "max_capture",
+      label: "Captura Máx.",
+      brlCurrency: true,
+    },
+    {
+      key: "time_investment",
+      label: "Temp. de Invest. (Meses)",
+    },
+    {
+      key: "minimum_value",
+      label: "Invest. Mínimo",
+      brlCurrency: true,
+    },
+    {
+      key: "actions",
+      label: "Açoes",
+      edit: true,
+      details: true,
+    },
+  ];
+
   return (
     <Box borderRadius={"md"} bg="#fff" p={4}>
       <Flex
@@ -28,7 +60,7 @@ export default function ContractedProjects({}) {
       </Flex>
       <Divider mt={5} mb={8} />
 
-      <PaginationTable fetchPokemons={fetchPokemons} />
+      <PaginationTable fetchData={getEnabledOperation} rows={rows} />
     </Box>
   );
 }

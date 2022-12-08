@@ -21,6 +21,7 @@ import {
   accountConfirmation,
   businessAccountConfirmation,
   businessSignin,
+  investorSignin,
 } from "../../services/api/auth";
 import { useMutation } from "react-query";
 import Router from "next/router";
@@ -33,6 +34,7 @@ import {
 import useToast from "../../helpers/toast";
 import useFormHelper from "../../helpers/form";
 import useAxiosValidate from "../../helpers/errors/axios";
+import { getPathname } from "../../helpers/browser";
 
 function AccountConfirmation() {
   const dispatch = useDispatch();
@@ -43,10 +45,14 @@ function AccountConfirmation() {
   const { modalAccountConfirm } = useSelector(useGeneral);
 
   const { mutate: mutateSignin, isLoading: isLoadingSignin } = useMutation(
-    (data) => businessSignin(data),
+    (data) => {
+      if (getPathname().includes("business")) businessSignin(data);
+      else investorSignin(data);
+    },
     {
       onSuccess: () => {
-        Router.push("/business/home");
+        if (getPathname().includes("business")) Router.push("/business/home");
+        else Router.push("/home");
       },
       onError: (error) => {
         handleToast(

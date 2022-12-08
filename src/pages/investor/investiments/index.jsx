@@ -13,51 +13,33 @@ import Layout from "../layout";
 
 import Button from "../../../components/Button";
 import { navigateTo } from "../../../helpers/routes";
+import useAxiosValidate from "../../../helpers/errors/axios";
+import { getInvestorOperation } from "../../../services/api/operation";
+import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { handleLoading } from "../../../redux/general/generalSlice";
 
 export default function Investiment({}) {
-  const propertyList = [
+  const dispatch = useDispatch();
+  const [data, setData] = useState([]);
+  const { axiosErrorValidate } = useAxiosValidate();
+
+  const { isLoading } = useQuery(
+    ["investorOperationList"],
+    getInvestorOperation,
     {
-      imageUrl:
-        "https://bloxs.com.br/api/filesystem/1.0/public/project/files/92/banner/banner-moss-creditos-de-carbono.jpg",
-      imageAlt: "Rear view of modern home with pool",
-      modality: "Equity",
-      category: "Comercial",
-      title: "4Nance - Energia Solar LTDA",
-      formattedPrice: "R$10.000",
-      participation: "	0.0032%",
-      captedTotal: "R$3.000.000",
-    },
-    {
-      imageUrl:
-        "https://bloxs.com.br/api/filesystem/1.0/public/project/files/92/banner/banner-moss-creditos-de-carbono.jpg",
-      imageAlt: "Rear view of modern home with pool",
-      modality: "Equity",
-      category: "Comercial",
-      title: "4Nance - Energia Solar LTDA",
-      formattedPrice: "R$10.000",
-      participation: "	0.0032%",
-    },
-    {
-      imageUrl:
-        "https://bloxs.com.br/api/filesystem/1.0/public/project/files/92/banner/banner-moss-creditos-de-carbono.jpg",
-      imageAlt: "Rear view of modern home with pool",
-      modality: "Equity",
-      category: "Comercial",
-      title: "4Nance - Energia Solar LTDA",
-      formattedPrice: "R$10.000",
-      participation: "	0.0032%",
-    },
-    {
-      imageUrl:
-        "https://bloxs.com.br/api/filesystem/1.0/public/project/files/92/banner/banner-moss-creditos-de-carbono.jpg",
-      imageAlt: "Rear view of modern home with pool",
-      modality: "Equity",
-      category: "Comercial",
-      title: "4Nance - Energia Solar LTDA",
-      formattedPrice: "R$10.000",
-      participation: "	0.0032%",
-    },
-  ];
+      onSuccess(data) {},
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+    }
+  );
+
+  useEffect(() => {
+    dispatch(handleLoading(isLoading));
+  }, [isLoading]);
+
   return (
     <>
       <Box mb={8}>
@@ -70,7 +52,7 @@ export default function Investiment({}) {
         </Text>
       </Box>
       <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing={3}>
-        {propertyList.map((property) => (
+        {data.map((property) => (
           <Box
             borderWidth="1px"
             borderRadius="lg"

@@ -62,7 +62,6 @@ export default function CaptureOperationForm() {
   });
 
   const handleOnValueChange = (group, name, value) => {
-    console.log(name, group, value);
     dispatch(
       handleFormData({
         group,
@@ -110,9 +109,6 @@ export default function CaptureOperationForm() {
             onValueChange={(value, _, values) =>
               handleOnValueChange("captation", "profitability", values.float)
             }
-            // maxLength={
-            //   formData?.captation?.profitability?.includes(",") ? 5 : 3
-            // }
           />
         </FormControl>
         <FormControl id="min-capture" isRequired>

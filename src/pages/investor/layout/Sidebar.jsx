@@ -40,7 +40,7 @@ const Sidebar = ({ onClose, ...rest }) => {
     },
     {
       name: "Investimentos",
-      path: "/investimentos/em-progresso",
+      path: "/investir",
       icon: FiBarChart,
       submenu: [],
     },
@@ -158,13 +158,15 @@ const Sidebar = ({ onClose, ...rest }) => {
             onClick={onClose}
           />
         </Flex>
-        {menu.map((link) => (
-          <NavItem key={link.name} icon={link.icon} {...link}>
-            {link.name}
-          </NavItem>
-        ))}
 
-        {!completePerfil ? (
+        <Box height="90vh" overflow="auto">
+          {menu.map((link) => (
+            <NavItem key={link.name} icon={link.icon} {...link}>
+              {link.name}
+            </NavItem>
+          ))}
+
+          {/* {!completePerfil ? (
           <Alert status="warning" mt={10} position="absolute" bottom={5}>
             <AlertIcon />
             <VStack>
@@ -221,7 +223,45 @@ const Sidebar = ({ onClose, ...rest }) => {
               fontWeight="600"
             />
           </Flex>
-        )}
+        )} */}
+          <Flex
+            px={3}
+            pt="50px"
+            flexDir="column"
+            position="relative"
+            marginTop="100%"
+            pb="10vh"
+          >
+            <Image
+              w="75%"
+              h="auto"
+              top="-150px"
+              pos="absolute"
+              ml={5}
+              src="https://firebasestorage.googleapis.com/v0/b/stcar-automotive.appspot.com/o/Piggy%20bank-amico.svg?alt=media&token=ec2daebd-ce5a-445a-874f-ec42861dcc1c"
+            />
+            <Text
+              textAlign="center"
+              mb={5}
+              color="blackAlpha.600"
+              fontSize="sm"
+            >
+              Escolha entre várias modalidades de investimentos, todos do mundo
+              real e 100% de confiança!
+            </Text>
+            <Button
+              onClick={() => {
+                onClose();
+                navigateTo("/investir");
+              }}
+              scheme="primary"
+              text="Quero investir"
+              w="100%"
+              h="5vh"
+              fontWeight="600"
+            />
+          </Flex>
+        </Box>
       </Box>
     </>
   );

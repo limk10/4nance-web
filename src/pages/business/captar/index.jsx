@@ -145,13 +145,6 @@ export default function CaptureProject({}) {
     await mutatePostEmployee(data);
   };
 
-  const formatCurrency = (data) => {
-    console.log("data", data);
-    const _data = data.replace("R$ ", "").replace(",", ".");
-    console.log("_data", _data), console.log(parseFloat(_data));
-    return data;
-  };
-
   const submitOperation = async () => {
     const { captation } = formData;
 

@@ -1,14 +1,6 @@
-import { useState } from "react";
-import { useMutation } from "react-query";
-import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
 import {
-  BsBarChart,
-  BsShieldLock,
-  BsCashCoin,
-  BsFilePlus,
-} from "react-icons/bs";
-import {
-  Button,
   Flex,
   FormControl,
   FormLabel,
@@ -16,72 +8,93 @@ import {
   Input,
   Link,
   Stack,
-  Image,
   Text,
   Center,
-  HStack,
   SimpleGrid,
 } from "@chakra-ui/react";
+import InputMask from "react-input-mask";
+import { useDispatch } from "react-redux";
 
 import Router from "next/router";
 
-import { addToLocalStorage } from "../../../helpers/localStorage";
-import { signupSchema, handleMessage } from "../../../helpers/validade";
-// import axios from "../../services/api";
+import { businessRegister, investorRegister } from "../../../services/api/auth";
+import Button from "../../../components/Button";
+
+import useToast from "../../../helpers/toast";
+import {
+  handleAccountConfirmation,
+  handleLoading,
+} from "../../../redux/general/generalSlice";
+import useFormHelper from "../../../helpers/form";
+import useAxiosValidate from "../../../helpers/errors/axios";
+import { setFormData } from "../../../redux/form/formSlice";
+import { handleMessage } from "../../../helpers/validade";
+import {
+  BsBarChart,
+  BsCashCoin,
+  BsFilePlus,
+  BsShieldLock,
+} from "react-icons/bs";
+import { isAuthenticated } from "../../../helpers/localStorage";
+import { navigateTo } from "../../../helpers/routes";
 
 const Signup = () => {
-  const [form, setForm] = useState({});
+  const dispatch = useDispatch();
+  const { handleToast } = useToast();
+  const { axiosErrorValidate } = useAxiosValidate();
+  const { handleChange, formData } = useFormHelper();
 
-  const handleChange = ({ target: { name, value } }) => {
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigateTo("/home");
+    }
+  }, []);
 
-  // Simulação de uma request POST com axios
-  const { isLoading, mutate: mutateRegister } = useMutation(
-    async () => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      return {
-        name: form?.name,
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-        refreshToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-      };
-    },
+  const { mutateAsync: mutateRegister, isLoading } = useMutation(
+    (data) => investorRegister(data),
     {
-      onSuccess: (res) => {
-        const { name, ...rest } = res;
-        addToLocalStorage(import.meta.env.VITE_REACT_APP_USER, { name });
-        addToLocalStorage(import.meta.env.VITE_REACT_APP_AUTH, rest);
-
-        Swal.fire({
-          title: `Olá, ${name}`,
-          html: "Seja bem vindo(a) <br/> Em instantes você será redirecionado ao seu painel!",
-          icon: "success",
-        });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+      onSuccess: () => {
+        handleToast(
+          "Seu cadastro foi efetuado com sucesso!",
+          "Um código de verificação foi enviado em seu e-mail, insira ele abaixo.",
+          "success",
+          9000
+        );
+        dispatch(handleAccountConfirmation(true));
       },
-      onError: (err) => {
-        console.log("err", err);
-      },
+      onError: (error) => axiosErrorValidate(error),
     }
   );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signupSchema.validate(form, { abortEarly: false });
-      mutateRegister();
-    } catch (err) {
-      if (err?.errors?.length) handleMessage(err?.errors);
+      dispatch(handleLoading(true));
+
+      const { signup } = formData;
+      const data = {
+        ...signup,
+        person_type: "Pessoa Fisica",
+        phone_2: null,
+        accept_terms: true,
+        roles: [
+          "49704f2e-cc35-41f7-af71-d766405f6b80",
+          "1937cea1-95e7-4f8e-b76b-eff6f7b06a36",
+        ],
+      };
+
+      await mutateRegister(data);
+    } catch (error) {
+    } finally {
+      dispatch(handleLoading(false));
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(setFormData({ group: "signup", values: {} }));
+    };
+  }, []);
 
   return (
     <>
@@ -158,90 +171,81 @@ const Signup = () => {
               <Text className="text-muted" color="gray.600">
                 Informe seus dados cadastrais abaixo
               </Text>
-              <FormControl id="email">
-                <FormLabel>E-mail *</FormLabel>
+              <FormControl id="name" isRequired>
+                <FormLabel>Nome Completo</FormLabel>
                 <Input
-                  type="email"
-                  name="email"
-                  value={form?.email}
+                  type="text"
+                  group="signup"
+                  name="name"
+                  value={formData?.signup?.name || ""}
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl id="name">
-                <FormLabel>Nome Completo *</FormLabel>
+              <FormControl id="document">
+                <FormLabel>Documento</FormLabel>
+                <InputMask
+                  mask="999.999.999-99"
+                  maskPlaceholder=""
+                  group="signup"
+                  name="document"
+                  value={formData?.signup?.document || ""}
+                  onChange={handleChange}
+                >
+                  <Input type="text" placeholder="___.___.___-__" />
+                </InputMask>
+              </FormControl>
+              <FormControl id="email" isRequired>
+                <FormLabel>E-mail</FormLabel>
                 <Input
-                  type="text"
-                  name="name"
-                  value={form?.name}
+                  type="email"
+                  group="signup"
+                  name="email"
+                  value={formData?.signup?.email || ""}
                   onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="phone">
                 <FormLabel>Telefone</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="(__) _ ____-____"
-                  name="phone_number"
-                  value={form?.phone_number}
+                <InputMask
+                  mask="(99) 9 9999-9999"
+                  maskPlaceholder=""
+                  group="signup"
+                  name="phone_1"
+                  value={formData?.signup?.phone_1 || ""}
                   onChange={handleChange}
-                />
+                >
+                  <Input type="text" placeholder="(__) _ ____-____" />
+                </InputMask>
               </FormControl>
-              <FormControl id="password">
-                <FormLabel>Senha *</FormLabel>
+              <FormControl id="password" isRequired>
+                <FormLabel>Senha</FormLabel>
                 <Input
                   type="password"
+                  group="signup"
                   name="password"
-                  value={form?.password}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl id="company-name">
-                <FormLabel>Nome da Empresa</FormLabel>
-                <Input
-                  type="text"
-                  name="company_name"
-                  value={form?.company_name}
+                  value={formData?.signup?.password || ""}
                   onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="cep">
                 <FormLabel>CEP </FormLabel>
-                <Input
-                  type="text"
-                  placeholder="_____-___"
+                <InputMask
+                  mask="99999-999"
+                  maskPlaceholder=""
+                  group="signup"
                   name="cep"
-                  value={form?.cep}
+                  value={formData?.signup?.cep || ""}
                   onChange={handleChange}
-                />
+                >
+                  <Input type="text" placeholder="_____-___" />
+                </InputMask>
               </FormControl>
-              <HStack>
-                <FormControl id="address">
-                  <FormLabel>Endereço</FormLabel>
-                  <Input
-                    type="text"
-                    name="address"
-                    value={form?.address}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl id="number">
-                  <FormLabel>Número</FormLabel>
-                  <Input
-                    type="text"
-                    name="number"
-                    value={form?.number}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </HStack>
               <Button
                 isLoading={isLoading}
                 loadingText="Um momento..."
                 type="submit"
-                colorScheme={"red"}
-              >
-                Cadastrar
-              </Button>
+                text="Cadastrar"
+              />
 
               <Center spacing={6}>
                 <Text>

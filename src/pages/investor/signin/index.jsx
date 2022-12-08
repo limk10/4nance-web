@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 // import { GoogleLogin } from "react-google-login";
 import { useMutation } from "react-query";
@@ -25,86 +25,83 @@ import Button from "../../../components/Button";
 
 import Router from "next/router";
 
-import { addToLocalStorage } from "../../../helpers/localStorage";
-import { signinSchema, handleMessage } from "../../../helpers/validade";
+import { handleMessage } from "../../../helpers/validade";
 
 import axios from "axios";
+import { investorSignin } from "../../../services/api/auth";
+import {
+  handleAccountConfirmation,
+  handleLoading,
+} from "../../../redux/general/generalSlice";
+import { useDispatch } from "react-redux";
+import { setFormData } from "../../../redux/form/formSlice";
+import useFormHelper from "../../../helpers/form";
+import useToast from "../../../helpers/toast";
+import { isAuthenticated } from "../../../helpers/localStorage";
+import { navigateTo } from "../../../helpers/routes";
 
 const Singin = () => {
-  const [form, setForm] = useState({});
+  const dispatch = useDispatch();
+  const { handleToast } = useToast();
+  const { handleChange, formData } = useFormHelper();
 
-  const handleChange = ({ target: { name, value } }) => {
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigateTo("/home");
+    }
+  }, []);
 
   // Simulação de uma request POST com axios
-  const { isLoading, mutate: mutateRegister } = useMutation(
-    async () => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      return {
-        name: "Matheus Lopes",
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-        refreshToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-      };
-    },
+  const { mutateAsync: mutateSignin } = useMutation(
+    (data) => investorSignin(data),
     {
-      onSuccess: (res) => {
-        const { name, ...rest } = res;
-        addToLocalStorage(import.meta.env.VITE_REACT_APP_USER, { name });
-        addToLocalStorage(import.meta.env.VITE_REACT_APP_AUTH, rest);
-
-        window.location.reload();
+      onSuccess: () => {
+        Router.push("/home");
       },
       onError: (err) => {
-        console.log("err", err);
+        const {
+          response: {
+            data: { error },
+          },
+        } = err;
+        console.log("error", error.includes("E-mail não verificado"));
+        if (error.includes("E-mail não verificado")) {
+          handleToast("Ops...", error, "error", 9000);
+          dispatch(handleAccountConfirmation(true));
+        } else {
+          handleToast(
+            "Ops...",
+            "E-mail ou senha estão incorretos.",
+            "error",
+            9000
+          );
+        }
       },
     }
   );
 
-  const username = "17b271f2-2c76-4240-a0d7-46f57e919ca3";
-  const password = "741d5db9-c596-41b4-8785-1d50367224c8";
-
-  function parseXmlToJson(xml) {
-    const json = {};
-    for (const res of xml.matchAll(
-      /(?:<(\w*)(?:\s[^>]*)*>)((?:(?!<\1).)*)(?:<\/\1>)|<(\w*)(?:\s*)*\/>/gm
-    )) {
-      const key = res[1] || res[3];
-      const value = res[2] && parseXmlToJson(res[2]);
-      json[key] = (value && Object.keys(value).length ? value : res[2]) || null;
-    }
-    return json;
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    return Router.push("/home");
     try {
-      await signinSchema.validate(form, { abortEarly: false });
-      mutateRegister();
+      dispatch(handleLoading(true));
+      const { signin } = formData;
+      const data = {
+        ...signin,
+      };
+
+      await mutateSignin(data);
     } catch (err) {
-      if (err?.errors?.length) handleMessage(err?.errors);
+      console.log("err --", err);
+    } finally {
+      dispatch(handleLoading(false));
     }
   };
 
-  // const responseGoogle = ({ profileObj, tokenObj }) => {
-  //   if (profileObj && tokenObj) {
-  //     addToLocalStorage(import.meta.env.VITE_REACT_APP_USER, {
-  //       name: profileObj.name,
-  //     });
-  //     addToLocalStorage(import.meta.env.VITE_REACT_APP_AUTH, {
-  //       token: tokenObj.access_token,
-  //       refreshToken: tokenObj.login_hint,
-  //     });
-
-  //     window.location.reload();
-  //   }
-  // };
+  useEffect(() => {
+    return () => {
+      dispatch(setFormData({ group: "signin", values: {} }));
+    };
+  }, []);
 
   return (
     <>
@@ -184,21 +181,23 @@ const Singin = () => {
               <Text className="text-muted" color="gray.600">
                 Entre com os dados inseridos durante o seu cadastro
               </Text>
-              <FormControl id="email">
-                <FormLabel>E-mail *</FormLabel>
+              <FormControl id="email" isRequired>
+                <FormLabel>E-mail</FormLabel>
                 <Input
                   type="email"
+                  group="signin"
                   name="email"
-                  value={form?.email}
+                  value={formData?.signin?.email || ""}
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl id="password">
-                <FormLabel>Senha *</FormLabel>
+              <FormControl id="password" isRequired>
+                <FormLabel>Senha</FormLabel>
                 <Input
                   type="password"
+                  group="signin"
                   name="password"
-                  value={form?.password}
+                  value={formData?.signin?.password || ""}
                   onChange={handleChange}
                 />
               </FormControl>
@@ -211,7 +210,6 @@ const Singin = () => {
                   Esqueceu sua senha?
                 </Link>
                 <Button
-                  isLoading={isLoading}
                   loadingText="Um momento..."
                   type="submit"
                   w={["100%", "30%"]}

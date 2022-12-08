@@ -10,16 +10,16 @@ export default function useAuth() {
   const [user, setUser] = useState({});
 
   const getUser = () => {
-    const tokenKey = getKeyToken();
-    const localAuth = getLocalStorage(tokenKey);
+    const key = getKeyToken();
+    const localAuth = getLocalStorage(key);
 
     const auth = JSON.parse(localAuth);
     setUser(auth);
   };
 
   const logout = () => {
-    const tokenKey = getKeyToken();
-    removeAuthLocalStorage(tokenKey);
+    const key = getKeyToken();
+    removeAuthLocalStorage(key);
     location.reload();
   };
 

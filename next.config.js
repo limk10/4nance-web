@@ -1,5 +1,5 @@
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   async rewrites() {
     return [
       // INVESTOR ROUTES
@@ -25,14 +25,6 @@ const nextConfig = {
       {
         source: "/investir",
         destination: "/investor/investiments",
-      },
-      {
-        source: "/investimentos/em-progresso",
-        destination: "/investor/investiments/progress",
-      },
-      {
-        source: "/investimentos/liquidados",
-        destination: "/investor/investiments/finished",
       },
       {
         source: "/investimentos/:id",

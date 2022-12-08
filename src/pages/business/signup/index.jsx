@@ -27,13 +27,20 @@ import {
 import useFormHelper from "../../../helpers/form";
 import useAxiosValidate from "../../../helpers/errors/axios";
 import { setFormData } from "../../../redux/form/formSlice";
-import { getPerson } from "../../../services/api/person";
+import { isAuthenticated } from "../../../helpers/localStorage";
+import { navigateTo } from "../../../helpers/routes";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const { handleToast } = useToast();
   const { axiosErrorValidate } = useAxiosValidate();
   const { handleChange, formData } = useFormHelper();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigateTo("/business/home");
+    }
+  }, []);
 
   const { mutate: mutateRegister, isLoading } = useMutation(
     (data) => businessRegister(data),
