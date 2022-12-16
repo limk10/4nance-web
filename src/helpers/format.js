@@ -1,5 +1,6 @@
 export const formatCurrency = (currency) => {
-  return currency.toLocaleString("pt-BR", {
+  const _currency = parseFloat(currency);
+  return _currency.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });

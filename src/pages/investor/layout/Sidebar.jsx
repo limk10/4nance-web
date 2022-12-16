@@ -235,7 +235,7 @@ const Sidebar = ({ onClose, ...rest }) => {
             <Image
               w="75%"
               h="auto"
-              top="-150px"
+              top="-140px"
               pos="absolute"
               ml={5}
               src="https://firebasestorage.googleapis.com/v0/b/stcar-automotive.appspot.com/o/Piggy%20bank-amico.svg?alt=media&token=ec2daebd-ce5a-445a-874f-ec42861dcc1c"

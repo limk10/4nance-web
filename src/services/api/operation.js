@@ -28,18 +28,20 @@ export const getAnalyzeOperation = async (data) => {
 
 export const getInvestorOperation = async () => {
   const { data: result } = await axios.get(`/projects/investor`);
-  console.log("result", result);
   return result;
 };
 
-export const getDocumentsInvestorOperation = async (data) => {
-  const { data: result } = await axios.get(`/post/files`, data);
-  console.log("result", result);
+export const getInvestorOperationById = async (id) => {
+  const { data: result } = await axios.get(`/projects/investor/${id}`);
   return result;
 };
 
-export const getTextsInvestorOperation = async (data) => {
-  const { data: result } = await axios.get(`/projects/posts`, data);
-  console.log("result", result);
+export const getDocumentsInvestorOperation = async (id) => {
+  const { data: result } = await axios.get(`/post/files/${id}`);
+  return result;
+};
+
+export const getTextsInvestorOperation = async (id) => {
+  const { data: result } = await axios.get(`/projects/posts/${id}`);
   return result;
 };
