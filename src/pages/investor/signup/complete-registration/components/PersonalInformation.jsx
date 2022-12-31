@@ -4,11 +4,7 @@ import {
   FormLabel,
   HStack,
   Input,
-  InputGroup,
-  InputLeftAddon,
   Select,
-  SimpleGrid,
-  VStack,
 } from "@chakra-ui/react";
 
 import InputMask from "react-input-mask";
@@ -156,7 +152,9 @@ function PersonalInformation() {
               onChange={handleChange}
             >
               {stateList.map(({ id, name }) => (
-                <option value={id}>{name}</option>
+                <option key={id} value={id}>
+                  {name}
+                </option>
               ))}
             </Select>
           </FormControl>
@@ -170,7 +168,9 @@ function PersonalInformation() {
               onChange={handleChange}
             >
               {cityList.map(({ id, name }) => (
-                <option value={id}>{name}</option>
+                <option key={id} value={id}>
+                  {name}
+                </option>
               ))}
             </Select>
           </FormControl>

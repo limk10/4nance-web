@@ -6,7 +6,7 @@ import Router from "next/router";
 
 import { getEnabledOperation } from "../../../../services/api/operation";
 
-export default function ContractedProjects({}) {
+export default function ContractedProjects() {
   const rows = [
     {
       key: "name_investment",
@@ -14,7 +14,7 @@ export default function ContractedProjects({}) {
     },
     {
       key: "profitability",
-      label: "Rentabilidade",
+      label: "Rentabilidade(% ano)",
     },
     {
       key: "min_capture",
@@ -35,12 +35,12 @@ export default function ContractedProjects({}) {
       label: "Invest. Mínimo",
       brlCurrency: true,
     },
-    {
-      key: "actions",
-      label: "Açoes",
-      edit: true,
-      details: true,
-    },
+    // {
+    //   key: "actions",
+    //   label: "Açoes",
+    //   edit: true,
+    //   details: true,
+    // },
   ];
 
   return (

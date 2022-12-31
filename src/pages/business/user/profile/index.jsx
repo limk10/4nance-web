@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { Center, GridItem, Grid, Box } from "@chakra-ui/react";
+import { Center, GridItem, Grid } from "@chakra-ui/react";
 
 import Layout from "../../layout";
 
-export default function UserPerfil({}) {
+export default function UserPerfil() {
   return (
     <Center>
       <Grid

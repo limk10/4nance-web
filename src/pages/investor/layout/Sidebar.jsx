@@ -1,37 +1,21 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
 import {
   Box,
   CloseButton,
   Flex,
   Icon,
-  useColorModeValue,
   Link,
   Text,
   Image,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  VStack,
 } from "@chakra-ui/react";
-import { useRouter, Router } from "next/router";
+import { useRouter } from "next/router";
 
-import {
-  FiPieChart,
-  FiHome,
-  FiBarChart,
-  FiDollarSign,
-  FiUsers,
-} from "react-icons/fi";
+import { FiPieChart, FiBarChart, FiDollarSign, FiUsers } from "react-icons/fi";
 import Button from "../../../components/Button";
 
 const Sidebar = ({ onClose, ...rest }) => {
   const router = useRouter();
-  const [completePerfil, setCompletePerfil] = useState(true);
 
-  const [menu, setMenu] = useState([
+  const menu = [
     {
       name: "Dashboard",
       path: "/dashboard",
@@ -56,10 +40,10 @@ const Sidebar = ({ onClose, ...rest }) => {
       icon: FiUsers,
       submenu: [],
     },
-  ]);
+  ];
 
   const isMenuAcvite = (path) => {
-    return menu.find((data) => router.asPath.includes(path));
+    return menu.find(() => router.asPath.includes(path));
   };
 
   const navigateTo = (route) => {

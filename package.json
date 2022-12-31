@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "npx vercel deploy && npx vercel --prod"
+    "deploy": "npx vercel deploy && npx vercel --prod",
+    "lint": "eslint --fix ./ --ext js,jsx,ts,tsx"
   },
   "dependencies": {
     "@ajna/pagination": "^1.4.17",
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "eslint": "8.14.0",
-    "eslint-config-next": "12.1.6"
+    "eslint-config-next": "12.1.6",
+    "eslint-plugin-react": "^7.31.11"
   }
 }

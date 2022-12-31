@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-// import { GoogleLogin } from "react-google-login";
+import { useEffect } from "react";
 import { useMutation } from "react-query";
 import {
   BsBarChart,
@@ -16,7 +14,6 @@ import {
   Input,
   Link,
   Stack,
-  Image,
   Text,
   Center,
   SimpleGrid,
@@ -25,9 +22,6 @@ import Button from "../../../components/Button";
 
 import Router from "next/router";
 
-import { handleMessage } from "../../../helpers/validade";
-
-import axios from "axios";
 import { investorSignin } from "../../../services/api/auth";
 import {
   handleAccountConfirmation,

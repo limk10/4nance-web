@@ -16,13 +16,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 
-import {
-  FiMenu,
-  FiChevronDown,
-  FiUser,
-  FiLogOut,
-  FiBell,
-} from "react-icons/fi";
+import { FiMenu, FiChevronDown, FiUser, FiLogOut } from "react-icons/fi";
 import useAuth from "../../../helpers/auth";
 import { navigateTo } from "../../../helpers/routes";
 

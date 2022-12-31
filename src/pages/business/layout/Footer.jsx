@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Stack,
-  Text,
-  useColorModeValue,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Text, useColorModeValue, Flex } from "@chakra-ui/react";
 
 export default function Footer() {
   return (

@@ -1,6 +1,4 @@
-import { useState } from "react";
 import {
-  Center,
   GridItem,
   Grid,
   Box,
@@ -25,7 +23,7 @@ import useAuth from "../../../helpers/auth";
 export default function Home() {
   const [user] = useAuth();
 
-  const [flow, setFlow] = useState([
+  const flow = [
     {
       title: "1. Submissão",
       description:
@@ -50,7 +48,7 @@ export default function Home() {
         "Se a operação for aprovada, é firmado um Contrato de Intermediação.",
       icon: VscEmptyWindow,
     },
-  ]);
+  ];
 
   return (
     <Grid

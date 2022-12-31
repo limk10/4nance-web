@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 
@@ -10,7 +10,6 @@ import Button from "../../../../components/Button";
 import Container from "../../../../components/Card";
 
 import PersonalInformation from "./components/PersonalInformation";
-import InvestorInformation from "./components/InvestorInformation";
 import Confirmation from "./components/Confirmation";
 import useFormHelper from "../../../../helpers/form";
 import { getPerson, postPerson } from "../../../../services/api/person";

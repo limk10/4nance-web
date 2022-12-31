@@ -1,6 +1,3 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
 import {
   Box,
   CloseButton,
@@ -9,13 +6,9 @@ import {
   useColorModeValue,
   Link,
   Text,
-  Alert,
-  AlertIcon,
-  VStack,
-  AlertDescription,
   Image,
 } from "@chakra-ui/react";
-import { useRouter, Router } from "next/router";
+import { useRouter } from "next/router";
 
 import Button from "../../../components/Button";
 
@@ -29,9 +22,8 @@ import {
 
 const Sidebar = ({ onClose, ...rest }) => {
   const router = useRouter();
-  const completePerfil = false;
 
-  const [menu, setMenu] = useState([
+  const menu = [
     {
       name: "Dashboard",
       path: "/business/dashboard",
@@ -56,10 +48,10 @@ const Sidebar = ({ onClose, ...rest }) => {
       icon: FiUsers,
       submenu: [],
     },
-  ]);
+  ];
 
   const isMenuAcvite = (path) => {
-    return menu.find((data) => router.pathname.includes(path));
+    return menu.find(() => router.pathname.includes(path));
   };
 
   const navigateTo = (route) => {

@@ -2,7 +2,6 @@ import {
   Badge,
   Box,
   Divider,
-  HStack,
   Image,
   SimpleGrid,
   Text,
@@ -15,13 +14,13 @@ import Button from "../../../components/Button";
 import { navigateTo } from "../../../helpers/routes";
 import useAxiosValidate from "../../../helpers/errors/axios";
 import { getInvestorOperation } from "../../../services/api/operation";
-import { useMutation, useQuery } from "react-query";
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { handleLoading } from "../../../redux/general/generalSlice";
 import { formatCurrency } from "../../../helpers/format";
 
-export default function Investiment({}) {
+export default function Investiment() {
   const dispatch = useDispatch();
   const { axiosErrorValidate } = useAxiosValidate();
 
@@ -59,6 +58,7 @@ export default function Investiment({}) {
         {data?.length &&
           data.map((property) => (
             <Box
+              key={property.id}
               borderWidth="1px"
               borderRadius="lg"
               boxShadow="md"

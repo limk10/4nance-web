@@ -4,9 +4,6 @@ import {
   Input,
   SimpleGrid,
   Select,
-  InputGroup,
-  InputLeftAddon,
-  GridItem,
   HStack,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -153,7 +150,9 @@ export default function CaptureEmployeeForm() {
           >
             {!!stateList.length &&
               stateList.map(({ id, name }) => (
-                <option value={id}>{name}</option>
+                <option key={id} value={id}>
+                  {name}
+                </option>
               ))}
           </Select>
         </FormControl>
@@ -168,7 +167,9 @@ export default function CaptureEmployeeForm() {
           >
             {!!cityList.length &&
               cityList.map(({ id, name }) => (
-                <option value={id}>{name}</option>
+                <option key={id} value={id}>
+                  {name}
+                </option>
               ))}
           </Select>
         </FormControl>

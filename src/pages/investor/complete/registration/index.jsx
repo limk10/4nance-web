@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 
@@ -10,7 +9,6 @@ import Button from "../../../../components/Button";
 import Container from "../../../../components/Card";
 
 import PersonalInformation from "./components/PersonalInformation";
-import InvestorInformation from "./components/InvestorInformation";
 import Confirmation from "./components/Confirmation";
 
 const steps = [
@@ -20,8 +18,7 @@ const steps = [
 ];
 
 export default function CompleteRegistration() {
-  const [form, setForm] = useState({});
-  const { nextStep, prevStep, setStep, reset, activeStep } = useSteps({
+  const { nextStep, prevStep, activeStep } = useSteps({
     initialStep: 0,
   });
 

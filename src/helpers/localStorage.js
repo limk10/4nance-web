@@ -20,7 +20,7 @@ export const isAuthenticated = () => {
 };
 
 export const setAuthLocalStorage = async (key, auth) => {
-  const { infProfile, ...restAuth } = auth;
+  const { ...restAuth } = auth;
   addToLocalStorage(key, restAuth);
 };
 

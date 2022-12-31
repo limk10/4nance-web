@@ -3,24 +3,16 @@ import {
   FormLabel,
   Input,
   SimpleGrid,
-  Select,
-  InputGroup,
-  InputLeftAddon,
   Textarea,
   RadioGroup,
   Radio,
   HStack,
-  FormHelperText,
-  Text,
   Link,
   Checkbox,
-  CheckboxGroup,
   Flex,
-  InputRightAddon,
 } from "@chakra-ui/react";
 import CurrencyInput from "react-currency-input-field";
 
-import InputMask from "react-input-mask";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosValidate from "../../../../../helpers/errors/axios";
@@ -180,6 +172,7 @@ export default function CaptureOperationForm() {
               {!!modalityList.length &&
                 modalityList.map((modality) => (
                   <Radio
+                    key={modality.id}
                     value={modality.id}
                     name="modality"
                     group="captation"
@@ -201,6 +194,7 @@ export default function CaptureOperationForm() {
               {!!categoryList.length &&
                 categoryList.map((category) => (
                   <Radio
+                    key={category.id}
                     value={category.id}
                     name="category"
                     group="captation"

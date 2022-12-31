@@ -1,19 +1,9 @@
-import {
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  Center,
-  SimpleGrid,
-  Box,
-} from "@chakra-ui/react";
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Box } from "@chakra-ui/react";
 
 import AnalyzeProjects from "./analise";
 import ContractedProjects from "./contratados";
 
 import Layout from "../layout";
-import { useEffect } from "react";
 
 export default function Projects() {
   return (

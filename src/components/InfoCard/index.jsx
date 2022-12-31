@@ -1,7 +1,6 @@
 import {
   Stack,
   Flex,
-  Text,
   Box,
   Stat,
   StatLabel,

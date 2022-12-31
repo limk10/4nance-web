@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import {
   Box,
   FormControl,
@@ -7,8 +8,6 @@ import {
   InputGroup,
   InputLeftAddon,
   Select,
-  SimpleGrid,
-  VStack,
 } from "@chakra-ui/react";
 
 function PersonalInformation() {

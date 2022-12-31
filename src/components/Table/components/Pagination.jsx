@@ -1,14 +1,12 @@
 import { Center, Flex, Text } from "@chakra-ui/react";
 import {
   Pagination,
-  PaginationPage,
   PaginationNext,
   PaginationPrevious,
-  PaginationPageGroup,
   PaginationContainer,
 } from "@ajna/pagination";
 
-const PaginationT = ({ pagesCount, currentPage, handlePageChange, pages }) => {
+const PaginationT = ({ pagesCount, currentPage, handlePageChange }) => {
   return (
     <Center>
       <Flex

@@ -1,11 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
-import { useState } from "react";
 
 import Layout from "../layout";
 import Button from "../../../components/Button";
 import Container from "../../../components/Card";
-import { navigateTo } from "../../../helpers/routes";
 
 import InvestmentValue from "./components/InvestmentValue";
 import PersonalInformation from "./components/PersonalInformation";
@@ -20,18 +18,10 @@ const steps = [
   { label: "Informações finais", children: <Conclusion /> },
 ];
 
-export default function Invest({}) {
-  const [form, setForm] = useState({});
-  const { nextStep, prevStep, setStep, reset, activeStep } = useSteps({
+export default function Invest() {
+  const { nextStep, prevStep, activeStep } = useSteps({
     initialStep: 0,
   });
-
-  const handleChange = ({ target: { name, value } }) => {
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
 
   return (
     <>

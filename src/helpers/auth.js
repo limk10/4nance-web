@@ -1,4 +1,3 @@
-import { useToast as useChakraToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
   getKeyToken,

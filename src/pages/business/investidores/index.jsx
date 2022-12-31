@@ -1,20 +1,11 @@
-import {
-  Center,
-  Box,
-  Grid,
-  GridItem,
-  Flex,
-  Text,
-  Divider,
-} from "@chakra-ui/react";
+import { Box, Grid, GridItem, Flex, Text, Divider } from "@chakra-ui/react";
 
 import Layout from "../layout";
 
-import PaginationTable from "../../../components/Table/PaginationTabe";
 import InfoCard from "../../../components/InfoCard";
 import { FiDivideSquare, FiDollarSign } from "react-icons/fi";
 
-export default function Investors({}) {
+export default function Investors() {
   return (
     <Box>
       <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>

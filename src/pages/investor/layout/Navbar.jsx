@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Box,
@@ -17,7 +17,6 @@ import {
   MenuItem,
   MenuDivider,
   VStack,
-  Divider,
   WrapItem,
 } from "@chakra-ui/react";
 
@@ -45,7 +44,7 @@ function Navbar() {
 
   // const Links = ["Dashboard", "Meus investimetnos", "Proventos", "Extratos"];
 
-  const [menu, setMenu] = useState([
+  const menu = [
     {
       name: "Dashboard",
       path: "/dashboard",
@@ -70,7 +69,7 @@ function Navbar() {
       icon: FiUsers,
       submenu: [],
     },
-  ]);
+  ];
 
   const NavLink = ({ _menu: { name, path } }) => (
     <Link

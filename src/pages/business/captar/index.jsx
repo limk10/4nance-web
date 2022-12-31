@@ -39,9 +39,8 @@ const steps = [
   },
 ];
 
-export default function CaptureProject({}) {
+export default function CaptureProject() {
   const dispatch = useDispatch();
-  const [form, setForm] = useState({});
   const [step, setStep] = useState(0);
   const [innerWidth, setInnerWidth] = useState();
   const { axiosErrorValidate } = useAxiosValidate();
@@ -175,7 +174,7 @@ export default function CaptureProject({}) {
     switch (step) {
       case 0:
         return (
-          <div align="left">
+          <Box align="left">
             <Text>Escolha uma empresa para qual deseja fazer a operação</Text>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} mb={10}>
               {!!employeeList.length &&
@@ -247,7 +246,7 @@ export default function CaptureProject({}) {
               </Box>
             </SimpleGrid>
             <CaptureEmployeeForm />
-          </div>
+          </Box>
         );
       case 1:
         return <CaptureOperationForm />;

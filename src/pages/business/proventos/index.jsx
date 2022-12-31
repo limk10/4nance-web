@@ -1,13 +1,4 @@
-import {
-  Center,
-  SimpleGrid,
-  Box,
-  Flex,
-  Divider,
-  Text,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Box, Flex, Divider, Text, Grid, GridItem } from "@chakra-ui/react";
 
 import Layout from "../layout";
 
@@ -15,7 +6,7 @@ import InfoCard from "../../../components/InfoCard";
 
 import { FiDollarSign, FiDivideSquare } from "react-icons/fi";
 
-export default function Earnings({}) {
+export default function Earnings() {
   return (
     <Box>
       <Grid templateColumns="repeat(12, 1fr)" gap={4} mb={8}>

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+import { useEffect } from "react";
 // import { GoogleLogin } from "react-google-login";
 import { useMutation } from "react-query";
 import {

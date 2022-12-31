@@ -8,22 +8,15 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot,
-  Select,
   Flex,
-  Text,
-  useQuery,
   Box,
   Tooltip,
 } from "@chakra-ui/react";
-import { Pagination, usePagination } from "@ajna/pagination";
 
-import PaginationT from "./components/Pagination";
 import { useMutation } from "react-query";
 import useAxiosValidate from "../../helpers/errors/axios";
 import { useDispatch } from "react-redux";
 import { handleLoading } from "../../redux/general/generalSlice";
-import { keys } from "lodash";
 import { formatCurrency } from "../../helpers/format";
 
 import { FiEdit, FiEye } from "react-icons/fi";
@@ -128,8 +121,8 @@ export default function PaginationTable({ fetchData, rows }) {
           <Tbody></Tbody>
           <Tbody>
             {!!data.length &&
-              data.map((d) => (
-                <Tr>
+              data.map((d, key) => (
+                <Tr key={key}>
                   <>
                     {rows.map((r) => (
                       <>

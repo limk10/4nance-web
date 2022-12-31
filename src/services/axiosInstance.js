@@ -7,7 +7,7 @@ import {
   addToLocalStorage,
 } from "../helpers/localStorage";
 
-const baseURL = "https://old-jeans-smoke-177-65-158-248.loca.lt/web/v1/";
+const baseURL = "https://fournance.onrender.com/web/v1/";
 // const baseURL = "http://localhost:3333/web/v1/";
 
 const api = axios.create({

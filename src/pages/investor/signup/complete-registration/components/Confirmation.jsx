@@ -1,11 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Text,
-} from "@chakra-ui/react";
+import { Alert, AlertTitle, Box, Text } from "@chakra-ui/react";
 import Button from "../../../../../components/Button";
 import { navigateTo } from "../../../../../helpers/routes";
 

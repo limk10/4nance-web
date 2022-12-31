@@ -11,14 +11,12 @@ import {
   PinInputField,
   HStack,
   Text,
-  Box,
   VStack,
   Heading,
   Center,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  accountConfirmation,
   businessAccountConfirmation,
   businessSignin,
   investorSignin,
@@ -44,7 +42,7 @@ function AccountConfirmation() {
 
   const { modalAccountConfirm } = useSelector(useGeneral);
 
-  const { mutate: mutateSignin, isLoading: isLoadingSignin } = useMutation(
+  const { mutate: mutateSignin } = useMutation(
     (data) => {
       if (getPathname().includes("business")) businessSignin(data);
       else investorSignin(data);
@@ -54,7 +52,7 @@ function AccountConfirmation() {
         if (getPathname().includes("business")) Router.push("/business/home");
         else Router.push("/home");
       },
-      onError: (error) => {
+      onError: () => {
         handleToast(
           "Ops...",
           "E-mail ou senha estão incorretos.",
@@ -70,7 +68,7 @@ function AccountConfirmation() {
     mutate: mutateAccountConfirmation,
     isLoading: isLoadingAccountConfirmation,
   } = useMutation((data) => businessAccountConfirmation(data), {
-    onSuccess: (resp) => {
+    onSuccess: () => {
       handleToast(
         "Cadastro ativado com sucesso",
         "Estamos preparando seu dashboard, um segundo...",

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Center, GridItem, Grid, Box, SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 
 import Layout from "../layout";
 
@@ -14,8 +13,8 @@ import {
   FiExternalLink,
 } from "react-icons/fi";
 
-export default function Dashboard({}) {
-  const [info, setInfo] = useState([
+export default function Dashboard() {
+  const info = [
     { title: 1.423, up: false, text: "Investidores", Icon: FiUsers },
     { title: 2, up: true, text: "Operações em captação", Icon: FiBarChart },
     { title: 5, up: true, text: "Operações encerradas", Icon: FiExternalLink },
@@ -32,12 +31,13 @@ export default function Dashboard({}) {
       text: "Ticket médio",
       Icon: FiDivideSquare,
     },
-  ]);
+  ];
   return (
     <>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={3}>
         {info.map(({ title, text, up, Icon }) => (
           <InfoCard
+            key={title}
             title={title}
             text={text}
             up={up}

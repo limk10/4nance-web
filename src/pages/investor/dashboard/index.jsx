@@ -1,9 +1,9 @@
-import { Box, Center, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 
 import Layout from "../layout";
 import Card from "../../../components/Card";
 
-export default function Dashboard({}) {
+export default function Dashboard() {
   return (
     <>
       <Box mb={5}>

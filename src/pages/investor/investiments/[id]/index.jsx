@@ -1,13 +1,9 @@
 import {
-  Avatar,
   Badge,
   Box,
   Center,
-  Divider,
   Flex,
-  HStack,
   Image,
-  Progress,
   SimpleGrid,
   Stack,
   Tab,
@@ -17,7 +13,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { FiAirplay, FiDownload } from "react-icons/fi";
+import { FiDownload } from "react-icons/fi";
 import {
   FaCertificate,
   FaPiggyBank,
@@ -30,7 +26,7 @@ import Button from "../../../../components/Button";
 import Layout from "../../layout";
 import Card from "../../../../components/Card";
 import { navigateTo } from "../../../../helpers/routes";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { useRouter } from "next/router";
 import {
   getDocumentsInvestorOperation,
@@ -276,7 +272,11 @@ export default function InvestimentDetails() {
               <TabList mb={3}>
                 {!!texts?.length &&
                   texts.map(({ type_post }) => (
-                    <Tab index={type_post} _focus={{ boxShadow: "none" }}>
+                    <Tab
+                      key={type_post}
+                      index={type_post}
+                      _focus={{ boxShadow: "none" }}
+                    >
                       {type_post === "operation" ? "Operação" : "Empresa"}
                     </Tab>
                   ))}
@@ -285,7 +285,7 @@ export default function InvestimentDetails() {
               <TabPanels color="blackAlpha.700">
                 {!!texts?.length &&
                   texts.map(({ title, text }, index) => (
-                    <TabPanel index={index} px={0}>
+                    <TabPanel key={title} index={index} px={0}>
                       <Text fontSize="sm">
                         <b>IMPORTANTE:</b> Todo investimento possui riscos.
                         Antes de investir, acesse a seção de Informações
@@ -302,6 +302,7 @@ export default function InvestimentDetails() {
                     {!!files?.length &&
                       files.map(({ url, name }) => (
                         <Box
+                          key={url}
                           borderWidth="1px"
                           borderColor="blackAlpha.100"
                           borderRadius="md"

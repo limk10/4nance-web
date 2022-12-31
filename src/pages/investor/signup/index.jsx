@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useEffect } from "react";
+import { useMutation } from "react-query";
 import {
   Flex,
   FormControl,
@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 
 import Router from "next/router";
 
-import { businessRegister, investorRegister } from "../../../services/api/auth";
+import { investorRegister } from "../../../services/api/auth";
 import Button from "../../../components/Button";
 
 import useToast from "../../../helpers/toast";
@@ -28,7 +28,6 @@ import {
 import useFormHelper from "../../../helpers/form";
 import useAxiosValidate from "../../../helpers/errors/axios";
 import { setFormData } from "../../../redux/form/formSlice";
-import { handleMessage } from "../../../helpers/validade";
 import {
   BsBarChart,
   BsCashCoin,
@@ -84,7 +83,6 @@ const Signup = () => {
       };
 
       await mutateRegister(data);
-    } catch (error) {
     } finally {
       dispatch(handleLoading(false));
     }

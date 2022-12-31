@@ -1,4 +1,4 @@
-import { Box, Center, Fade, Flex, ScaleFade, Text } from "@chakra-ui/react";
+import { Box, Flex, ScaleFade } from "@chakra-ui/react";
 
 import { Ring } from "@uiball/loaders";
 import { useGeneral } from "../../redux/general/generalSlice";
