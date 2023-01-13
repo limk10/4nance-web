@@ -1,6 +1,6 @@
 import { Box, Flex, Text, Divider } from "@chakra-ui/react";
 import PaginationTable from "../../../../components/Table/PaginationTabe";
-import { getAnalyzeOperation } from "../../../../services/api/operation";
+import { getBusinessAnalyzeOperation } from "../../../../services/api/operation";
 
 export default function AnalyzeProjects() {
   const rows = [
@@ -50,7 +50,7 @@ export default function AnalyzeProjects() {
       </Flex>
       <Divider mt={5} mb={8} />
 
-      <PaginationTable fetchData={getAnalyzeOperation} rows={rows} />
+      <PaginationTable fetchData={getBusinessAnalyzeOperation} rows={rows} />
     </Box>
   );
 }

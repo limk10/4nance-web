@@ -4,7 +4,7 @@ import PaginationTable from "../../../../components/Table/PaginationTabe";
 
 import Router from "next/router";
 
-import { getEnabledOperation } from "../../../../services/api/operation";
+import { getBusinessEnabledOperation } from "../../../../services/api/operation";
 
 export default function ContractedProjects() {
   const rows = [
@@ -60,7 +60,7 @@ export default function ContractedProjects() {
       </Flex>
       <Divider mt={5} mb={8} />
 
-      <PaginationTable fetchData={getEnabledOperation} rows={rows} />
+      <PaginationTable fetchData={getBusinessEnabledOperation} rows={rows} />
     </Box>
   );
 }

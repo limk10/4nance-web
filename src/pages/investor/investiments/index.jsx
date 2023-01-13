@@ -13,7 +13,7 @@ import Layout from "../layout";
 import Button from "../../../components/Button";
 import { navigateTo } from "../../../helpers/routes";
 import useAxiosValidate from "../../../helpers/errors/axios";
-import { getInvestorOperation } from "../../../services/api/operation";
+import { getInvestorEnabledOperation } from "../../../services/api/operation";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -26,7 +26,7 @@ export default function Investiment() {
 
   const { isLoading, data } = useQuery(
     "investorOperationList",
-    getInvestorOperation,
+    getInvestorEnabledOperation,
     {
       onError(error) {
         axiosErrorValidate(error);

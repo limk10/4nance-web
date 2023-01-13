@@ -51,13 +51,13 @@ function PersonalInformation() {
   );
 
   useEffect(() => {
-    if (!formData?.completeRegistration?.state) return;
+    if (!formData?.personData?.state) return;
     const {
-      completeRegistration: { state },
+      personData: { state },
     } = formData;
 
     if (state) mutateCityList(state);
-  }, [formData?.completeRegistration?.state]);
+  }, [formData?.personData?.state]);
 
   useEffect(() => {
     dispatch(handleLoading(isLoadingCityList));
@@ -72,8 +72,8 @@ function PersonalInformation() {
             <Input
               id="name"
               name="name"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.name || ""}
+              group="personData"
+              value={formData?.personData?.name || ""}
               onChange={handleChange}
             />
           </FormControl>
@@ -83,7 +83,7 @@ function PersonalInformation() {
               type="email"
               id="email"
               name="email"
-              value={formData?.completeRegistration?.email || ""}
+              value={formData?.personData?.email || ""}
               disabled
             />
           </FormControl>
@@ -95,7 +95,7 @@ function PersonalInformation() {
               mask="999.999.999-99"
               maskPlaceholder=""
               name="document"
-              value={formData?.completeRegistration?.document || ""}
+              value={formData?.personData?.document || ""}
               disabled
             >
               <Input type="text" placeholder="___.___.___-__" />
@@ -106,9 +106,9 @@ function PersonalInformation() {
             <InputMask
               mask="(99) 9 9999-9999"
               maskPlaceholder=""
-              group="completeRegistration"
+              group="personData"
               name="phone_1"
-              value={formData?.completeRegistration?.phone_1 || ""}
+              value={formData?.personData?.phone_1 || ""}
               onChange={handleChange}
             >
               <Input type="text" placeholder="(__) _ ____-____" />
@@ -119,9 +119,9 @@ function PersonalInformation() {
             <InputMask
               mask="(99) 9 9999-9999"
               maskPlaceholder=""
-              group="completeRegistration"
+              group="personData"
               name="phone_2"
-              value={formData?.completeRegistration?.phone_2 || ""}
+              value={formData?.personData?.phone_2 || ""}
               onChange={handleChange}
             >
               <Input type="text" placeholder="(__) _ ____-____" />
@@ -134,9 +134,9 @@ function PersonalInformation() {
             <InputMask
               mask="99999-999"
               maskPlaceholder=""
-              group="completeRegistration"
+              group="personData"
               name="cep"
-              value={formData?.completeRegistration?.cep || ""}
+              value={formData?.personData?.cep || ""}
               onChange={handleChange}
             >
               <Input type="text" placeholder="_____-___" />
@@ -147,8 +147,8 @@ function PersonalInformation() {
             <Select
               name="state"
               placeholder="Selecione um estado"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.state || ""}
+              group="personData"
+              value={formData?.personData?.state || ""}
               onChange={handleChange}
             >
               {stateList.map(({ id, name }) => (
@@ -163,8 +163,8 @@ function PersonalInformation() {
             <Select
               name="city"
               placeholder="Selecione uma cidade"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.city || ""}
+              group="personData"
+              value={formData?.personData?.city || ""}
               onChange={handleChange}
             >
               {cityList.map(({ id, name }) => (
@@ -181,8 +181,8 @@ function PersonalInformation() {
             <Input
               id="address"
               name="address"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.address || ""}
+              group="personData"
+              value={formData?.personData?.address || ""}
               onChange={handleChange}
             />
           </FormControl>
@@ -192,8 +192,8 @@ function PersonalInformation() {
               type="number"
               id="number"
               name="number"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.number || ""}
+              group="personData"
+              value={formData?.personData | ""}
               onChange={handleChange}
             />
           </FormControl>
@@ -202,8 +202,8 @@ function PersonalInformation() {
             <Input
               id="district"
               name="district"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.district || ""}
+              group="personData"
+              value={formData?.personData?.district || ""}
               onChange={handleChange}
             />
           </FormControl>
@@ -214,8 +214,8 @@ function PersonalInformation() {
             <Input
               id="complement"
               name="complement"
-              group="completeRegistration"
-              value={formData?.completeRegistration?.complement || ""}
+              group="personData"
+              value={formData?.personData?.complement || ""}
               onChange={handleChange}
             />
           </FormControl>

@@ -5,11 +5,29 @@ import {
   Box,
   FormControl,
   FormLabel,
-  Input,
   Text,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { handleFormData } from "../../../../redux/form/formSlice";
+import CurrencyInput from "react-currency-input-field";
+import useFormHelper from "../../../../helpers/form";
 
 function InvestmentValue() {
+  const dispatch = useDispatch();
+  const {
+    formData: { investiment },
+  } = useFormHelper();
+
+  const handleOnValueChange = (group, name, value) => {
+    dispatch(
+      handleFormData({
+        group,
+        name,
+        value,
+      })
+    );
+  };
+
   return (
     <>
       <Box my={5}>
@@ -37,9 +55,19 @@ function InvestmentValue() {
           múltiplos de R$ 5.000,00.
         </Text>
       </Alert>
-      <FormControl id="investiment-value" isRequired>
-        <FormLabel>Valor do investimento</FormLabel>
-        <Input name="number" value="" onChange={() => {}} />
+      <FormControl id="value" isRequired>
+        <FormLabel>Qual o valor que deseja investir?</FormLabel>
+        <CurrencyInput
+          id="value"
+          name="value"
+          group="investiment"
+          className="chakra-input css-1c6j008"
+          prefix="R$ "
+          value={investiment?.value}
+          onValueChange={(value, _, values) =>
+            handleOnValueChange("investiment", "value", values.float)
+          }
+        />
       </FormControl>
     </>
   );

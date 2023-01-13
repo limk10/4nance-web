@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Alert,
   AlertIcon,
@@ -7,15 +7,119 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  InputLeftAddon,
   Select,
   SimpleGrid,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import useAxiosValidate from "../../../../helpers/errors/axios";
+import { getPerson } from "../../../../services/api/person";
+import { useMutation, useQuery } from "react-query";
+import { setFormData } from "../../../../redux/form/formSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLoading } from "../../../../redux/general/generalSlice";
+import useFormHelper from "../../../../helpers/form";
+import InputMask from "react-input-mask";
+import {
+  handleCityList,
+  handleStateList,
+  useAddress,
+} from "../../../../redux/address/addressSlice";
+import { getCityList, getStateList } from "../../../../services/api/address";
 
-function PersonalInformatio() {
+function PersonalInformation() {
+  const dispatch = useDispatch();
+  const { axiosErrorValidate } = useAxiosValidate();
+  const { formData, handleChange } = useFormHelper();
+
+  const { stateList, cityList } = useSelector(useAddress);
+
+  useQuery(["stateList"], getStateList, {
+    onSuccess(data) {
+      dispatch(handleStateList(data));
+    },
+    onError(error) {
+      axiosErrorValidate(error);
+    },
+  });
+
+  const { mutate: mutateCityList, isLoading: isLoadingCityList } = useMutation(
+    ["getStateList"],
+    (id) => getCityList(id),
+    {
+      onSuccess(data) {
+        dispatch(handleCityList(data));
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+    }
+  );
+
+  const { isLoading: isLoadingPerson } = useQuery(["queryPerson"], getPerson, {
+    onSuccess(data) {
+      const {
+        person: { id, name, document, email, phone_1 },
+        address: {
+          cep,
+          address,
+          number,
+          district,
+          complement,
+          city: { state_id },
+          city_id,
+        },
+        infBanks,
+      } = data;
+
+      const dataPerson = {
+        id,
+        name,
+        document,
+        email,
+        phone_1,
+        cep,
+        address,
+        number,
+        district,
+        complement,
+        state_id,
+        city_id,
+        pix_key: infBanks?.pix_key,
+        pix_type: infBanks?.pix_type,
+      };
+
+      dispatch(
+        setFormData({
+          group: "personData",
+          values: dataPerson,
+        })
+      );
+    },
+    onError(error) {
+      axiosErrorValidate(error);
+    },
+  });
+
+  useEffect(() => {
+    if (!formData?.personData?.state_id) return;
+    const {
+      personData: { state_id },
+    } = formData;
+
+    if (state_id) mutateCityList(state_id);
+  }, [formData?.personData?.state_id]);
+
+  useEffect(() => {
+    if (isLoadingCityList) return;
+    dispatch(handleLoading(isLoadingPerson));
+  }, [isLoadingPerson]);
+
+  useEffect(() => {
+    if (isLoadingPerson) return;
+    dispatch(handleLoading(isLoadingCityList));
+  }, [isLoadingCityList]);
+
   return (
     <>
       <Box my={5}>
@@ -48,9 +152,15 @@ function PersonalInformatio() {
             <VStack spacing={3}>
               <FormControl id="name" isRequired>
                 <FormLabel>Nome</FormLabel>
-                <Input id="name" name="name" value="" onChange={() => {}} />
+                <Input
+                  id="name"
+                  group="personData"
+                  name="name"
+                  value={formData?.personData?.name || ""}
+                  onChange={handleChange}
+                />
               </FormControl>
-              <FormControl id="last_name" isRequired>
+              {/* <FormControl id="last_name" isRequired>
                 <FormLabel>Sobrenome</FormLabel>
                 <Input
                   id="last_name"
@@ -92,12 +202,21 @@ function PersonalInformatio() {
                   <option value={0}>Masculino</option>
                   <option value={1}>Feminio</option>
                 </Select>
-              </FormControl>
+              </FormControl> */}
               <FormControl id="cpf" isRequired>
                 <FormLabel>CPF</FormLabel>
-                <Input id="cpf" name="cpf" value="" onChange={() => {}} />
+                <InputMask
+                  mask="999.999.999-99"
+                  maskPlaceholder=""
+                  group="personData"
+                  name="document"
+                  value={formData?.personData?.document || ""}
+                  disabled
+                >
+                  <Input type="text" placeholder="___.___.___-__" />
+                </InputMask>
               </FormControl>
-              <SimpleGrid columns={2} spacingX={3} w="100%">
+              {/* <SimpleGrid columns={2} spacingX={3} w="100%">
                 <FormControl id="rg" isRequired>
                   <FormLabel>RG</FormLabel>
                   <Input id="rg" name="rg" value="" onChange={() => {}} />
@@ -111,8 +230,8 @@ function PersonalInformatio() {
                     onChange={() => {}}
                   />
                 </FormControl>
-              </SimpleGrid>
-              <FormControl id="civil_state" isRequired>
+              </SimpleGrid> */}
+              {/* <FormControl id="civil_state" isRequired>
                 <FormLabel>Estado cívil</FormLabel>
                 <Select
                   name="civil_state"
@@ -128,7 +247,7 @@ function PersonalInformatio() {
               <FormControl id="cargo" isRequired>
                 <FormLabel>Cargo</FormLabel>
                 <Input id="cargo" name="cargo" value="" onChange={() => {}} />
-              </FormControl>
+              </FormControl> */}
             </VStack>
           </Box>
           <Box mt={4}>
@@ -136,21 +255,28 @@ function PersonalInformatio() {
               • Contrato
             </Text>
             <VStack spacing={3}>
-              <FormControl id="e-mail" isRequired>
+              <FormControl id="email" isRequired>
                 <FormLabel>E-mail</FormLabel>
-                <Input id="e-mail" name="e-mail" value="" onChange={() => {}} />
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData?.personData?.email || ""}
+                  disabled
+                />
               </FormControl>
-              <FormControl id="e-mail" isRequired>
+              <FormControl id="phone" isRequired>
                 <FormLabel>Telefone</FormLabel>
-                <InputGroup>
-                  <InputLeftAddon children="+55" />
-                  <Input
-                    type="tel"
-                    placeholder=""
-                    value=""
-                    onChange={() => {}}
-                  />
-                </InputGroup>
+                <InputMask
+                  mask="(99) 9 9999-9999"
+                  maskPlaceholder=""
+                  group="personData"
+                  name="phone_1"
+                  value={formData?.personData?.phone_1 || ""}
+                  onChange={handleChange}
+                >
+                  <Input type="text" placeholder="(__) _ ____-____" />
+                </InputMask>
               </FormControl>
             </VStack>
           </Box>
@@ -163,60 +289,98 @@ function PersonalInformatio() {
             <VStack spacing={3}>
               <FormControl id="cep" isRequired>
                 <FormLabel>CEP</FormLabel>
-                <Input id="cep" name="cep" value="" onChange={() => {}} />
+                <InputMask
+                  mask="99999-999"
+                  maskPlaceholder=""
+                  group="personData"
+                  name="cep"
+                  value={formData?.personData?.cep || ""}
+                  onChange={handleChange}
+                >
+                  <Input type="text" placeholder="_____-___" />
+                </InputMask>
               </FormControl>
+              <SimpleGrid columns={2} spacingX={3} w="100%">
+                <FormControl id="state" isRequired>
+                  <FormLabel>Estado/Provincia</FormLabel>
+                  <Select
+                    name="state_id"
+                    placeholder="Selecione um estado"
+                    group="personData"
+                    value={formData?.personData?.state_id || ""}
+                    onChange={handleChange}
+                  >
+                    {stateList.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl id="city" isRequired>
+                  <FormLabel>Cidade</FormLabel>
+                  <Select
+                    name="city_id"
+                    placeholder="Selecione uma cidade"
+                    group="personData"
+                    value={formData?.personData?.city_id || ""}
+                    onChange={handleChange}
+                  >
+                    {cityList.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </SimpleGrid>
               <FormControl id="address" isRequired>
                 <FormLabel>Endereço</FormLabel>
                 <Input
                   id="address"
                   name="address"
-                  value=""
-                  onChange={() => {}}
+                  group="personData"
+                  value={formData?.personData?.address || ""}
+                  onChange={handleChange}
                 />
               </FormControl>
               <SimpleGrid columns={2} spacingX={3} w="100%">
                 <FormControl id="number" isRequired>
                   <FormLabel>Número</FormLabel>
                   <Input
+                    type="number"
                     id="number"
                     name="number"
-                    value=""
-                    onChange={() => {}}
+                    group="personData"
+                    value={formData?.personData?.number || ""}
+                    onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="complement" isRequired>
-                  <FormLabel>Complemento</FormLabel>
+                <FormControl id="district" isRequired>
+                  <FormLabel>Bairro</FormLabel>
                   <Input
-                    id="complement"
-                    name="complement"
-                    value=""
-                    onChange={() => {}}
+                    id="district"
+                    name="district"
+                    group="personData"
+                    value={formData?.personData?.district || ""}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </SimpleGrid>
-              <FormControl id="district" isRequired>
-                <FormLabel>Bairro</FormLabel>
+              <FormControl id="complement">
+                <FormLabel>Complemento</FormLabel>
                 <Input
-                  id="district"
-                  name="addrdistrictss"
-                  value=""
-                  onChange={() => {}}
+                  id="complement"
+                  name="complement"
+                  group="personData"
+                  value={formData?.personData?.complement || ""}
+                  onChange={handleChange}
                 />
               </FormControl>
-              <SimpleGrid columns={2} spacingX={3} w="100%">
-                <FormControl id="city" isRequired>
-                  <FormLabel>Cidade</FormLabel>
-                  <Input id="city" name="city" value="" onChange={() => {}} />
-                </FormControl>
-                <FormControl id="state" isRequired>
-                  <FormLabel>Estado</FormLabel>
-                  <Input id="state" name="state" value="" onChange={() => {}} />
-                </FormControl>
-              </SimpleGrid>
             </VStack>
           </Box>
           <Box mt={4}>
-            <Text fontSize="lg" fontWeight="600" mb={3}>
+            {/* <Text fontSize="lg" fontWeight="600" mb={3}>
               • Dados Bancarios
             </Text>
             <VStack spacing={3}>
@@ -262,33 +426,38 @@ function PersonalInformatio() {
                   />
                 </FormControl>
               </SimpleGrid>
-            </VStack>
+            </VStack> */}
           </Box>
           <Box mt={4}>
             <Text fontSize="lg" fontWeight="600" mb={3}>
-              • Pix (Opcional)
+              • Pix
             </Text>
             <VStack spacing={3}>
               <SimpleGrid columns={2} spacingX={3} w="100%">
                 <FormControl id="pix_type" isRequired>
                   <FormLabel>Tipo</FormLabel>
                   <Select
+                    id="pix_type"
                     name="pix_type"
-                    onChange={() => {}}
-                    value=""
+                    group="personData"
+                    value={formData?.personData?.pix_type || ""}
+                    onChange={handleChange}
                     placeholder="Selecione o tipo"
                   >
-                    <option value={1}>Conta corrente</option>
-                    <option value={2}>Conta poupança</option>
+                    <option value="cpf_cnpj">CPF/CNPJ</option>
+                    <option value="phone">Telefone</option>
+                    <option value="email">E-mail</option>
+                    <option value="random_key">Chave Aleatória</option>
                   </Select>
                 </FormControl>
-                <FormControl id="key_pix" isRequired>
+                <FormControl id="pix_key" isRequired>
                   <FormLabel>Chave</FormLabel>
                   <Input
-                    id="key_pix"
-                    name="key_pix"
-                    value=""
-                    onChange={() => {}}
+                    id="pix_key"
+                    name="pix_key"
+                    group="personData"
+                    value={formData?.personData?.pix_key || ""}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </SimpleGrid>
@@ -300,4 +469,4 @@ function PersonalInformatio() {
   );
 }
 
-export default PersonalInformatio;
+export default PersonalInformation;

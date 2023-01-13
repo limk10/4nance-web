@@ -29,6 +29,7 @@ import useAxiosValidate from "../../../helpers/errors/axios";
 import { setFormData } from "../../../redux/form/formSlice";
 import { isAuthenticated } from "../../../helpers/localStorage";
 import { navigateTo } from "../../../helpers/routes";
+import { clearSpecialCharacters } from "../../../helpers/format";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -61,8 +62,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { signup } = formData;
+    const { document, phone_1 } = signup;
+
     const data = {
       ...signup,
+      document: clearSpecialCharacters(document),
+      phone_1: clearSpecialCharacters(phone_1),
       person_type: "Pessoa Fisica",
       phone_2: null,
       accept_terms: true,

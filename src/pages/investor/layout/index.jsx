@@ -17,9 +17,7 @@ const LayoutComponent = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      navigateTo("/signin");
-    }
+    if (!isAuthenticated()) navigateTo("/signin");
   }, []);
 
   return (

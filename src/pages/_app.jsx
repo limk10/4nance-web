@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { extendTheme } from "@chakra-ui/react";
 import { Provider } from "react-redux";
@@ -59,6 +59,7 @@ function App({ Component, pageProps }) {
     <Provider store={store}>
       <ChakraProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
+          <CSSReset />
           <LoadingScreen />
           <AccountConfirmation />
           {getLayout(<Component {...pageProps} />)}

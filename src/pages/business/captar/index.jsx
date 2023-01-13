@@ -94,12 +94,12 @@ export default function CaptureProject() {
   const handleSelectEmployee = (employee) => {
     const data = {
       id: employee?.company_id,
-      cnpj: employee?.company?.cnpj,
-      socialReaseon: employee?.company?.social_reason,
-      fantasyName: employee?.company?.fantasy_name,
-      state: employee?.company?.state_registration,
-      email: employee?.company?.email_company,
-      phone: employee?.company?.phone_company,
+      cnpj: employee?.cnpj,
+      socialReaseon: employee?.social_reason,
+      fantasyName: employee?.fantasy_name,
+      state: employee?.state_registration,
+      email: employee?.email_company,
+      phone: employee?.phone_company,
       address: employee?.address,
       number: employee?.number,
       complement: employee?.complement,
@@ -170,6 +170,8 @@ export default function CaptureProject() {
     else if (step === 1) submitOperation();
   };
 
+  console.log("employee", employeeList);
+
   const contentForm = () => {
     switch (step) {
       case 0:
@@ -185,7 +187,7 @@ export default function CaptureProject() {
                     mr={2}
                     p={3}
                     bg={
-                      employee.company_id === formData?.captation?.company_id
+                      employee?.company_id === formData?.captation?.company_id
                         ? "gray.800"
                         : "gray.700"
                     }
@@ -212,11 +214,11 @@ export default function CaptureProject() {
                           }
                           orientation="vertical"
                         />
-                        <Text>{employee.company.fantasy_name}</Text>
+                        <Text>{employee?.fantasy_name}</Text>
                       </Stack>
                     </Heading>
                     <Text color={"gray.500"} mt={1}>
-                      {employee.company.cnpj}
+                      {employee?.cnpj}
                     </Text>
                   </Box>
                 ))}

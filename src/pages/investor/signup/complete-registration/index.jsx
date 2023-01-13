@@ -35,7 +35,7 @@ export default function CompleteRegistration() {
 
   const { isLoading: isLoadingPerson } = useQuery(["queryPerson"], getPerson, {
     onSuccess(data) {
-      dispatch(setFormData({ group: "completeRegistration", values: data }));
+      dispatch(setFormData({ group: "personData", values: data }));
     },
     onError(error) {
       axiosErrorValidate(error);
@@ -59,20 +59,20 @@ export default function CompleteRegistration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { completeRegistration } = formData;
+    const { personData } = formData;
     const data = {
-      name: completeRegistration?.name,
-      document: completeRegistration?.document,
-      phone_1: completeRegistration?.phone_1,
-      phone_2: completeRegistration?.phone_2,
-      email: completeRegistration?.email,
+      name: personData?.name,
+      document: personData?.document,
+      phone_1: personData?.phone_1,
+      phone_2: personData?.phone_2,
+      email: personData?.email,
       company_id: null,
-      address: completeRegistration?.address,
-      number: completeRegistration?.number,
-      complement: completeRegistration?.complement,
-      district: completeRegistration?.district,
-      cep: completeRegistration?.cep,
-      city_id: completeRegistration?.city,
+      address: personData?.address,
+      number: personData?.number,
+      complement: personData?.complement,
+      district: personData?.district,
+      cep: personData?.cep,
+      city_id: personData?.city,
     };
 
     dispatch(handleLoading(true));

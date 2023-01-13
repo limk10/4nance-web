@@ -11,14 +11,14 @@ export default function useAuth() {
   const getUser = () => {
     const key = getKeyToken();
     const localAuth = getLocalStorage(key);
-
     const auth = JSON.parse(localAuth);
     setUser(auth);
+
   };
 
-  const logout = () => {
+  const logout = async () => {
     const key = getKeyToken();
-    removeAuthLocalStorage(key);
+    await removeAuthLocalStorage(key);
     location.reload();
   };
 

@@ -30,7 +30,7 @@ import { useMutation } from "react-query";
 import { useRouter } from "next/router";
 import {
   getDocumentsInvestorOperation,
-  getInvestorOperationById,
+  getInvestorEnabledOperationById,
   getTextsInvestorOperation,
 } from "../../../../services/api/operation";
 import useAxiosValidate from "../../../../helpers/errors/axios";
@@ -49,7 +49,7 @@ export default function InvestimentDetails() {
   const [investiment, setInvestiment] = useState([]);
 
   const { mutateAsync: getInvestimentByID } = useMutation(
-    (data) => getInvestorOperationById(data),
+    (data) => getInvestorEnabledOperationById(data),
     {
       onSuccess(data) {
         setInvestiment(data);

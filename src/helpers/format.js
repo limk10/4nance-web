@@ -5,3 +5,9 @@ export const formatCurrency = (currency) => {
     currency: "BRL",
   });
 };
+
+
+export const clearSpecialCharacters = (string) => {
+  if (!string) return '-'
+  return string.replace(/[^\w\s]/gi, "").replaceAll(' ', '')
+}

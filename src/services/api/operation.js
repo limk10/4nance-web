@@ -15,23 +15,23 @@ export const postOperation = async (data) => {
   return result;
 };
 
-export const getEnabledOperation = async (data) => {
-  const { data: result } = await axios.get(`/projects/enabled`, data);
+export const getBusinessEnabledOperation = async (data) => {
+  const { data: result } = await axios.get(`/projects/enabled/business`, data);
   return result;
 };
 
-export const getAnalyzeOperation = async (data) => {
-  const { data: result } = await axios.get(`/projects`, data);
+export const getBusinessAnalyzeOperation = async (data) => {
+  const { data: result } = await axios.get(`/projects/business`, data);
   console.log("result", result);
   return result;
 };
 
-export const getInvestorOperation = async () => {
-  const { data: result } = await axios.get(`/projects/investor`);
+export const getInvestorEnabledOperation = async () => {
+  const { data: result } = await axios.get(`projects/enabled/investor`);
   return result;
 };
 
-export const getInvestorOperationById = async (id) => {
+export const getInvestorEnabledOperationById = async (id) => {
   const { data: result } = await axios.get(`/projects/investor/${id}`);
   return result;
 };
