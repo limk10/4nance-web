@@ -11,6 +11,7 @@ export default function useAuth() {
   const getUser = () => {
     const key = getKeyToken();
     const localAuth = getLocalStorage(key);
+    if (localAuth === 'undefined') return logout()
     const auth = JSON.parse(localAuth);
     setUser(auth);
 

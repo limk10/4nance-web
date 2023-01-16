@@ -92,7 +92,9 @@ export default function CaptureOperationForm() {
       </SimpleGrid>
       <SimpleGrid columns={{ base: 1, lg: 3, xl: 4 }} spacing={3} mb={4}>
         <FormControl id="profitability" isRequired>
-          <FormLabel>Qual a rentabilidade?</FormLabel>
+          <FormLabel>
+            Qual a rentabilidade? <small>(em %)</small>
+          </FormLabel>
           <CurrencyInput
             id="profitability"
             name="profitability"

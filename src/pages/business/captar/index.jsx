@@ -18,7 +18,11 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import CaptureEmployeeForm from "./components/form/CaptureEmployeeForm";
 import CaptureOperationForm from "./components/form/CaptureOperationForm";
 import Layout from "../layout";
-import { getEmplpoyee, postEmployee } from "../../../services/api/employee";
+import {
+  getEmplpoyee,
+  postEmployee,
+  putEmployee,
+} from "../../../services/api/employee";
 import { useDispatch, useSelector } from "react-redux";
 import useFormHelper from "../../../helpers/form";
 import useAxiosValidate from "../../../helpers/errors/axios";
@@ -76,6 +80,21 @@ export default function CaptureProject() {
     }
   );
 
+  const { mutate: mutatePutEmployee } = useMutation(
+    (data) => putEmployee(data),
+    {
+      onSuccess: () => {
+        handleStep("next");
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+      onSettled() {
+        dispatch(handleLoading(false));
+      },
+    }
+  );
+
   const { mutate: mutatePostOperation } = useMutation(
     (data) => postOperation(data),
     {
@@ -97,15 +116,16 @@ export default function CaptureProject() {
       cnpj: employee?.cnpj,
       socialReaseon: employee?.social_reason,
       fantasyName: employee?.fantasy_name,
-      state: employee?.state_registration,
       email: employee?.email_company,
       phone: employee?.phone_company,
-      address: employee?.address,
-      number: employee?.number,
-      complement: employee?.complement,
-      district: employee?.district,
-      cep: employee?.cep,
-      city: employee?.city_id,
+      address: employee?.address?.address,
+      number: employee?.address?.number,
+      complement: employee?.address?.complement,
+      district: employee?.address?.district,
+      cep: employee?.address?.cep,
+      state: employee?.state_registration,
+      city: employee?.address_id,
+      edit: true,
     };
 
     dispatch(setFormData({ group: "captation", values: data }));
@@ -141,11 +161,15 @@ export default function CaptureProject() {
     };
 
     dispatch(handleLoading(true));
-    await mutatePostEmployee(data);
+
+    if (captation.edit) await mutatePutEmployee(data);
+    else await mutatePostEmployee(data);
   };
 
   const submitOperation = async () => {
     const { captation } = formData;
+    if (!formData?.category || !formData?.modality || !captation?.description)
+      return;
 
     const data = {
       modality_id: formData?.modality,

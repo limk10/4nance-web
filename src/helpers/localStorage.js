@@ -14,8 +14,8 @@ export const addToLocalStorage = (key, value) => {
   }
 };
 
-export const isAuthenticated = () => {
-  const key = getKeyToken();
+export const isAuthenticated = async () => {
+  const key = await getKeyToken();
   return Boolean(getLocalStorage(key));
 };
 
@@ -44,6 +44,8 @@ export const getInvestorKeyToken = () => {
 };
 
 export const getKeyToken = () => {
+  const pathname = getPathname()
+  if (!pathname) return
   if (getPathname().includes("admin")) return getAdminKeyToken();
   if (getPathname().includes("business")) return getBusinessKeyToken();
   else return getInvestorKeyToken();

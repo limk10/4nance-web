@@ -59,20 +59,20 @@ api.interceptors.response.use(
     const { response, config } = error;
     const originalRequest = config;
 
-    if (
-      (response.status === 401 && originalRequest.url.includes("signin")) ||
-      originalRequest.url.includes("signup")
-    ) {
-      return Promise.reject(error);
-    }
+    // if (
+    //   (response.status === 401 && (originalRequest.url.includes("signin")) ||
+    //   originalRequest.url.includes("signup"))
+    // ) {
+    //   return Promise.reject(error);
+    // }
 
     if (
       response.status === 401 &&
       originalRequest.url.includes("authenticate/refresh")
     ) {
       removeAuthLocalStorage();
-      return Promise.reject(error);
     }
+
     if (response.status === 401 && !originalRequest?.retry) {
       originalRequest.retry = true;
       await refreshToken(config);
