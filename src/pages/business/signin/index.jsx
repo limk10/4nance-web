@@ -30,11 +30,14 @@ const Singin = () => {
   const { handleToast } = useToast();
   const { handleChange, formData } = useFormHelper();
 
+  const init = async () => {
+    const auth = await isAuthenticated();
+    if (auth) return navigateTo("/business/home");
+  };
+
   useEffect(() => {
-    if (isAuthenticated()) {
-      navigateTo("/business/home");
-    }
-  }, []);
+    init();
+  });
 
   // Simulação de uma request POST com axios
   const { mutate: mutateSignin, isLoading } = useMutation(

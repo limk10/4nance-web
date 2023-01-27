@@ -16,44 +16,45 @@ import { navigateTo } from "../../../helpers/routes";
 const LayoutComponent = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const init = async () => {
+    const auth = await isAuthenticated();
+    if (!auth) return navigateTo("/signin");
+  };
+
   useEffect(() => {
-    if (!isAuthenticated()) return navigateTo("/signin");
-  }, []);
+    init();
+  });
 
   return (
     <>
-      {isAuthenticated() ? (
-        <>
-          <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-            <SidebarContent
-              onClose={onClose}
-              display={{ base: "none", md: "block" }}
-            />
-            <Drawer
-              autoFocus={false}
-              isOpen={isOpen}
-              placement="left"
-              onClose={onClose}
-              returnFocusOnClose={false}
-              onOverlayClick={onClose}
-              size="full"
-            >
-              <DrawerContent>
-                <SidebarContent onClose={onClose} />
-              </DrawerContent>
-            </Drawer>
-            <Navbar onOpen={onOpen} />
-            <Box px={{ base: 2, md: 8 }}>
-              <Box ml={{ base: 0, md: 60 }} pb={10} color="gray.600">
-                <main>{children}</main>
-              </Box>
+      <>
+        <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+          <SidebarContent
+            onClose={onClose}
+            display={{ base: "none", md: "block" }}
+          />
+          <Drawer
+            autoFocus={false}
+            isOpen={isOpen}
+            placement="left"
+            onClose={onClose}
+            returnFocusOnClose={false}
+            onOverlayClick={onClose}
+            size="full"
+          >
+            <DrawerContent>
+              <SidebarContent onClose={onClose} />
+            </DrawerContent>
+          </Drawer>
+          <Navbar onOpen={onOpen} />
+          <Box px={{ base: 2, md: 8 }}>
+            <Box ml={{ base: 0, md: 60 }} pb={10} color="gray.600">
+              <main>{children}</main>
             </Box>
           </Box>
-          <Footer />
-        </>
-      ) : (
-        <></>
-      )}
+        </Box>
+        <Footer />
+      </>
     </>
   );
 };

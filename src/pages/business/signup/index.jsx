@@ -37,11 +37,14 @@ const Signup = () => {
   const { axiosErrorValidate } = useAxiosValidate();
   const { handleChange, formData } = useFormHelper();
 
+  const init = async () => {
+    const auth = await isAuthenticated();
+    if (auth) return navigateTo("/business/home");
+  };
+
   useEffect(() => {
-    if (isAuthenticated()) {
-      navigateTo("/business/home");
-    }
-  }, []);
+    init();
+  });
 
   const { mutate: mutateRegister, isLoading } = useMutation(
     (data) => businessRegister(data),

@@ -8,8 +8,8 @@ import {
 export default function useAuth() {
   const [user, setUser] = useState({});
 
-  const getUser = () => {
-    const key = getKeyToken();
+  const getUser = async () => {
+    const key = await getKeyToken();
     const localAuth = getLocalStorage(key);
     if (localAuth === 'undefined') return logout()
     const auth = JSON.parse(localAuth);
@@ -18,7 +18,7 @@ export default function useAuth() {
   };
 
   const logout = async () => {
-    const key = getKeyToken();
+    const key = await getKeyToken();
     await removeAuthLocalStorage(key);
     location.reload();
   };

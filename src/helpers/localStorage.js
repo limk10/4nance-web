@@ -1,5 +1,9 @@
 import { getPathname } from "./browser";
 
+export const adminKeyToken = `@token.admin:4ance-web`
+export const businessKeyToken = `@token.business:4ance-web`
+export const investorKeyToken = `@token.investor:4ance-web`
+
 export const getLocalStorage = (key) => {
   if (typeof window !== "undefined") return localStorage.getItem(key);
   else return "";
@@ -16,7 +20,7 @@ export const addToLocalStorage = (key, value) => {
 
 export const isAuthenticated = async () => {
   const key = await getKeyToken();
-  return Boolean(getLocalStorage(key));
+  return localStorage.getItem(key);
 };
 
 export const setAuthLocalStorage = async (key, auth) => {
@@ -31,22 +35,10 @@ export const removeAuthLocalStorage = (key) => {
 
 export const removeLocalStorage = (key) => localStorage.removeItem(key);
 
-export const getAdminKeyToken = () => {
-  return `@token.admin:4ance-web`;
-};
-
-export const getBusinessKeyToken = () => {
-  return `@token.business:4ance-web`;
-};
-
-export const getInvestorKeyToken = () => {
-  return `@token.investor:4ance-web`;
-};
-
-export const getKeyToken = () => {
-  const pathname = getPathname()
+export const getKeyToken = async () => {
+  const pathname = await getPathname()
   if (!pathname) return
-  if (getPathname().includes("admin")) return getAdminKeyToken();
-  if (getPathname().includes("business")) return getBusinessKeyToken();
-  else return getInvestorKeyToken();
+  if (pathname.includes("admin")) return adminKeyToken;
+  if (pathname.includes("business")) return businessKeyToken;
+  else return investorKeyToken;
 };

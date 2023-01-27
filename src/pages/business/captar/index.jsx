@@ -34,6 +34,7 @@ import {
 } from "../../../redux/employee/employeeSlice";
 import { setFormData } from "../../../redux/form/formSlice";
 import { postOperation } from "../../../services/api/operation";
+import { clearSpecialCharacters } from "../../../helpers/format";
 
 const steps = [
   { label: "Sua empresa", description: "Conte-nos um pouco sobre sua empresa" },
@@ -112,7 +113,7 @@ export default function CaptureProject() {
 
   const handleSelectEmployee = (employee) => {
     const data = {
-      id: employee?.company_id,
+      id: employee?.id,
       cnpj: employee?.cnpj,
       socialReaseon: employee?.social_reason,
       fantasyName: employee?.fantasy_name,
@@ -124,7 +125,7 @@ export default function CaptureProject() {
       district: employee?.address?.district,
       cep: employee?.address?.cep,
       state: employee?.state_registration,
-      city: employee?.address_id,
+      city: employee?.address?.city?.id,
       edit: true,
     };
 
@@ -144,9 +145,9 @@ export default function CaptureProject() {
 
   const submitEmployee = async () => {
     const { captation } = formData;
-    if (captation.id) return handleStep("next");
     const data = {
-      cnpj: captation?.cnpj,
+      ...(captation.id ? { company_id: captation.id } : ""),
+      cnpj: clearSpecialCharacters(captation?.cnpj),
       social_reason: captation?.socialReaseon,
       fantasy_name: captation?.fantasyName,
       state_registration: captation?.state,
@@ -193,8 +194,6 @@ export default function CaptureProject() {
     if (step === 0) submitEmployee();
     else if (step === 1) submitOperation();
   };
-
-  console.log("employee", employeeList);
 
   const contentForm = () => {
     switch (step) {

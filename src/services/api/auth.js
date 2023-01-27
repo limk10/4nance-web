@@ -1,19 +1,19 @@
 import {
-  getBusinessKeyToken,
-  getInvestorKeyToken,
+  businessKeyToken,
+  investorKeyToken,
   setAuthLocalStorage,
 } from "../../helpers/localStorage";
 import axios from "../axiosInstance";
 
 export const businessSignin = async (data) => {
   const { data: result } = await axios.post(`signin/business`, data);
-  const key = getBusinessKeyToken();
+  const key = businessKeyToken;
   setAuthLocalStorage(key, result);
 };
 
 export const investorSignin = async (data) => {
   const { data: result } = await axios.post(`signin`, data);
-  const key = getInvestorKeyToken();
+  const key = investorKeyToken;
   setAuthLocalStorage(key, result);
 };
 

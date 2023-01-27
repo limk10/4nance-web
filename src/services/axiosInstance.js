@@ -4,7 +4,7 @@ import {
   getLocalStorage,
   getKeyToken,
   removeAuthLocalStorage,
-  addToLocalStorage,
+  // addToLocalStorage,
 } from "../helpers/localStorage";
 
 const baseURL = "https://fournance.onrender.com/web/v1/";
@@ -19,27 +19,27 @@ const api = axios.create({
   },
 });
 
-const refreshToken = async (config) => {
-  await api
-    .post("auth/v1/refresh")
-    .then(async ({ data, status }) => {
-      if (status === 200) {
-        const key = await getKeyToken();
-        addToLocalStorage(key, data.token);
+// const refreshToken = async (config) => {
+//   await api
+//     .post("auth/v1/refresh")
+//     .then(async ({ data, status }) => {
+//       if (status === 200) {
+//         const key = await getKeyToken();
+//         addToLocalStorage(key, data.token);
 
-        config.headers.Authorization = `Bearer ${data.token}`;
-      }
-    })
-    .catch((err) => {
-      console.log("err", err);
-    });
-};
+//         config.headers.Authorization = `Bearer ${data.token}`;
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("err", err);
+//     });
+// };
 
 api.interceptors.request.use(async (config) => {
   const configuration = config;
 
   const key = await getKeyToken();
-  const authStorage = await getLocalStorage(key);
+  const authStorage = getLocalStorage(key);
 
   if (authStorage) {
     const { token } = JSON.parse(authStorage);
@@ -73,11 +73,11 @@ api.interceptors.response.use(
       removeAuthLocalStorage();
     }
 
-    if (response.status === 401 && !originalRequest?.retry) {
-      originalRequest.retry = true;
-      await refreshToken(config);
-      return api(originalRequest);
-    }
+    // if (response.status === 401 && !originalRequest?.retry) {
+    //   originalRequest.retry = true;
+    //   await refreshToken(config);
+    //   return api(originalRequest);
+    // }
 
     return Promise.reject(error);
   }

@@ -43,11 +43,14 @@ const Signup = () => {
   const { axiosErrorValidate } = useAxiosValidate();
   const { handleChange, formData } = useFormHelper();
 
-  useEffect(() => {
-    if (isAuthenticated()) {
-      navigateTo("/home");
-    }
-  }, []);
+  const init = async () => {
+    const auth = await isAuthenticated();
+    if (auth) return navigateTo("/home");
+  };
+
+  useEffect(async () => {
+    init();
+  });
 
   const { mutateAsync: mutateRegister, isLoading } = useMutation(
     (data) => investorRegister(data),
