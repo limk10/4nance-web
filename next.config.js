@@ -62,6 +62,12 @@ const nextConfig = {
         destination: "/investor/complete/registration",
       },
 
+      // PROFILE
+      {
+        source: "/perfil",
+        destination: "/investor/profile",
+      },
+
       // BUSINESS ROUTES
       {
         source: "/business/completar",

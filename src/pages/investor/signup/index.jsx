@@ -48,7 +48,7 @@ const Signup = () => {
     if (auth) return navigateTo("/home");
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     init();
   });
 

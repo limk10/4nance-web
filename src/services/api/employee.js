@@ -6,7 +6,8 @@ export const postEmployee = async (data) => {
 };
 
 export const putEmployee = async (data) => {
-  const { data: result } = await axios.put(`/company`, data);
+  const { company_id, ...payload } = data;
+  const { data: result } = await axios.put(`/company/${company_id}`, payload);
   return result;
 };
 

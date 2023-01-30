@@ -160,9 +160,7 @@ function Navbar() {
                 bg={useColorModeValue("white", "gray.900")}
                 borderColor={useColorModeValue("gray.200", "gray.700")}
               >
-                <MenuItem
-                  onClick={() => navigateTo("/business/usuario/perfil")}
-                >
+                <MenuItem onClick={() => navigateTo("/perfil")}>
                   <FiUser />
                   <Text ml={2}>Perfil</Text>
                 </MenuItem>
