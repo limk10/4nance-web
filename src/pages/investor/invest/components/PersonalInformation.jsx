@@ -252,7 +252,7 @@ function PersonalInformation() {
           </Box>
           <Box mt={4}>
             <Text fontSize="lg" fontWeight="600" mb={3}>
-              • Contrato
+              • Contato
             </Text>
             <VStack spacing={3}>
               <FormControl id="email" isRequired>

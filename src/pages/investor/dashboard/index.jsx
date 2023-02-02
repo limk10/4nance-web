@@ -14,10 +14,7 @@ export default function Dashboard() {
           Veja aqui todos seus ativos e como eles estão neste exato momento.
         </Text>
       </Box>
-      <Card p={4}>
-        <Text>Dashboard</Text>
-      </Card>
-      <SimpleGrid columns={{ base: 1, md: 4 }} spacingX={3} mt={4}>
+      <SimpleGrid columns={{ base: 1, md: 4 }} spacingX={3} mb={4}>
         <Card>
           <Text>1</Text>
         </Card>
@@ -25,12 +22,15 @@ export default function Dashboard() {
           <Text>2</Text>
         </Card>
         <Card>
-          <Text>3</Text>
+          <Text>2</Text>
         </Card>
         <Card>
-          <Text>4</Text>
+          <Text>2</Text>
         </Card>
       </SimpleGrid>
+      <Card p={4}>
+        <Text>Dashboard</Text>
+      </Card>
     </>
   );
 }
