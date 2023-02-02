@@ -45,12 +45,12 @@ const Signup = () => {
 
   const init = async () => {
     const auth = await isAuthenticated();
-    if (auth) return navigateTo("/home");
+    if (auth) return navigateTo("/dashboard");
   };
 
   useEffect(() => {
     init();
-  });
+  }, []);
 
   const { mutateAsync: mutateRegister, isLoading } = useMutation(
     (data) => investorRegister(data),

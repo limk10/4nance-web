@@ -32,19 +32,20 @@ const Singin = () => {
 
   const init = async () => {
     const auth = await isAuthenticated();
+    console.log('auth', auth)
     if (auth) return navigateTo("/business/home");
   };
 
   useEffect(() => {
     init();
-  });
+  }, []);
 
   // Simulação de uma request POST com axios
   const { mutate: mutateSignin, isLoading } = useMutation(
     (data) => businessSignin(data),
     {
       onSuccess: () => {
-        Router.push("/business/home");
+        window.location.reload()
       },
       onError: (err) => {
         const {

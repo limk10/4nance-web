@@ -44,7 +44,7 @@ const Signup = () => {
 
   useEffect(() => {
     init();
-  });
+  }, []);
 
   const { mutate: mutateRegister, isLoading } = useMutation(
     (data) => businessRegister(data),

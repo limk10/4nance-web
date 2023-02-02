@@ -22,7 +22,6 @@ import {
   investorSignin,
 } from "../../services/api/auth";
 import { useMutation } from "react-query";
-import Router from "next/router";
 import {
   handleAccountConfirmation,
   handleLoading,
@@ -49,8 +48,9 @@ function AccountConfirmation() {
     },
     {
       onSuccess: () => {
-        if (getPathname().includes("business")) Router.push("/business/home");
-        else Router.push("/home");
+        window.location.reload()
+        // if (getPathname().includes("business")) Router.push("/business/home");
+        // else Router.push("/home");
       },
       onError: () => {
         handleToast(

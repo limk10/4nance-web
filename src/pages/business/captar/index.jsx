@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import Button from "../../../components/Button";
 import Steps, { Step } from "rc-steps";
-import Router from "next/router";
 import { AiFillPlusCircle } from "react-icons/ai";
 import CaptureEmployeeForm from "./components/form/CaptureEmployeeForm";
 import CaptureOperationForm from "./components/form/CaptureOperationForm";
@@ -317,7 +316,7 @@ export default function CaptureProject() {
 
               <Center mt={5}>
                 <Button
-                  onClick={() => Router.push("/business/home")}
+                  onClick={() => {}}
                   w="20%"
                   text="Home"
                 />

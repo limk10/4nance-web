@@ -26,7 +26,7 @@ const LayoutComponent = ({ children }) => {
 
   useEffect(() => {
     init();
-  });
+  }, []);
 
   return (
     <>

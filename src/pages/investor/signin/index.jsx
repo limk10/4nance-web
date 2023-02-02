@@ -41,19 +41,19 @@ const Singin = () => {
 
   const init = async () => {
     const auth = await isAuthenticated();
-    if (auth) return navigateTo("/home");
+    if (auth) return navigateTo("/dashboard");
   };
 
   useEffect(() => {
     init();
-  });
+  }, []);
 
   // Simulação de uma request POST com axios
   const { mutateAsync: mutateSignin } = useMutation(
     (data) => investorSignin(data),
     {
       onSuccess: () => {
-        Router.push("/home");
+        window.location.reload()
       },
       onError: (err) => {
         const {

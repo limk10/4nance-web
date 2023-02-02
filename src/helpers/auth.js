@@ -20,7 +20,7 @@ export default function useAuth() {
   const logout = async () => {
     const key = await getKeyToken();
     await removeAuthLocalStorage(key);
-    location.reload();
+    window.location.reload()
   };
 
   useEffect(() => {
