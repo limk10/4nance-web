@@ -193,7 +193,7 @@ function PersonalInformation() {
               id="number"
               name="number"
               group="personData"
-              value={formData?.personData | ""}
+              value={formData?.personData?.number | ""}
               onChange={handleChange}
             />
           </FormControl>

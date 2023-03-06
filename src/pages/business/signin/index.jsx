@@ -32,7 +32,7 @@ const Singin = () => {
 
   const init = async () => {
     const auth = await isAuthenticated();
-    console.log('auth', auth)
+    console.log("auth", auth);
     if (auth) return navigateTo("/business/home");
   };
 
@@ -45,7 +45,7 @@ const Singin = () => {
     (data) => businessSignin(data),
     {
       onSuccess: () => {
-        window.location.reload()
+        window.location.reload();
       },
       onError: (err) => {
         const {

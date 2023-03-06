@@ -34,7 +34,31 @@ export default function CompleteRegistration() {
 
   const { isLoading: isLoadingPerson } = useQuery(["queryPerson"], getPerson, {
     onSuccess(data) {
-      dispatch(setFormData({ group: "personData", values: data }));
+      const { person, address, infBanks } = data;
+
+      const dataPerson = {
+        id: person?.id,
+        name: person?.name,
+        document: person?.document,
+        email: person?.email,
+        phone_1: person?.phone_1,
+        cep: address?.cep,
+        address: address?.address,
+        number: address?.number,
+        district: address?.district,
+        complement: address?.complement,
+        state_id: address?.city?.state_id,
+        city_id: address?.city_id,
+        pix_key: infBanks?.pix_key,
+        pix_type: infBanks?.pix_type,
+      };
+
+      dispatch(
+        setFormData({
+          group: "personData",
+          values: dataPerson,
+        })
+      );
     },
     onError(error) {
       axiosErrorValidate(error);

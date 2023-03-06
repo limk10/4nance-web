@@ -36,18 +36,18 @@ const Sidebar = ({ onClose, ...rest }) => {
       icon: FiBarChart,
       submenu: [],
     },
-    {
-      name: "Proventos",
-      path: "/business/proventos",
-      icon: FiDollarSign,
-      submenu: [],
-    },
-    {
-      name: "Meus investidores",
-      path: "/business/investidores",
-      icon: FiUsers,
-      submenu: [],
-    },
+    // {
+    //   name: "Proventos",
+    //   path: "/business/proventos",
+    //   icon: FiDollarSign,
+    //   submenu: [],
+    // },
+    // {
+    //   name: "Meus investidores",
+    //   path: "/business/investidores",
+    //   icon: FiUsers,
+    //   submenu: [],
+    // },
   ];
 
   const isMenuAcvite = (path) => {

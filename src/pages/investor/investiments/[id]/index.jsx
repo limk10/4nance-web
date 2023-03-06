@@ -111,6 +111,7 @@ export default function InvestimentDetails() {
       </Box>
     );
   };
+
   return (
     <>
       <Box mb={8}>

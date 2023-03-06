@@ -70,7 +70,7 @@ const nextConfig = {
 
       // BUSINESS ROUTES
       {
-        source: "/business/completar",
+        source: "/negocio/completar",
         destination: "/business/signup/complete-registration",
       },
     ];

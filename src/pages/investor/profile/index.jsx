@@ -64,33 +64,21 @@ export default function Profile() {
 
   const { isLoading: isLoadingPerson } = useQuery(["queryPerson"], getPerson, {
     onSuccess(data) {
-      const {
-        person: { id, name, document, email, phone_1 },
-        address: {
-          cep,
-          address,
-          number,
-          district,
-          complement,
-          city: { state_id },
-          city_id,
-        },
-        infBanks,
-      } = data;
+      const { person, address, infBanks } = data;
 
       const dataPerson = {
-        id,
-        name,
-        document,
-        email,
-        phone_1,
-        cep,
-        address,
-        number,
-        district,
-        complement,
-        state_id,
-        city_id,
+        id: person?.id,
+        name: person?.name,
+        document: person?.document,
+        email: person?.email,
+        phone_1: person?.phone_1,
+        cep: address?.cep,
+        address: address?.address,
+        number: address?.number,
+        district: address?.district,
+        complement: address?.complement,
+        state_id: address?.city?.state_id,
+        city_id: address?.city_id,
         pix_key: infBanks?.pix_key,
         pix_type: infBanks?.pix_type,
       };
@@ -106,6 +94,8 @@ export default function Profile() {
       axiosErrorValidate(error);
     },
   });
+
+  const handleSubmit = () => {};
 
   useEffect(() => {
     if (!formData?.personData?.state_id) return;
@@ -136,41 +126,42 @@ export default function Profile() {
       p={6}
       my={12}
     >
-      <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
-        Dados Pessoais
-      </Heading>
-      <FormControl id="userName">
-        <Stack direction={["column"]} mb={10}>
-          <Center>
-            {/* <Avatar size="xl" src="#!"></Avatar> */}
-            <Avatar
-              size={"xl"}
-              name={formData?.personData?.name || "Investidor"}
-            />
-          </Center>
-          {/* <Center w="full">
+      <form onSubmit={handleSubmit}>
+        <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
+          Dados Pessoais
+        </Heading>
+        <FormControl id="userName">
+          <Stack direction={["column"]} mb={10}>
+            <Center>
+              {/* <Avatar size="xl" src="#!"></Avatar> */}
+              <Avatar
+                size={"xl"}
+                name={formData?.personData?.name || "Investidor"}
+              />
+            </Center>
+            {/* <Center w="full">
             <Button onClick={() => {}} variant="outline" text="Alterar Foto" />
           </Center> */}
-        </Stack>
-      </FormControl>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacingX={5}>
-        <Box>
+          </Stack>
+        </FormControl>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacingX={5}>
           <Box>
-            <Text fontSize="lg" fontWeight="600" mb={3}>
-              • Dados Pessoais
-            </Text>
-            <VStack spacing={3}>
-              <FormControl id="name" isRequired>
-                <FormLabel>Nome</FormLabel>
-                <Input
-                  id="name"
-                  group="personData"
-                  name="name"
-                  value={formData?.personData?.name || ""}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              {/* <FormControl id="last_name" isRequired>
+            <Box>
+              <Text fontSize="lg" fontWeight="600" mb={3}>
+                • Dados Pessoais
+              </Text>
+              <VStack spacing={3}>
+                <FormControl id="name" isRequired>
+                  <FormLabel>Nome</FormLabel>
+                  <Input
+                    id="name"
+                    group="personData"
+                    name="name"
+                    value={formData?.personData?.name || ""}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                {/* <FormControl id="last_name" isRequired>
                 <FormLabel>Sobrenome</FormLabel>
                 <Input
                   id="last_name"
@@ -213,20 +204,20 @@ export default function Profile() {
                   <option value={1}>Feminio</option>
                 </Select>
               </FormControl> */}
-              <FormControl id="cpf" isRequired>
-                <FormLabel>CPF</FormLabel>
-                <InputMask
-                  mask="999.999.999-99"
-                  maskPlaceholder=""
-                  group="personData"
-                  name="document"
-                  value={formData?.personData?.document || ""}
-                  disabled
-                >
-                  <Input type="text" placeholder="___.___.___-__" />
-                </InputMask>
-              </FormControl>
-              {/* <SimpleGrid columns={2} spacingX={3} w="100%">
+                <FormControl id="cpf" isRequired>
+                  <FormLabel>CPF</FormLabel>
+                  <InputMask
+                    mask="999.999.999-99"
+                    maskPlaceholder=""
+                    group="personData"
+                    name="document"
+                    value={formData?.personData?.document || ""}
+                    disabled
+                  >
+                    <Input type="text" placeholder="___.___.___-__" />
+                  </InputMask>
+                </FormControl>
+                {/* <SimpleGrid columns={2} spacingX={3} w="100%">
                 <FormControl id="rg" isRequired>
                   <FormLabel>RG</FormLabel>
                   <Input id="rg" name="rg" value="" onChange={() => {}} />
@@ -241,7 +232,7 @@ export default function Profile() {
                   />
                 </FormControl>
               </SimpleGrid> */}
-              {/* <FormControl id="civil_state" isRequired>
+                {/* <FormControl id="civil_state" isRequired>
                 <FormLabel>Estado cívil</FormLabel>
                 <Select
                   name="civil_state"
@@ -258,139 +249,139 @@ export default function Profile() {
                 <FormLabel>Cargo</FormLabel>
                 <Input id="cargo" name="cargo" value="" onChange={() => {}} />
               </FormControl> */}
-            </VStack>
+              </VStack>
+            </Box>
+            <Box mt={4}>
+              <Text fontSize="lg" fontWeight="600" mb={3}>
+                • Contato
+              </Text>
+              <VStack spacing={3}>
+                <FormControl id="email" isRequired>
+                  <FormLabel>E-mail</FormLabel>
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData?.personData?.email || ""}
+                    disabled
+                  />
+                </FormControl>
+                <FormControl id="phone" isRequired>
+                  <FormLabel>Telefone</FormLabel>
+                  <InputMask
+                    mask="(99) 9 9999-9999"
+                    maskPlaceholder=""
+                    group="personData"
+                    name="phone_1"
+                    value={formData?.personData?.phone_1 || ""}
+                    onChange={handleChange}
+                  >
+                    <Input type="text" placeholder="(__) _ ____-____" />
+                  </InputMask>
+                </FormControl>
+              </VStack>
+            </Box>
           </Box>
-          <Box mt={4}>
-            <Text fontSize="lg" fontWeight="600" mb={3}>
-              • Contato
-            </Text>
-            <VStack spacing={3}>
-              <FormControl id="email" isRequired>
-                <FormLabel>E-mail</FormLabel>
-                <Input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData?.personData?.email || ""}
-                  disabled
-                />
-              </FormControl>
-              <FormControl id="phone" isRequired>
-                <FormLabel>Telefone</FormLabel>
-                <InputMask
-                  mask="(99) 9 9999-9999"
-                  maskPlaceholder=""
-                  group="personData"
-                  name="phone_1"
-                  value={formData?.personData?.phone_1 || ""}
-                  onChange={handleChange}
-                >
-                  <Input type="text" placeholder="(__) _ ____-____" />
-                </InputMask>
-              </FormControl>
-            </VStack>
-          </Box>
-        </Box>
-        <Box>
           <Box>
-            <Text fontSize="lg" fontWeight="600" mb={3}>
-              • Endereço
-            </Text>
-            <VStack spacing={3}>
-              <FormControl id="cep" isRequired>
-                <FormLabel>CEP</FormLabel>
-                <InputMask
-                  mask="99999-999"
-                  maskPlaceholder=""
-                  group="personData"
-                  name="cep"
-                  value={formData?.personData?.cep || ""}
-                  onChange={handleChange}
-                >
-                  <Input type="text" placeholder="_____-___" />
-                </InputMask>
-              </FormControl>
-              <SimpleGrid columns={2} spacingX={3} w="100%">
-                <FormControl id="state" isRequired>
-                  <FormLabel>Estado/Provincia</FormLabel>
-                  <Select
-                    name="state_id"
-                    placeholder="Selecione um estado"
+            <Box>
+              <Text fontSize="lg" fontWeight="600" mb={3}>
+                • Endereço
+              </Text>
+              <VStack spacing={3}>
+                <FormControl id="cep" isRequired>
+                  <FormLabel>CEP</FormLabel>
+                  <InputMask
+                    mask="99999-999"
+                    maskPlaceholder=""
                     group="personData"
-                    value={formData?.personData?.state_id || ""}
+                    name="cep"
+                    value={formData?.personData?.cep || ""}
                     onChange={handleChange}
                   >
-                    {stateList.map(({ id, name }) => (
-                      <option key={id} value={id}>
-                        {name}
-                      </option>
-                    ))}
-                  </Select>
+                    <Input type="text" placeholder="_____-___" />
+                  </InputMask>
                 </FormControl>
-                <FormControl id="city" isRequired>
-                  <FormLabel>Cidade</FormLabel>
-                  <Select
-                    name="city_id"
-                    placeholder="Selecione uma cidade"
-                    group="personData"
-                    value={formData?.personData?.city_id || ""}
-                    onChange={handleChange}
-                  >
-                    {cityList.map(({ id, name }) => (
-                      <option key={id} value={id}>
-                        {name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </SimpleGrid>
-              <FormControl id="address" isRequired>
-                <FormLabel>Endereço</FormLabel>
-                <Input
-                  id="address"
-                  name="address"
-                  group="personData"
-                  value={formData?.personData?.address || ""}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <SimpleGrid columns={2} spacingX={3} w="100%">
-                <FormControl id="number" isRequired>
-                  <FormLabel>Número</FormLabel>
+                <SimpleGrid columns={2} spacingX={3} w="100%">
+                  <FormControl id="state" isRequired>
+                    <FormLabel>Estado/Provincia</FormLabel>
+                    <Select
+                      name="state_id"
+                      placeholder="Selecione um estado"
+                      group="personData"
+                      value={formData?.personData?.state_id || ""}
+                      onChange={handleChange}
+                    >
+                      {stateList.map(({ id, name }) => (
+                        <option key={id} value={id}>
+                          {name}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl id="city" isRequired>
+                    <FormLabel>Cidade</FormLabel>
+                    <Select
+                      name="city_id"
+                      placeholder="Selecione uma cidade"
+                      group="personData"
+                      value={formData?.personData?.city_id || ""}
+                      onChange={handleChange}
+                    >
+                      {cityList.map(({ id, name }) => (
+                        <option key={id} value={id}>
+                          {name}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </SimpleGrid>
+                <FormControl id="address" isRequired>
+                  <FormLabel>Endereço</FormLabel>
                   <Input
-                    type="number"
-                    id="number"
-                    name="number"
+                    id="address"
+                    name="address"
                     group="personData"
-                    value={formData?.personData?.number || ""}
+                    value={formData?.personData?.address || ""}
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="district" isRequired>
-                  <FormLabel>Bairro</FormLabel>
+                <SimpleGrid columns={2} spacingX={3} w="100%">
+                  <FormControl id="number" isRequired>
+                    <FormLabel>Número</FormLabel>
+                    <Input
+                      type="number"
+                      id="number"
+                      name="number"
+                      group="personData"
+                      value={formData?.personData?.number || ""}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                  <FormControl id="district" isRequired>
+                    <FormLabel>Bairro</FormLabel>
+                    <Input
+                      id="district"
+                      name="district"
+                      group="personData"
+                      value={formData?.personData?.district || ""}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                </SimpleGrid>
+                <FormControl id="complement">
+                  <FormLabel>Complemento</FormLabel>
                   <Input
-                    id="district"
-                    name="district"
+                    id="complement"
+                    name="complement"
                     group="personData"
-                    value={formData?.personData?.district || ""}
+                    value={formData?.personData?.complement || ""}
                     onChange={handleChange}
                   />
                 </FormControl>
-              </SimpleGrid>
-              <FormControl id="complement">
-                <FormLabel>Complemento</FormLabel>
-                <Input
-                  id="complement"
-                  name="complement"
-                  group="personData"
-                  value={formData?.personData?.complement || ""}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </VStack>
-          </Box>
-          <Box mt={4}>
-            {/* <Text fontSize="lg" fontWeight="600" mb={3}>
+              </VStack>
+            </Box>
+            <Box mt={4}>
+              {/* <Text fontSize="lg" fontWeight="600" mb={3}>
               • Dados Bancarios
             </Text>
             <VStack spacing={3}>
@@ -437,48 +428,48 @@ export default function Profile() {
                 </FormControl>
               </SimpleGrid>
             </VStack> */}
+            </Box>
+            <Box mt={4}>
+              <Text fontSize="lg" fontWeight="600" mb={3}>
+                • Pix
+              </Text>
+              <VStack spacing={3}>
+                <SimpleGrid columns={2} spacingX={3} w="100%">
+                  <FormControl id="pix_type" isRequired>
+                    <FormLabel>Tipo</FormLabel>
+                    <Select
+                      id="pix_type"
+                      name="pix_type"
+                      group="personData"
+                      value={formData?.personData?.pix_type || ""}
+                      onChange={handleChange}
+                      placeholder="Selecione o tipo"
+                    >
+                      <option value="cpf_cnpj">CPF/CNPJ</option>
+                      <option value="phone">Telefone</option>
+                      <option value="email">E-mail</option>
+                      <option value="random_key">Chave Aleatória</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl id="pix_key" isRequired>
+                    <FormLabel>Chave</FormLabel>
+                    <Input
+                      id="pix_key"
+                      name="pix_key"
+                      group="personData"
+                      value={formData?.personData?.pix_key || ""}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                </SimpleGrid>
+              </VStack>
+            </Box>
           </Box>
-          <Box mt={4}>
-            <Text fontSize="lg" fontWeight="600" mb={3}>
-              • Pix
-            </Text>
-            <VStack spacing={3}>
-              <SimpleGrid columns={2} spacingX={3} w="100%">
-                <FormControl id="pix_type" isRequired>
-                  <FormLabel>Tipo</FormLabel>
-                  <Select
-                    id="pix_type"
-                    name="pix_type"
-                    group="personData"
-                    value={formData?.personData?.pix_type || ""}
-                    onChange={handleChange}
-                    placeholder="Selecione o tipo"
-                  >
-                    <option value="cpf_cnpj">CPF/CNPJ</option>
-                    <option value="phone">Telefone</option>
-                    <option value="email">E-mail</option>
-                    <option value="random_key">Chave Aleatória</option>
-                  </Select>
-                </FormControl>
-                <FormControl id="pix_key" isRequired>
-                  <FormLabel>Chave</FormLabel>
-                  <Input
-                    id="pix_key"
-                    name="pix_key"
-                    group="personData"
-                    value={formData?.personData?.pix_key || ""}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </SimpleGrid>
-            </VStack>
-          </Box>
-        </Box>
-      </SimpleGrid>
-      <Flex width="100%" justify="space-between" mt={7}>
-        <Button mr={4} onClick={() => {}} variant="outline" text="Voltar" />
-        <Button type="submit" text="Salvar Perfil" />
-      </Flex>
+        </SimpleGrid>
+        <Flex width="100%" justify="flex-end" mt={7}>
+          <Button type="submit" text="Salvar Perfil" />
+        </Flex>
+      </form>
     </Stack>
   );
 }

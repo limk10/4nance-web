@@ -182,7 +182,7 @@ const Signup = () => {
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl id="document">
+              <FormControl id="document" isRequired>
                 <FormLabel>Documento</FormLabel>
                 <InputMask
                   mask="999.999.999-99"
@@ -205,7 +205,7 @@ const Signup = () => {
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl id="phone">
+              <FormControl id="phone" isRequired>
                 <FormLabel>Telefone</FormLabel>
                 <InputMask
                   mask="(99) 9 9999-9999"
@@ -228,7 +228,7 @@ const Signup = () => {
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl id="cep">
+              <FormControl id="cep" isRequired>
                 <FormLabel>CEP </FormLabel>
                 <InputMask
                   mask="99999-999"
