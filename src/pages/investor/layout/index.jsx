@@ -10,20 +10,24 @@ import Navbar from "./Navbar";
 import SidebarContent from "./Sidebar";
 import Footer from "./Footer";
 import { isAuthenticated } from "../../../helpers/localStorage";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { navigateTo } from "../../../helpers/routes";
 
 const LayoutComponent = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [localAuth, setLocalAuth] = useState();
 
   const init = async () => {
     const auth = await isAuthenticated();
+    setLocalAuth(auth);
     if (!auth) return navigateTo("/signin");
   };
 
   useLayoutEffect(() => {
     init();
   }, []);
+
+  if (!localAuth) return <></>;
 
   return (
     <>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Avatar,
   Box,
@@ -31,16 +32,18 @@ import { handleLoading } from "../../../redux/general/generalSlice";
 import { getCityList, getStateList } from "../../../services/api/address";
 
 import Layout from "../layout";
-import { getPerson } from "../../../services/api/person";
+import { getPerson, postPerson } from "../../../services/api/person";
+import useToast from "../../../helpers/toast";
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const { handleToast } = useToast();
   const { axiosErrorValidate } = useAxiosValidate();
   const { formData, handleChange } = useFormHelper();
 
   const { stateList, cityList } = useSelector(useAddress);
 
-  useQuery(["stateList"], getStateList, {
+  const { isLoading: isLoadingState } = useQuery(["stateList"], getStateList, {
     onSuccess(data) {
       dispatch(handleStateList(data));
     },
@@ -49,22 +52,9 @@ export default function Profile() {
     },
   });
 
-  const { mutate: mutateCityList, isLoading: isLoadingCityList } = useMutation(
-    ["getStateList"],
-    (id) => getCityList(id),
-    {
-      onSuccess(data) {
-        dispatch(handleCityList(data));
-      },
-      onError(error) {
-        axiosErrorValidate(error);
-      },
-    }
-  );
-
   const { isLoading: isLoadingPerson } = useQuery(["queryPerson"], getPerson, {
     onSuccess(data) {
-      const { person, address, infBanks } = data;
+      const { person, infBanks } = data;
 
       const dataPerson = {
         id: person?.id,
@@ -72,13 +62,13 @@ export default function Profile() {
         document: person?.document,
         email: person?.email,
         phone_1: person?.phone_1,
-        cep: address?.cep,
-        address: address?.address,
-        number: address?.number,
-        district: address?.district,
-        complement: address?.complement,
-        state_id: address?.city?.state_id,
-        city_id: address?.city_id,
+        cep: person?.address?.cep,
+        address: person?.address?.address,
+        number: person?.address?.number,
+        district: person?.address?.district,
+        complement: person?.address?.complement,
+        state_id: person?.address?.city?.state?.id,
+        city_id: person?.address?.city?.id,
         pix_key: infBanks?.pix_key,
         pix_type: infBanks?.pix_type,
       };
@@ -95,7 +85,45 @@ export default function Profile() {
     },
   });
 
-  const handleSubmit = () => {};
+  const { mutateAsync: mutateCityList, isLoading: isLoadingCityList } =
+    useMutation((id) => getCityList(id), {
+      onSuccess(data) {
+        dispatch(handleCityList(data));
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+    });
+
+  const { mutateAsync: muatatePostPerson, isLoading: isLoadingPostPerson } =
+    useMutation((data) => postPerson(data), {
+      onSuccess() {
+        handleToast(
+          "Sucesso!",
+          "Seus dados foram atualizado com sucesso.",
+          "success",
+          9000,
+          "top-right"
+        );
+      },
+      onError(error) {
+        axiosErrorValidate(error);
+      },
+    });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const {
+      personData: { id, ...rest },
+    } = formData;
+
+    const data = {
+      ...rest,
+      registerComplete: true,
+    };
+
+    muatatePostPerson(data);
+  };
 
   useEffect(() => {
     if (!formData?.personData?.state_id) return;
@@ -106,15 +134,16 @@ export default function Profile() {
     if (state_id) mutateCityList(state_id);
   }, [formData?.personData?.state_id]);
 
-  useEffect(() => {
-    if (isLoadingCityList) return;
-    dispatch(handleLoading(isLoadingPerson));
-  }, [isLoadingPerson]);
-
-  useEffect(() => {
-    if (isLoadingPerson) return;
-    dispatch(handleLoading(isLoadingCityList));
-  }, [isLoadingCityList]);
+  if (
+    isLoadingState ||
+    isLoadingPerson ||
+    isLoadingCityList ||
+    isLoadingPostPerson
+  ) {
+    dispatch(handleLoading(true));
+  } else {
+    dispatch(handleLoading(false));
+  }
 
   return (
     <Stack

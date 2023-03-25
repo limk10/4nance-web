@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { setFormData } from "../../../../redux/form/formSlice";
 import { handleLoading } from "../../../../redux/general/generalSlice";
 import useAxiosValidate from "../../../../helpers/errors/axios";
+import useAuth from "../../../../helpers/auth";
 
 const steps = [
   { label: "Dados Pessoais", children: <PersonalInformation /> },
@@ -27,6 +28,7 @@ const steps = [
 
 export default function CompleteRegistration() {
   const dispatch = useDispatch();
+  const [user] = useAuth();
   const { axiosErrorValidate } = useAxiosValidate();
   const { formData } = useFormHelper();
   const { nextStep, activeStep } = useSteps({
@@ -87,7 +89,7 @@ export default function CompleteRegistration() {
     <>
       <Box mb={8}>
         <Text fontSize="xl" fontWeight="md" color="blackAlpha.800">
-          Olá, empresário
+          Olá, {user?.user || "Empresário"}
         </Text>
         <Text fontSize="sm" color="blackAlpha.600">
           Complete seu cadastro, conte-nos um pouco sobre você.

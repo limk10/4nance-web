@@ -39,8 +39,8 @@ api.interceptors.request.use(async (config) => {
   const configuration = config;
 
   const key = await getKeyToken();
-  const authStorage = getLocalStorage(key);
-
+  const authStorage = await getLocalStorage(key);
+  
   if (authStorage) {
     const { token } = JSON.parse(authStorage);
 

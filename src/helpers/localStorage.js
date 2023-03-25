@@ -39,6 +39,6 @@ export const getKeyToken = async () => {
   const pathname = await getPathname()
   if (!pathname) return
   if (pathname.includes("admin")) return adminKeyToken;
-  if (pathname.includes("business")) return businessKeyToken;
+  if (pathname.includes("business") || pathname.includes("negocio")) return businessKeyToken;
   else return investorKeyToken;
 };
