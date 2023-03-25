@@ -66,7 +66,6 @@ const Signup = () => {
     e.preventDefault();
     const { signup } = formData;
     const { document, phone_1 } = signup;
-    console.log();
 
     const data = {
       ...signup,

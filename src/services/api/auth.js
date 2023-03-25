@@ -7,14 +7,12 @@ import axios from "../axiosInstance";
 
 export const businessSignin = async (data) => {
   const { data: result } = await axios.post(`signin/business`, data);
-  const key = businessKeyToken;
-  setAuthLocalStorage(key, result);
+  setAuthLocalStorage(businessKeyToken, result);
 };
 
 export const investorSignin = async (data) => {
   const { data: result } = await axios.post(`signin`, data);
-  const key = investorKeyToken;
-  setAuthLocalStorage(key, result);
+  setAuthLocalStorage(investorKeyToken, result);
 };
 
 export const businessSignout = async () => {

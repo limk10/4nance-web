@@ -41,14 +41,14 @@ function AccountConfirmation() {
 
   const { modalAccountConfirm } = useSelector(useGeneral);
 
-  const { mutate: mutateSignin } = useMutation(
-    (data) => {
-      if (getPathname().includes("business")) businessSignin(data);
-      else investorSignin(data);
+  const { mutateAsync: mutateSignin } = useMutation(
+    async (data) => {
+      if (getPathname().includes("business")) await businessSignin(data);
+      else await investorSignin(data);
     },
     {
       onSuccess: () => {
-        window.location.reload()
+        window.location.reload();
         // if (getPathname().includes("business")) Router.push("/business/home");
         // else Router.push("/home");
       },
@@ -65,7 +65,7 @@ function AccountConfirmation() {
   );
 
   const {
-    mutate: mutateAccountConfirmation,
+    mutateAsync: mutateAccountConfirmation,
     isLoading: isLoadingAccountConfirmation,
   } = useMutation((data) => businessAccountConfirmation(data), {
     onSuccess: () => {
@@ -76,14 +76,12 @@ function AccountConfirmation() {
         9000
       );
 
-      setTimeout(() => {
-        const data = {
-          email: formData?.signin?.email || formData?.signup?.email,
-          password: formData?.signin?.password || formData?.signup?.password,
-        };
+      const data = {
+        email: formData?.signin?.email || formData?.signup?.email,
+        password: formData?.signin?.password || formData?.signup?.password,
+      };
 
-        mutateSignin(data);
-      }, 2000);
+      mutateSignin(data);
     },
     onError: (error) => axiosErrorValidate(error),
   });
@@ -94,6 +92,7 @@ function AccountConfirmation() {
         email: formData?.signin?.email || formData?.signup?.email,
         code: e,
       };
+
       mutateAccountConfirmation(data);
     }
   };

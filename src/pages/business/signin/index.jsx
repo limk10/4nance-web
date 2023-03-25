@@ -32,7 +32,6 @@ const Singin = () => {
 
   const init = async () => {
     const auth = await isAuthenticated();
-    console.log("auth", auth);
     if (auth) return navigateTo("/business/home");
   };
 
