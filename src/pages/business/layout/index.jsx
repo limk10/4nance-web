@@ -13,7 +13,7 @@ import Navbar from "./Navbar";
 import SidebarContent from "./Sidebar";
 import Footer from "./Footer";
 import { isAuthenticated } from "../../../helpers/localStorage";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { navigateTo } from "../../../helpers/routes";
 
 const LayoutComponent = ({ children }) => {
@@ -24,7 +24,7 @@ const LayoutComponent = ({ children }) => {
     if (!auth) return navigateTo("/business/signin");
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     init();
   }, []);
 
