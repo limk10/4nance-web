@@ -12,13 +12,7 @@ import { useRouter } from "next/router";
 
 import Button from "../../../components/Button";
 
-import {
-  FiPieChart,
-  FiHome,
-  FiBarChart,
-  FiDollarSign,
-  FiUsers,
-} from "react-icons/fi";
+import { FiPieChart, FiHome, FiBarChart } from "react-icons/fi";
 
 const Sidebar = ({ onClose, ...rest }) => {
   const router = useRouter();
