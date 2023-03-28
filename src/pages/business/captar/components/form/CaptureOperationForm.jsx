@@ -95,7 +95,7 @@ export default function CaptureOperationForm() {
           <FormLabel>
             Qual a rentabilidade? <small>(em %)</small>
           </FormLabel>
-          {/* <CurrencyInput
+          <CurrencyInput
             id="profitability"
             name="profitability"
             group="captation"
@@ -103,43 +103,43 @@ export default function CaptureOperationForm() {
             onValueChange={(value, _, values) =>
               handleOnValueChange("captation", "profitability", values.float)
             }
-          /> */}
+          />
         </FormControl>
         <FormControl id="min-capture" isRequired>
           <FormLabel>Captura mínima?</FormLabel>
-          {/* <CurrencyInput
+          <CurrencyInput
             id="min-capture"
             name="minCapture"
             group="captation"
             className="chakra-input css-1c6j008"
             decimalsLimit={2}
-            decimalSeparator=","
+            // decimalSeparator=","
             prefix="R$ "
             onValueChange={(value, _, values) =>
               handleOnValueChange("captation", "minCapture", values.float)
             }
-          /> */}
+          />
         </FormControl>
         <FormControl id="max-capture" isRequired>
           <FormLabel>Captura máxima?</FormLabel>
-          {/* <CurrencyInput
+          <CurrencyInput
             id="max-capture"
             name="maxCapture"
             group="captation"
             className="chakra-input css-1c6j008"
             decimalsLimit={2}
-            decimalSeparator=","
+            // decimalSeparator=","
             prefix="R$ "
             onValueChange={(value, _, values) =>
               handleOnValueChange("captation", "maxCapture", values.float)
             }
-          /> */}
+          />
         </FormControl>
         <FormControl id="time-investiment" isRequired>
           <FormLabel>
             Tempo de investimento? <small>(Meses)</small>
           </FormLabel>
-          {/* <CurrencyInput
+          <CurrencyInput
             id="time-investiment"
             name="timeInvestment"
             group="captation"
@@ -148,7 +148,7 @@ export default function CaptureOperationForm() {
               handleOnValueChange("captation", "timeInvestment", values.float)
             }
             maxLength={2}
-          /> */}
+          />
         </FormControl>
       </SimpleGrid>
       <FormControl id="description" mb={4} isRequired>
