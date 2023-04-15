@@ -98,31 +98,6 @@ export default function Home() {
           ))}
         </Box>
       </GridItem>
-
-      {/* <GridItem colSpan={4} rowSpan={1}>
-          <Box p={5} bg="white" borderRadius={"md"} shadow="md">
-            <Heading fontSize="large" fontWeight={600}>
-              Plan Money
-            </Heading>
-            <Text mt={4}>
-              The future can be even brighter but a goal without a plan is just
-              a wish
-            </Text>
-          </Box>
-        </GridItem>
-
-        <GridItem colSpan={4} rowSpan={1}>
-          <Box p={5} bg="white" borderRadius={"md"} shadow="md">
-            <Heading fontSize="large" fontWeight={600}>
-              Save Money
-            </Heading>
-            <Text mt={4}>
-              You deserve good things. With a whooping 10-15% interest rate per
-              annum, grow your savings on your own terms with our completely
-              automated process
-            </Text>
-          </Box>
-        </GridItem> */}
     </Grid>
   );
 }

@@ -170,7 +170,7 @@ export default function InvestimentDetails() {
                 <GroupInfo
                   text="Valor da Cota"
                   value={formatCurrency(investiment?.minimum_value)}
-                  icon={<FaPiggyBank color="#4A5568" size="25" />}
+                  icon={<FaPiggyBank size="25" />}
                 />
                 <GroupInfo
                   text="Valor Captado"
